@@ -1,0 +1,3949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plaid Maker</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:         #f0ede8;
+  --surface:    #faf9f7;
+  --surface2:   #f4f1ec;
+  --border:     #e0dbd2;
+  --border-md:  #ccc6bb;
+  --text:       #1a1714;
+  --muted:      #8a8278;
+  --accent:     #c4472a;
+  --accent-h:   #a83820;
+  --accent2:    #2a6ec4;
+  --green:      #2a7a45;
+  --nav-bg:     #1a1714;
+  --nav-text:   #ffffff;
+  --nav-text-dim: rgba(255,255,255,0.4);
+  --nav-text-bright: rgba(255,255,255,0.75);
+  --nav-border: rgba(255,255,255,0.1);
+  --nav-btn-bg: rgba(255,255,255,0.08);
+  --nav-btn-border: rgba(255,255,255,0.14);
+  --nav-btn-hover-bg: rgba(255,255,255,0.16);
+  --sel-highlight:  #eef3fd;
+  --sel-dot-hover-bg: #d0e2f8;
+  --radius:     3px;
+  --sidebar-w:  252px;
+  --nav-h:      48px;
+  --shadow:     0 1px 3px rgba(0,0,0,.07), 0 4px 16px rgba(0,0,0,.06);
+  --shadow-lg:  0 2px 8px rgba(0,0,0,.1), 0 8px 32px rgba(0,0,0,.08);
+}
+
+html[data-theme="grey"] {
+  --bg:         #3d3935;
+  --surface:    #4a4540;
+  --surface2:   #524d48;
+  --border:     #5d5854;
+  --border-md:  #6d6860;
+  --text:       #f0ede8;
+  --muted:      #b5aca0;
+  --accent:     #e8653f;
+  --accent-h:   #ff7c52;
+  --accent2:    #4a8ee6;
+  --green:      #4a9a5f;
+  --nav-bg:     #2d2926;
+  --nav-text:   #f0ede8;
+  --nav-text-dim: rgba(240,237,232,0.4);
+  --nav-text-bright: rgba(240,237,232,0.75);
+  --nav-border: rgba(240,237,232,0.1);
+  --nav-btn-bg: rgba(240,237,232,0.08);
+  --nav-btn-border: rgba(240,237,232,0.14);
+  --nav-btn-hover-bg: rgba(240,237,232,0.16);
+  --sel-highlight:  #5d5854;
+  --sel-dot-hover-bg: #6d6860;
+  --shadow:     0 1px 3px rgba(0,0,0,.4), 0 4px 16px rgba(0,0,0,.3);
+  --shadow-lg:  0 2px 8px rgba(0,0,0,.5), 0 8px 32px rgba(0,0,0,.4);
+}
+
+html[data-theme="dark"] {
+  --bg:         #1a1714;
+  --surface:    #252220;
+  --surface2:   #2d2926;
+  --border:     #3d3935;
+  --border-md:  #4a4540;
+  --text:       #f0ede8;
+  --muted:      #9d8f7f;
+  --accent:     #e8653f;
+  --accent-h:   #ff7c52;
+  --accent2:    #4a8ee6;
+  --green:      #4a9a5f;
+  --nav-bg:     #0d0b09;
+  --nav-text:   #f0ede8;
+  --nav-text-dim: rgba(240,237,232,0.4);
+  --nav-text-bright: rgba(240,237,232,0.75);
+  --nav-border: rgba(240,237,232,0.1);
+  --nav-btn-bg: rgba(240,237,232,0.08);
+  --nav-btn-border: rgba(240,237,232,0.14);
+  --nav-btn-hover-bg: rgba(240,237,232,0.16);
+  --sel-highlight:  #3d3935;
+  --sel-dot-hover-bg: #4a4540;
+  --shadow:     0 1px 3px rgba(0,0,0,.3), 0 4px 16px rgba(0,0,0,.25);
+  --shadow-lg:  0 2px 8px rgba(0,0,0,.4), 0 8px 32px rgba(0,0,0,.35);
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 12.5px;
+  min-height: 100%;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── NAV ─────────────────────────────────────────── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 400;
+  height: var(--nav-h);
+  background: var(--nav-bg);
+  display: flex; align-items: center; gap: 0;
+  padding: 0;
+}
+.nav-brand {
+  display: flex; align-items: center; gap: 10px;
+  padding: 0 20px;
+  height: 100%;
+  border-right: 1px solid var(--nav-border);
+}
+.nav-brand-name {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.05rem;
+  color: var(--nav-text);
+  letter-spacing: .01em;
+}
+.nav-brand-name em { font-style: italic; color: #e8c9a0; }
+.nav-info {
+  display: flex; align-items: center; gap: 16px;
+  padding: 0 20px;
+  flex: 1;
+  border-left: 1px solid var(--nav-border);
+}
+.nav-stat {
+  font-family: 'DM Mono', monospace;
+  font-size: .62rem;
+  color: var(--nav-text-dim);
+  display: flex; align-items: center; gap: 5px;
+}
+.nav-stat b { color: var(--nav-text-bright); font-weight: 500; }
+.nav-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--nav-border); }
+
+/* ── WORKSPACE ───────────────────────────────────── */
+.workspace {
+  display: flex;
+  height: calc(100vh - var(--nav-h));
+  margin-top: var(--nav-h);
+  overflow: hidden;
+}
+
+/* ── SIDEBAR ─────────────────────────────────────── */
+.sidebar {
+  width: var(--sidebar-w);
+  flex-shrink: 0;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* section */
+.sec {
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+}
+.sec-hd {
+  display: flex; align-items: center; gap: 0;
+  padding: 0 14px;
+  height: 34px;
+  cursor: pointer;
+  user-select: none;
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+  transition: background .1s;
+  flex-shrink: 0;
+}
+.sec-hd:hover { background: var(--bg); }
+.sec-icon {
+  width: 16px; height: 16px;
+  display: flex; align-items: center; justify-content: center;
+  margin-right: 8px; flex-shrink: 0;
+  color: var(--muted);
+}
+.sec-label {
+  font-size: .6rem; font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--muted); flex: 1;
+}
+.sec-badge {
+  font-family: 'DM Mono', monospace;
+  font-size: .58rem;
+  color: var(--muted);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 1px 5px;
+  margin-right: 7px;
+}
+.sec-chevron {
+  font-size: 8px; color: var(--border-md);
+  transition: transform .15s; line-height: 1;
+  flex-shrink: 0;
+}
+.sec.collapsed .sec-chevron { transform: rotate(-90deg); }
+
+.sec-body {
+  padding: 10px 12px;
+  display: flex; flex-direction: column; gap: 8px;
+  overflow: hidden;
+  max-height: 2000px;
+  transition: max-height .22s ease, padding .18s ease, opacity .15s;
+  opacity: 1;
+}
+.sec.collapsed .sec-body {
+  max-height: 0; padding-top: 0; padding-bottom: 0;
+  opacity: 0; pointer-events: none; overflow: hidden;
+}
+.sec.scrollable .sec-body {
+  overflow-y: visible;
+  max-height: 2000px;
+}
+.sec.collapsed.scrollable .sec-body { max-height: 0; overflow: hidden; }
+
+/* ── STICKY PROGRESS BAR ─────────────────────────── */
+.sec-sticky-bar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--surface);
+  padding: 8px 12px 6px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.sec-sticky-bar .thread-progress-wrap {
+  margin-top: 0;
+}
+.sec-sticky-bar .seq-warn {
+  margin-top: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 7px;
+  padding-right: 7px;
+  max-height: 0;
+  overflow: hidden;
+  border-width: 0;
+  transition: max-height .15s ease, margin-top .15s ease, padding .15s ease, border-width .15s;
+}
+.sec-sticky-bar .seq-warn.visible {
+  max-height: 40px;
+  margin-top: 7px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-width: 1px;
+}
+.sec.collapsed .sec-sticky-bar {
+  display: none;
+}
+
+/* ── PALETTE ─────────────────────────────────────── */
+.pal-list { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; }
+.pal-row  { display: flex; align-items: center; gap: 4px; min-width: 0; }
+
+.hex-wrap {
+  flex: 1; min-width: 0;
+  display: flex; align-items: center;
+  border: 1px solid var(--border-md); border-radius: var(--radius);
+  overflow: hidden; height: 26px;
+  background: var(--surface);
+  transition: border-color .1s;
+}
+.hex-wrap:focus-within { border-color: var(--accent2); }
+.hex-in {
+  flex: 1; min-width: 0; border: none; outline: none;
+  font-family: 'DM Mono', monospace; font-size: .65rem;
+  padding: 0 5px; background: transparent; color: var(--text);
+  text-transform: uppercase;
+}
+.nat-wrap {
+  width: 26px; height: 26px; position: relative;
+  flex-shrink: 0; cursor: pointer;
+}
+.nat-wrap .sw {
+  position: absolute; inset: 0; pointer-events: none;
+  border-left: 1px solid var(--border);
+}
+.nat-wrap input[type=color] {
+  position: absolute; inset: 0; opacity: 0;
+  width: 100%; height: 100%; cursor: pointer; border: none;
+}
+.bx {
+  background: none; border: none; cursor: pointer;
+  color: var(--border-md); padding: 2px 3px;
+  border-radius: 2px; font-size: 10px; line-height: 1;
+  transition: color .1s; flex-shrink: 0;
+}
+.bx:hover { color: var(--accent); }
+
+.add-pal { display: flex; align-items: center; gap: 4px; }
+.new-sw {
+  width: 26px; height: 26px;
+  border: 1px dashed var(--border-md); border-radius: var(--radius);
+  cursor: pointer; overflow: hidden; position: relative; flex-shrink: 0;
+}
+.new-sw .sw { position: absolute; inset: 0; pointer-events: none; }
+.new-sw input[type=color] {
+  position: absolute; inset: 0; opacity: 0;
+  width: 100%; height: 100%; cursor: pointer; border: none;
+}
+.btn-ghost {
+  flex: 1; height: 26px;
+  background: transparent;
+  border: 1px dashed var(--border-md); border-radius: var(--radius);
+  font-family: 'DM Sans', sans-serif; font-size: .62rem; font-weight: 500;
+  color: var(--muted); cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 3px;
+  transition: all .1s;
+}
+.btn-ghost:hover { border-color: var(--accent2); color: var(--accent2); background: #eef3fd; }
+
+/* ── SETTINGS ────────────────────────────────────── */
+.field { display: flex; flex-direction: column; gap: 4px; }
+.field-lbl {
+  font-size: .58rem; font-weight: 600;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--muted);
+}
+.field-row { display: flex; align-items: center; gap: 6px; }
+.num-in {
+  height: 26px;
+  border: 1px solid var(--border-md); border-radius: var(--radius);
+  font-family: 'DM Mono', monospace; font-size: .7rem;
+  text-align: center; background: var(--surface); color: var(--text);
+  transition: border-color .1s;
+}
+.num-in:focus { outline: none; border-color: var(--accent2); }
+.sel-in {
+  width: 100%; height: 26px;
+  border: 1px solid var(--border-md); border-radius: var(--radius);
+  font-family: 'DM Mono', monospace; font-size: .68rem;
+  background: var(--surface); color: var(--text);
+  padding: 0 6px; cursor: pointer;
+}
+.sel-in:focus { outline: none; border-color: var(--accent2); }
+.field-note {
+  font-size: .58rem; color: var(--muted);
+  font-family: 'DM Mono', monospace;
+}
+
+/* ── SEQUENCE ROWS ───────────────────────────────── */
+.mirror-lbl {
+  display: flex; align-items: center; gap: 6px;
+  font-size: .68rem; color: var(--muted); font-weight: 400; cursor: pointer;
+}
+.mirror-lbl input {
+  width: 12px; height: 12px;
+  accent-color: var(--accent2); cursor: pointer;
+}
+
+.ins-btn {
+  display: flex; align-items: center; justify-content: center;
+  height: 16px; width: 100%;
+  background: none; border: none; cursor: pointer;
+  color: transparent; font-size: 13px; line-height: 1;
+  border-radius: 2px; transition: color .1s, background .1s; flex-shrink: 0;
+}
+.ins-btn:hover { color: var(--accent2); background: #eef3fd; }
+
+.seq-row {
+  display: flex; align-items: center; gap: 5px;
+  flex-shrink: 0;
+  padding: 2px 3px;
+  border-radius: 5px;
+  transition: background .1s;
+  position: relative;
+}
+.seq-row:hover { background: var(--surface2); }
+
+.cdrop { position: relative; flex-shrink: 0; }
+.cdrop-btn {
+  width: 32px; height: 28px; border-radius: 4px;
+  border: 1px solid var(--border-md); cursor: pointer;
+  position: relative; overflow: hidden;
+  transition: border-color .1s, box-shadow .1s; flex-shrink: 0;
+}
+.cdrop-btn:hover { border-color: var(--accent2); box-shadow: 0 0 0 2px #d0e2f8; }
+.cdrop-btn .sw { position: absolute; inset: 0; pointer-events: none; }
+.cdrop-btn .caret {
+  position: absolute; bottom: 3px; right: 3px;
+  width: 0; height: 0;
+  border-left: 3px solid transparent;
+  border-right: 3px solid transparent;
+  border-top: 4px solid rgba(255,255,255,.85);
+  pointer-events: none;
+  filter: drop-shadow(0 0 1px rgba(0,0,0,.5));
+}
+.cdrop-menu {
+  position: absolute; top: calc(100% + 4px); left: 0; z-index: 600;
+  background: var(--surface);
+  border: 1px solid var(--border-md);
+  border-radius: var(--radius);
+  overflow: hidden; box-shadow: var(--shadow-lg);
+  display: none; flex-wrap: wrap;
+  width: 96px;
+}
+.cdrop-menu.open { display: flex; }
+.cdrop-opt {
+  width: 24px; height: 24px; cursor: pointer;
+  border: none; padding: 0; flex-shrink: 0;
+  transition: transform .08s;
+}
+.cdrop-opt:hover { transform: scale(1.18); z-index: 1; position: relative; }
+
+.seq-x { display: none; }
+
+.seq-n {
+  flex: 1; min-width: 0;
+  height: 28px;
+  border: 1px solid var(--border-md); border-radius: 4px;
+  font-family: 'DM Mono', monospace; font-size: .72rem;
+  text-align: center; background: var(--surface); color: var(--text);
+  transition: border-color .1s, box-shadow .1s;
+}
+.seq-n:hover { border-color: var(--border-md); }
+.seq-n:focus { outline: none; border-color: var(--accent2); box-shadow: 0 0 0 2px #d0e2f8; }
+
+/* ── DRAG & MULTI-SELECT ─────────────────────────── */
+.seq-drag-handle {
+  display: flex; align-items: center; justify-content: center;
+  width: 13px; height: 28px;
+  cursor: grab; flex-shrink: 0;
+  color: transparent;
+  font-size: 11px; line-height: 1;
+  user-select: none;
+  transition: color .1s;
+}
+.seq-row:hover .seq-drag-handle { color: var(--border-md); }
+.seq-drag-handle:hover { color: var(--muted) !important; }
+.seq-drag-handle:active { cursor: grabbing; }
+
+.seq-sel-dot {
+  width: 13px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; cursor: pointer;
+}
+.seq-sel-dot::before {
+  content: '';
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  border: 1.5px solid transparent;
+  background: transparent;
+  transition: all .12s;
+  display: block;
+}
+.seq-row:hover .seq-sel-dot::before { border-color: var(--border-md); }
+.seq-sel-dot:hover::before { border-color: var(--accent2) !important; background: var(--sel-dot-hover-bg); }
+.seq-row.sel-active .seq-sel-dot::before {
+  background: var(--accent2);
+  border-color: var(--accent2);
+}
+.seq-row.sel-active {
+  background: var(--sel-highlight);
+}
+
+.seq-rm {
+  background: none; border: none; cursor: pointer;
+  color: transparent;
+  padding: 2px 3px; border-radius: 3px;
+  font-size: 10px; line-height: 1;
+  transition: color .1s, background .1s; flex-shrink: 0;
+  width: 20px; height: 20px;
+  display: flex; align-items: center; justify-content: center;
+}
+.seq-row:hover .seq-rm { color: var(--border-md); }
+.seq-rm:hover { color: var(--accent) !important; background: #fdecea; }
+
+.seq-row.seq-dragging { opacity: .3; pointer-events: none; }
+.seq-row.seq-drag-over-top    { box-shadow: 0 -2px 0 0 var(--accent2); }
+.seq-row.seq-drag-over-bottom { box-shadow:  0 2px 0 0 var(--accent2); }
+
+/* ── THREAD PROGRESS BAR ─────────────────────────── */
+.thread-progress-wrap {
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.thread-progress-track {
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--border);
+  overflow: hidden;
+  position: relative;
+}
+.thread-progress-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width .2s ease, background .2s ease;
+  position: relative;
+}
+.thread-progress-track::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 4px;
+  background-image:
+    linear-gradient(45deg,#ccc 25%,transparent 25%),
+    linear-gradient(-45deg,#ccc 25%,transparent 25%),
+    linear-gradient(45deg,transparent 75%,#ccc 75%),
+    linear-gradient(-45deg,transparent 75%,#ccc 75%);
+  background-size: 6px 6px;
+  background-position: 0 0, 0 3px, 3px -3px, -3px 0;
+  background-color: #e8e4de;
+  z-index: 0;
+}
+.thread-progress-fill { z-index: 1; }
+.thread-progress-over {
+  position: absolute;
+  right: 0; top: 0; bottom: 0;
+  background: var(--accent);
+  opacity: .55;
+  z-index: 2;
+  border-radius: 0 4px 4px 0;
+}
+.thread-progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'DM Mono', monospace;
+  font-size: .58rem;
+  color: var(--muted);
+}
+.thread-progress-label .pct {
+  font-weight: 500;
+}
+.thread-progress-label .pct.full  { color: var(--green); }
+.thread-progress-label .pct.over  { color: var(--accent); }
+.thread-progress-label .pct.empty { color: var(--muted); }
+
+/* ── INLINE WARNING CHIP ─────────────────────────── */
+.seq-warn {
+  display: none;
+  font-family: 'DM Mono', monospace;
+  font-size: .6rem;
+  color: var(--accent);
+  background: #fdecea;
+  border: 1px solid #f5c2bb;
+  border-radius: 3px;
+  padding: 3px 7px;
+  margin-top: 4px;
+}
+.seq-warn.visible { display: block; }
+
+.sym-note {
+  font-size: .67rem; color: var(--muted); line-height: 1.5;
+}
+.sym-note a {
+  color: var(--accent2); cursor: pointer;
+  text-decoration: underline; font-weight: 500;
+}
+.btn-link {
+  font-size: .62rem; color: var(--muted); background: none; border: none;
+  cursor: pointer; text-decoration: underline; text-align: left; padding: 0;
+  font-family: 'DM Sans', sans-serif;
+}
+.btn-link:hover { color: var(--green); }
+
+.border-note {
+  font-size: .62rem; color: var(--muted);
+  background: #fffbf0;
+  border: 1px solid #e8d9a0;
+  border-radius: var(--radius);
+  padding: 5px 7px;
+  line-height: 1.5;
+}
+.border-note b { color: var(--text); font-weight: 500; }
+
+/* ── PREVIEW AREA ────────────────────────────────── */
+.preview-area {
+  flex: 1;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  padding: 20px 24px 0 24px;
+  gap: 12px;
+}
+
+.preview-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-shrink: 0;
+}
+.preview-bar-left {
+  display: flex; align-items: baseline; gap: 10px;
+}
+.preview-lbl {
+  font-family: 'Instrument Serif', serif;
+  font-size: .95rem; color: var(--text);
+}
+.preview-meta {
+  font-family: 'DM Mono', monospace;
+  font-size: .6rem; color: var(--muted);
+}
+
+.thread-readout {
+  display: flex; align-items: center; gap: 8px;
+}
+.trd-stat {
+  font-family: 'DM Mono', monospace;
+  font-size: .6rem; color: var(--muted);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 3px 7px;
+  display: flex; align-items: center; gap: 4px;
+}
+.trd-stat b { color: var(--text); font-weight: 500; }
+.trd-warn {
+  font-size: .58rem; color: #a07020;
+  background: #fffbf0; border: 1px solid #e8d9a0;
+  border-radius: 2px; padding: 3px 6px;
+  display: none;
+}
+.trd-warn.visible { display: block; }
+
+.canvas-wrap {
+  flex: 1;
+  position: relative;
+  overflow: auto;
+  min-height: 0;
+  cursor: default;
+}
+
+/* Zoom host — provides scroll space matching the scaled frame */
+.zoom-host {
+  position: relative;
+  display: inline-block;
+  min-width: 100%;
+}
+
+/* Zoom badge */
+.zoom-badge {
+  position: absolute;
+  bottom: 14px;
+  right: 10px;
+  z-index: 20;
+  display: flex; align-items: center; gap: 4px;
+  background: rgba(26,23,20,.72);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 4px;
+  padding: 3px 8px;
+  font-family: 'DM Mono', monospace;
+  font-size: .58rem;
+  color: rgba(255,255,255,.8);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .25s;
+}
+.zoom-badge.visible { opacity: 1; }
+
+.canvas-frame {
+  position: relative;
+  /* Checkerboard = transparency indicator, drawn in CSS under the visCanvas */
+  background-color: #e8e4de;
+  background-image:
+    linear-gradient(45deg,#c0c0c0 25%,transparent 25%),
+    linear-gradient(-45deg,#c0c0c0 25%,transparent 25%),
+    linear-gradient(45deg,transparent 75%,#c0c0c0 75%),
+    linear-gradient(-45deg,transparent 75%,#c0c0c0 75%);
+  background-size: 12px 12px;
+  background-position: 0 0, 0 6px, 6px -6px, -6px 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  width: 100%;
+}
+
+.resize-handle {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 8px;
+  cursor: ns-resize;
+  z-index: 10;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0,0,0,.06) 100%
+  );
+  display: flex; align-items: center; justify-content: center;
+}
+.resize-handle::after {
+  content: '';
+  width: 32px; height: 3px;
+  border-radius: 2px;
+  background: var(--border-md);
+  opacity: .7;
+}
+.resize-handle:hover::after { background: var(--accent2); opacity: 1; }
+
+.empty-overlay {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 8px;
+  background: var(--surface); pointer-events: none;
+}
+.empty-overlay .ei { font-size: 2rem; opacity: .12; }
+.empty-overlay p {
+  font-size: .6rem; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--muted); opacity: .4;
+}
+
+#tileCanvas { display: none; }
+
+.pattern-diagram {
+  flex-shrink: 0;
+  display: flex; align-items: center; gap: 0;
+  height: 18px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  width: 100%;
+  margin-bottom: 4px;
+}
+.pd-border-l, .pd-border-r {
+  height: 100%;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--accent) 0px, var(--accent) 1px,
+    transparent 1px, transparent 3px
+  );
+  opacity: .4;
+  flex-shrink: 0;
+  min-width: 2px;
+}
+.pd-main {
+  flex: 1;
+  height: 100%;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--accent2) 0px, var(--accent2) 1px,
+    transparent 1px, transparent 4px
+  );
+  opacity: .25;
+}
+.pd-lbl {
+  font-family: 'DM Mono', monospace;
+  font-size: .52rem; color: var(--muted);
+  padding: 0 4px;
+  white-space: nowrap;
+}
+
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-md); border-radius: 2px; }
+
+/* ══════════════════════════════════════════════════
+   NUMBER SCRUBBER  —  Figma / Photoshop style
+   Shows ↔ cursor on hover to signal "drag to change"
+   ══════════════════════════════════════════════════ */
+input[type=number]:not(:focus) {
+  cursor: ew-resize;
+}
+/* Subtle dashed bottom border on unfocused num inputs → visual affordance */
+.num-in:not(:focus),
+.seq-n:not(:focus) {
+  border-bottom-style: dashed;
+}
+
+/* ══════════════════════════════════════════════════
+   MOBILE TAB BAR + BOTTOM SHEET
+   ══════════════════════════════════════════════════ */
+:root { --tabbar-h: 56px; }
+
+.mobile-tabbar {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: var(--tabbar-h);
+  background: var(--text);
+  z-index: 350;
+  align-items: stretch;
+  border-top: 1px solid rgba(255,255,255,.08);
+}
+.mob-tab {
+  flex: 1;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 3px;
+  cursor: pointer;
+  color: rgba(255,255,255,.4);
+  transition: color .15s, background .15s;
+  border: none; background: none;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+.mob-tab.active {
+  color: #fff;
+  background: rgba(255,255,255,.1);
+}
+.mob-tab svg { flex-shrink: 0; }
+.mob-tab-lbl {
+  font-family: 'DM Sans', sans-serif;
+  font-size: .5rem; font-weight: 600;
+  letter-spacing: .09em; text-transform: uppercase;
+  line-height: 1;
+}
+
+.mobile-sheet-pill {
+  display: none;
+  width: 36px; height: 4px;
+  background: var(--border-md);
+  border-radius: 2px;
+  margin: 8px auto 4px;
+  flex-shrink: 0;
+}
+
+.seq-move-btns { display: none; }
+.seq-move-btn  { display: none; }
+
+@media (max-width: 768px) {
+  .nav-info { display: none; }
+
+  .workspace {
+    height: calc(100vh - var(--nav-h) - var(--tabbar-h));
+  }
+
+  .preview-area {
+    padding: 12px 12px 8px;
+  }
+
+  .sidebar {
+    position: fixed;
+    bottom: var(--tabbar-h);
+    left: 0; right: 0;
+    width: 100%;
+    height: 40vh;
+    border-right: none;
+    border-top: 1px solid var(--border);
+    border-radius: 14px 14px 0 0;
+    box-shadow: 0 -6px 32px rgba(0,0,0,.15);
+    z-index: 300;
+    transform: translateY(calc(100% + 1px));
+    transition: transform .28s cubic-bezier(.4, 0, .2, 1);
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  .sidebar.mobile-open {
+    transform: translateY(0);
+  }
+
+  .sidebar.mobile-open .sec {
+    display: none;
+  }
+  .sidebar.mobile-open .sec.mobile-active {
+    display: flex;
+  }
+  .sidebar.mobile-open .sec.mobile-active .sec-hd {
+    display: none;
+  }
+  .sidebar.mobile-open .sec.mobile-active .sec-body {
+    max-height: none !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    overflow: visible !important;
+    padding: 10px 12px !important;
+  }
+  .sidebar.mobile-open .sec.mobile-active .sec-sticky-bar {
+    display: block;
+    position: sticky;
+    top: 0;
+  }
+
+  .mobile-sheet-pill { display: block; }
+  .mobile-tabbar { display: flex; }
+
+  .canvas-frame { border-radius: 6px; }
+  .preview-bar { flex-wrap: wrap; gap: 6px; }
+  .thread-readout { flex-wrap: wrap; gap: 4px; }
+
+  .seq-row {
+    min-height: 52px;
+    padding: 4px 6px;
+    gap: 8px;
+  }
+
+  .cdrop-btn {
+    width: 44px; height: 44px;
+    border-radius: 6px;
+  }
+  .cdrop-opt { width: 36px; height: 36px; }
+  .cdrop-menu { width: 144px; }
+
+  .seq-n {
+    height: 44px;
+    font-size: .9rem;
+    border-radius: 6px;
+  }
+
+  .seq-drag-handle {
+    display: flex !important;
+    width: 36px; height: 44px;
+    color: var(--border-md) !important;
+    font-size: 16px;
+    background: var(--surface2);
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    touch-action: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .seq-drag-handle:active { background: #eef3fd; color: var(--accent2) !important; }
+
+  .seq-move-btns { display: none !important; }
+
+  .seq-sel-dot {
+    width: 36px; height: 44px;
+  }
+  .seq-sel-dot::before {
+    width: 13px; height: 13px;
+    border-color: var(--border-md) !important;
+  }
+
+  .seq-rm {
+    color: var(--border-md) !important;
+    width: 36px; height: 36px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+  }
+  .seq-rm:active { color: var(--accent) !important; background: #fdecea; }
+
+  .ins-btn {
+    height: 28px;
+    color: var(--border-md) !important;
+    font-size: 14px;
+  }
+
+  .mirror-lbl { font-size: .78rem; gap: 10px; padding: 4px 0; }
+  .mirror-lbl input { width: 18px; height: 18px; }
+
+  .num-in { height: 40px !important; font-size: .82rem; }
+  .sel-in { height: 40px !important; font-size: .82rem; }
+
+  .field { gap: 8px; }
+  .field-row { gap: 10px; }
+
+  /* On touch, cursor scrub doesn't apply — reset cursor */
+  input[type=number]:not(:focus) { cursor: auto; }
+  .num-in:not(:focus), .seq-n:not(:focus) { border-bottom-style: solid; }
+}
+
+/* ── GROUPS ──────────────────────────────────────── */
+.seq-group {
+  margin: 2px 0 1px;
+  border: 1.5px solid rgba(0,0,0,.12);
+  border-radius: 6px;
+  background: rgba(0,0,0,.02);
+  flex-shrink: 0;
+  overflow: visible;
+  transition: border-color .12s, background .12s;
+}
+/* Selected group — highlighted with a visible border + tint */
+.seq-group.grp-selected {
+  border-color: var(--accent2);
+  background: rgba(42,110,196,.06);
+}
+.seq-group-hd {
+  display: flex; align-items: center; gap: 5px;
+  padding: 3px 6px 3px 5px;
+  user-select: none; min-height: 30px;
+  border-radius: 5px 5px 0 0;
+}
+.seq-group:not(.collapsed) .seq-group-hd {
+  border-bottom: 1px solid rgba(0,0,0,.07);
+}
+.seq-group.grp-selected:not(.collapsed) .seq-group-hd {
+  border-bottom-color: rgba(42,110,196,.18);
+}
+.seq-group.collapsed .seq-group-hd { border-radius: 5px; }
+/* Collapse icon — bigger and clearly legible */
+.seq-group-collapse {
+  width: 20px; height: 20px; flex-shrink: 0;
+  background: none; border: none; cursor: pointer; padding: 0;
+  color: var(--muted); font-size: 12px; line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 3px;
+  transition: transform .12s, background .1s, color .1s;
+}
+.seq-group-collapse:hover { background: var(--surface2); color: var(--text); }
+.seq-group.collapsed .seq-group-collapse { transform: rotate(-90deg); }
+.seq-group-name {
+  flex: 1; min-width: 0; font-size: .63rem; font-weight: 600;
+  color: var(--text); outline: none; cursor: text;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  border-radius: 2px; padding: 1px 3px;
+  border: 1px solid transparent; transition: border-color .1s;
+}
+.seq-group-name:focus {
+  background: var(--surface); border-color: var(--accent2);
+  text-overflow: clip; overflow: visible;
+}
+.seq-group-badge {
+  font-family: 'DM Mono', monospace; font-size: .56rem;
+  color: var(--muted); background: var(--bg);
+  border: 1px solid var(--border); border-radius: 2px;
+  padding: 0 4px; flex-shrink: 0; line-height: 1.7;
+}
+.seq-group-preview {
+  height: 8px; border-radius: 2px; flex-shrink: 0;
+  display: block; width: 52px;
+  border: 1px solid rgba(0,0,0,.12); transition: width .15s;
+}
+.seq-group.collapsed .seq-group-preview { width: 80px; }
+.seq-group-body { padding: 2px 0 4px 6px; position: relative; }
+/* Hidden rows / groups */
+.seq-row.row-hidden .cdrop-btn,
+.seq-row.row-hidden .seq-n { opacity: .35; }
+.seq-row.row-hidden { background: repeating-linear-gradient(
+  -45deg, transparent, transparent 4px, rgba(0,0,0,.03) 4px, rgba(0,0,0,.03) 5px); }
+.seq-group.grp-hidden { opacity: .45; }
+.seq-group.grp-hidden .seq-group-hd { text-decoration: line-through; }
+/* Undo/redo toolbar */
+.undo-bar {
+  display: flex; align-items: center; gap: 4px;
+  padding: 0 8px;
+  margin-left: auto;
+}
+.undo-btn {
+  height: 26px; min-width: 32px;
+  background: var(--nav-btn-bg); border: 1px solid var(--nav-btn-border);
+  border-radius: var(--radius); color: var(--nav-text-dim);
+  font-size: .65rem; font-family: 'DM Mono', monospace;
+  cursor: pointer; padding: 0 8px;
+  transition: background .1s, color .1s;
+  display: flex; align-items: center; gap: 4px;
+}
+.undo-btn:hover:not(:disabled) { background: var(--nav-btn-hover-bg); color: var(--nav-text); }
+.undo-btn:disabled { opacity: .3; cursor: default; }
+
+.theme-toggle-btn {
+  height: 26px; width: 26px;
+  background: var(--nav-btn-bg); border: 1px solid var(--nav-btn-border);
+  border-radius: var(--radius); color: var(--nav-text-bright);
+  font-size: .8rem; cursor: pointer; padding: 0;
+  transition: background .1s, color .1s;
+  display: flex; align-items: center; justify-content: center;
+  margin-left: 8px;
+}
+.theme-toggle-btn:hover { background: var(--nav-btn-hover-bg); color: var(--nav-text); }
+
+/* Project name in nav */
+.nav-project-name {
+  font-family: 'DM Mono', monospace;
+  font-size: .68rem;
+  color: var(--nav-text-bright);
+  padding: 0 14px;
+  border-left: 1px solid var(--nav-border);
+  border-right: 1px solid var(--nav-border);
+  height: 100%;
+  display: flex; align-items: center;
+  gap: 6px;
+  min-width: 0;
+  max-width: 200px;
+  overflow: hidden;
+}
+.nav-project-name .proj-label {
+  font-size: .53rem;
+  color: var(--nav-text-dim);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+.nav-project-name .proj-title {
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  color: var(--nav-text);
+}
+
+/* Settings text input */
+.txt-in {
+  width: 100%; height: 26px;
+  border: 1px solid var(--border-md); border-radius: var(--radius);
+  font-family: 'DM Sans', sans-serif; font-size: .7rem;
+  padding: 0 8px; background: var(--surface); color: var(--text);
+  transition: border-color .1s;
+}
+.txt-in:focus { outline: none; border-color: var(--accent2); }
+
+/* Hannah bordered box */
+.hannah-box {
+  border: 1px solid var(--border-md);
+  border-radius: var(--radius);
+  padding: 8px 10px;
+  background: var(--surface2);
+  display: flex; flex-direction: column; gap: 7px;
+}
+.hannah-row {
+  display: flex; align-items: center; gap: 8px;
+}
+.hannah-row .field-lbl { margin-bottom: 0; flex-shrink: 0; }
+
+/* Border mirror sections */
+.border-mirror-section { display: flex; flex-direction: column; gap: 8px; }
+.border-side-label {
+  font-size: .58rem; font-weight: 600;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--muted); padding: 3px 0 1px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2px;
+}
+
+/* ── CONTEXT MENU ──────────────────────────────────── */
+.ctx-menu {
+  position: fixed; background: var(--surface);
+  border: 1px solid var(--border-md);
+  border-radius: calc(var(--radius) + 2px);
+  box-shadow: var(--shadow-lg); z-index: 9999;
+  display: none; min-width: 155px; padding: 3px 0;
+}
+.ctx-menu.open { display: block; }
+.ctx-item {
+  display: flex; align-items: center; gap: 6px;
+  width: 100%; padding: 6px 12px;
+  background: none; border: none; text-align: left;
+  font-family: 'DM Sans', sans-serif; font-size: .72rem;
+  color: var(--text); cursor: pointer; white-space: nowrap;
+  transition: background .07s;
+}
+.ctx-item:hover { background: var(--surface2); }
+.ctx-item .ctx-kbd {
+  margin-left: auto; padding-left: 14px;
+  font-family: 'DM Mono', monospace; font-size: .57rem; color: var(--muted);
+}
+.ctx-item.danger { color: var(--accent); }
+.ctx-sep { height: 1px; background: var(--border); margin: 3px 0; }
+
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+      <rect x="0" y="0" width="8" height="8" fill="white" opacity=".9"/>
+      <rect x="10" y="0" width="8" height="8" fill="white" opacity=".25"/>
+      <rect x="0" y="10" width="8" height="8" fill="white" opacity=".25"/>
+      <rect x="10" y="10" width="8" height="8" fill="white" opacity=".9"/>
+    </svg>
+    <span class="nav-brand-name">Plaid<em>Maker</em></span>
+  </div>
+  <div class="nav-project-name" id="navProjectName" style="display:none">
+    <span class="proj-label">Project</span>
+    <span class="proj-title" id="navProjectTitle">Untitled</span>
+  </div>
+  <div class="nav-info">
+    <button class="undo-btn" id="undoBtn" title="Undo (Ctrl+Z)" disabled>↩ Undo</button>
+    <button class="undo-btn" id="redoBtn" title="Redo (Ctrl+Y)" disabled>↪ Redo</button>
+    <button class="theme-toggle-btn" id="themeToggle" title="Toggle dark/light mode">🌙</button>
+  </div>
+  <div class="nav-info" style="padding-left:12px">
+    <div class="nav-stat">Warp <b id="navWarp">—</b> threads</div>
+    <div class="nav-dot"></div>
+    <div class="nav-stat">Weft <b id="navWeft">—</b> threads</div>
+    <div class="nav-dot"></div>
+    <div class="nav-stat">Border <b id="navBorder">—</b> × 2 threads</div>
+    <div class="nav-dot"></div>
+    <div class="nav-stat">Total <b id="navTotal">—</b> warp threads</div>
+  </div>
+</nav>
+
+<div class="workspace">
+
+  <!-- ══ SIDEBAR ══════════════════════════════════ -->
+  <div class="sidebar">
+    <div class="mobile-sheet-pill"></div>
+
+    <!-- COLORS -->
+    <div class="sec" id="secColors">
+      <div class="sec-hd" onclick="toggleSec('secColors')">
+        <div class="sec-icon">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <circle cx="3" cy="3" r="2.5" fill="#e74c3c"/>
+            <circle cx="9" cy="3" r="2.5" fill="#27ae60"/>
+            <circle cx="6" cy="9" r="2.5" fill="#2980b9"/>
+          </svg>
+        </div>
+        <span class="sec-label">Colors</span>
+        <span class="sec-chevron">▾</span>
+      </div>
+      <div class="sec-body">
+        <div class="pal-list" id="palList"></div>
+        <div class="add-pal">
+          <div class="new-sw" title="Pick new color">
+            <div class="sw" id="newSw" style="background:#888"></div>
+            <input type="color" id="newPicker" value="#888888"
+                   oninput="document.getElementById('newSw').style.background=this.value">
+          </div>
+          <button class="btn-ghost" onclick="addPalColor()">＋ Add Color</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- WARP -->
+    <div class="sec scrollable" id="secWarp">
+      <div class="sec-hd" onclick="toggleSec('secWarp')">
+        <div class="sec-icon">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <rect x="1.5" y="0" width="2" height="12" fill="currentColor" opacity=".35"/>
+            <rect x="5" y="0" width="2" height="12" fill="currentColor"/>
+            <rect x="8.5" y="0" width="2" height="12" fill="currentColor" opacity=".35"/>
+          </svg>
+        </div>
+        <span class="sec-label">Warp</span>
+        <span class="sec-badge" id="xTotal">0</span>
+        <span class="sec-chevron">▾</span>
+      </div>
+      <div class="sec-sticky-bar" id="xProgressContainer"></div>
+      <div class="sec-body">
+        <label class="mirror-lbl"><input type="checkbox" id="xMirror"> Mirror from center <span style="font-size:.58rem;color:var(--muted);font-family:'DM Mono',monospace">(1st row = center)</span></label>
+        <div id="xRows"></div>
+      </div>
+    </div>
+
+    <!-- WEFT -->
+    <div class="sec scrollable" id="secWeft">
+      <div class="sec-hd" onclick="toggleSec('secWeft')">
+        <div class="sec-icon">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <rect x="0" y="1.5" width="12" height="2" fill="currentColor" opacity=".35"/>
+            <rect x="0" y="5" width="12" height="2" fill="currentColor"/>
+            <rect x="0" y="8.5" width="12" height="2" fill="currentColor" opacity=".35"/>
+          </svg>
+        </div>
+        <span class="sec-label">Weft</span>
+        <span class="sec-badge" id="yTotal">0</span>
+        <span class="sec-chevron">▾</span>
+      </div>
+      <div class="sec-body">
+        <div id="yRows"></div>
+      </div>
+    </div>
+
+    <!-- BORDER (weft selvedge) -->
+    <div class="sec scrollable" id="secBorder">
+      <div class="sec-hd" onclick="toggleSec('secBorder')">
+        <div class="sec-icon">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <rect x="0" y="0" width="3" height="12" fill="currentColor" opacity=".7"/>
+            <rect x="9" y="0" width="3" height="12" fill="currentColor" opacity=".7"/>
+            <rect x="4" y="3" width="4" height="6" fill="currentColor" opacity=".2"/>
+          </svg>
+        </div>
+        <span class="sec-label">Border</span>
+        <span class="sec-badge" id="bTotal">0</span>
+        <span class="sec-chevron">▾</span>
+      </div>
+      <div class="sec-sticky-bar" id="bProgressContainer"></div>
+      <div class="sec-body">
+        <div class="field">
+          <div class="field-row">
+            <input class="num-in" style="width:72px" type="number" id="totalBorderIn" value="150" min="0" max="300" step="1">
+            <span class="field-note" id="borderMaxNote">150 per side · 300 total</span>
+          </div>
+        </div>
+        <label class="mirror-lbl">
+          <input type="checkbox" id="borderMirror" checked>
+          Mirror (apply same design to both sides)
+        </label>
+        <!-- Mirrored: single editor -->
+        <div id="bMirrorSingle">
+          <div id="bRows"></div>
+        </div>
+        <!-- Un-mirrored: two editors -->
+        <div id="bMirrorDual" style="display:none">
+          <div class="border-side-label">Left Border</div>
+          <div id="bRowsLeft"></div>
+          <div class="border-side-label" style="margin-top:6px">Right Border</div>
+          <div id="brProgressContainer"></div>
+          <div id="bRowsRight"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="sec" id="secSettings">
+      <div class="sec-hd" onclick="toggleSec('secSettings')">
+        <div class="sec-icon">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <circle cx="6" cy="6" r="2.2" stroke="currentColor" stroke-width="1.4" fill="none"/>
+            <line x1="6" y1="0" x2="6" y2="2.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            <line x1="6" y1="9.5" x2="6" y2="12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            <line x1="0" y1="6" x2="2.5" y2="6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            <line x1="9.5" y1="6" x2="12" y2="6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="sec-label">Settings</span>
+        <span class="sec-chevron">▾</span>
+      </div>
+      <div class="sec-body">
+        <div class="field">
+          <div class="field-lbl">Project Name</div>
+          <input class="txt-in" type="text" id="projectNameIn" placeholder="Untitled Project" maxlength="60">
+        </div>
+
+        <div class="hannah-box">
+          <div class="hannah-row" style="justify-content:space-between;margin-bottom:2px">
+            <div class="field-lbl" style="margin-bottom:0">Total warp threads <span class="field-note" id="totalWarpNote" style="flex:1">5700 threads</span></div>
+          </div>
+          <input class="num-in" style="display:none" type="number" id="totalWarpIn" value="5700" min="100" max="999999" step="1" readonly>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+            <div class="field">
+              <div class="field-lbl">Density</div>
+              <input class="num-in" style="width:100%" type="number" id="densityIn" value="100" min="1" max="300" step="1">
+            </div>
+            <div class="field">
+              <div class="field-lbl">Width (in)</div>
+              <input class="num-in" style="width:100%" type="number" id="widthIn" value="54" min="1" max="100" step="1">
+            </div>
+          </div>
+          <div class="field-note" style="font-size:.56rem;color:var(--muted);margin-top:3px">(Density × Width) + (Border × 2)</div>
+        </div>
+        <div class="field">
+          <div class="field-lbl">Twill</div>
+          <select class="sel-in" id="twillSel">
+            <option value="1x1">1×1  Plain weave</option>
+            <option value="2x2">2×2  Twill</option>
+            <option value="warp">Warp only (stripes)</option>
+            <option value="weft">Weft only (stripes)</option>
+            <option value="border">Border only</option>
+          </select>
+        </div>
+        <div class="field">
+          <div class="field-lbl">Canvas height</div>
+          <div class="field-row">
+            <input class="num-in" style="width:64px" type="number" id="canvasH" value="320" min="40" max="800">
+            <span class="field-note">px — or drag handle</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /sidebar -->
+
+  <!-- ══ PREVIEW ══════════════════════════════════ -->
+  <div class="preview-area" id="previewArea">
+
+    <div class="preview-bar">
+      <div class="preview-bar-left">
+        <span class="preview-lbl">Preview</span>
+        <span class="preview-meta" id="previewMeta">—</span>
+      </div>
+      <div class="thread-readout">
+        <div class="trd-stat">Width <b id="statW">—</b> px</div>
+        <div class="trd-stat">Tile <b id="statTile">—</b></div>
+        <div class="trd-warn" id="densityWarn">⚠ High density — smooth blend active</div>
+        <div class="trd-stat" style="color:var(--muted);font-size:.55rem;border:none;background:none;padding-left:0">Scroll to zoom · Dbl-click to reset</div>
+      </div>
+    </div>
+
+    <!-- pattern structure diagram -->
+    <div class="pattern-diagram" id="patDiagram">
+      <div class="pd-border-l" id="pdBL" style="width:0%"></div>
+      <div class="pd-lbl" id="pdBLlbl" style="display:none">Border</div>
+      <div class="pd-main" style="flex:1"></div>
+      <div class="pd-lbl" id="pdBRlbl" style="display:none">Border</div>
+      <div class="pd-border-r" id="pdBR" style="width:0%"></div>
+    </div>
+
+    <div class="canvas-wrap" id="canvasWrap">
+      <div class="zoom-host" id="zoomHost">
+        <div class="canvas-frame" id="canvasFrame">
+          <canvas id="visCanvas" style="position:absolute;top:0;left:0;display:block;image-rendering:auto;"></canvas>
+          <div class="resize-handle" id="resizeHandle"></div>
+          <div class="empty-overlay" id="emptyOverlay">
+            <div class="ei">🧵</div>
+            <p>Add warp &amp; weft threads to begin</p>
+          </div>
+        </div>
+      </div>
+      <div class="zoom-badge" id="zoomBadge">100%</div>
+    </div>
+
+    <canvas id="tileCanvas"></canvas>
+  </div>
+
+</div><!-- /workspace -->
+
+<!-- ── MOBILE TAB BAR ───────────────────────────── -->
+<div class="mobile-tabbar" id="mobileTabbar">
+
+  <button class="mob-tab" id="mtab-colors" onclick="activateMobileTab('secColors','mtab-colors')">
+    <svg width="18" height="18" viewBox="0 0 12 12" fill="none">
+      <circle cx="3" cy="3" r="2.5" fill="#e74c3c"/>
+      <circle cx="9" cy="3" r="2.5" fill="#27ae60"/>
+      <circle cx="6" cy="9" r="2.5" fill="#2980b9"/>
+    </svg>
+    <span class="mob-tab-lbl">Colors</span>
+  </button>
+
+  <button class="mob-tab" id="mtab-warp" onclick="activateMobileTab('secWarp','mtab-warp')">
+    <svg width="18" height="18" viewBox="0 0 12 12" fill="none">
+      <rect x="1.5" y="0" width="2" height="12" fill="currentColor" opacity=".4"/>
+      <rect x="5"   y="0" width="2" height="12" fill="currentColor"/>
+      <rect x="8.5" y="0" width="2" height="12" fill="currentColor" opacity=".4"/>
+    </svg>
+    <span class="mob-tab-lbl">Warp</span>
+  </button>
+
+  <button class="mob-tab" id="mtab-weft" onclick="activateMobileTab('secWeft','mtab-weft')">
+    <svg width="18" height="18" viewBox="0 0 12 12" fill="none">
+      <rect x="0" y="1.5" width="12" height="2" fill="currentColor" opacity=".4"/>
+      <rect x="0" y="5"   width="12" height="2" fill="currentColor"/>
+      <rect x="0" y="8.5" width="12" height="2" fill="currentColor" opacity=".4"/>
+    </svg>
+    <span class="mob-tab-lbl">Weft</span>
+  </button>
+
+  <button class="mob-tab" id="mtab-border" onclick="activateMobileTab('secBorder','mtab-border')">
+    <svg width="18" height="18" viewBox="0 0 12 12" fill="none">
+      <rect x="0" y="0" width="3" height="12" fill="currentColor" opacity=".7"/>
+      <rect x="9" y="0" width="3" height="12" fill="currentColor" opacity=".7"/>
+      <rect x="4" y="3" width="4" height="6"  fill="currentColor" opacity=".2"/>
+    </svg>
+    <span class="mob-tab-lbl">Border</span>
+  </button>
+
+  <button class="mob-tab" id="mtab-settings" onclick="activateMobileTab('secSettings','mtab-settings')">
+    <svg width="18" height="18" viewBox="0 0 12 12" fill="none">
+      <circle cx="6" cy="6" r="2.2" stroke="currentColor" stroke-width="1.4" fill="none"/>
+      <line x1="6" y1="0"   x2="6"  y2="2.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      <line x1="6" y1="9.5" x2="6"  y2="12"  stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      <line x1="0" y1="6"   x2="2.5" y2="6"  stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      <line x1="9.5" y1="6" x2="12"  y2="6"  stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+    </svg>
+    <span class="mob-tab-lbl">Settings</span>
+  </button>
+
+</div>
+
+<script>
+'use strict';
+
+// ═══════════════════════════════════════════════════════════════
+// CHECKERBOARD CONSTANTS
+// ═══════════════════════════════════════════════════════════════
+const CHECKER_GRADS = [
+  'linear-gradient(45deg,#c0c0c0 25%,transparent 25%)',
+  'linear-gradient(-45deg,#c0c0c0 25%,transparent 25%)',
+  'linear-gradient(45deg,transparent 75%,#c0c0c0 75%)',
+  'linear-gradient(-45deg,transparent 75%,#c0c0c0 75%)'
+];
+const CHECKER_IMG = CHECKER_GRADS.join(',');
+const CHECKER_SZ  = CHECKER_GRADS.map(() => '12px 12px').join(',');
+const CHECKER_POS = '0 0,0 6px,6px -6px,-6px 0px';
+const CHECKER_RPT = CHECKER_GRADS.map(() => 'repeat').join(',');
+
+// ═══════════════════════════════════════════════════════════════
+// THEME MANAGEMENT
+// ═══════════════════════════════════════════════════════════════
+function initTheme() {
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  setTheme(savedTheme);
+}
+
+function setTheme(theme) {
+  const html = document.documentElement;
+  const themeIcons = { 'light': '🌙', 'grey': '🌓', 'dark': '☀️' };
+  
+  if (theme === 'light' || theme === 'grey' || theme === 'dark') {
+    if (theme === 'light') {
+      html.removeAttribute('data-theme');
+    } else {
+      html.setAttribute('data-theme', theme);
+    }
+    localStorage.setItem('theme', theme);
+    document.getElementById('themeToggle').textContent = themeIcons[theme];
+  }
+}
+
+function toggleTheme() {
+  const html = document.documentElement;
+  const currentTheme = html.getAttribute('data-theme') || 'light';
+  const themeRotation = { 'light': 'grey', 'grey': 'dark', 'dark': 'light' };
+  setTheme(themeRotation[currentTheme]);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// MODEL
+// ═══════════════════════════════════════════════════════════════
+const M = {
+  colors   : [],
+  x_list:[], x_rowIds:[], x_groups:[], x_hidden:new Set(),
+  x_mirror : false,
+  y_list:[], y_rowIds:[], y_groups:[], y_hidden:new Set(),
+  y_mirror : false,
+  b_list:[], b_rowIds:[], b_groups:[], b_hidden:new Set(),
+  br_list:[], br_rowIds:[], br_groups:[], br_hidden:new Set(), // right border (un-mirrored)
+  twill    : '1x1',
+  projectName: '',
+
+  active_y()  { return this.y_list; },
+  color(ci)   { return this.colors[ci - 1] || '#ffffff'; },
+  borderTotal() { return this.b_list.reduce((s,r) => s + r[1], 0); },
+};
+
+// ── ID counters ──────────────────────────────────────────────
+let _rowIdCtr = 0, _grpIdCtr = 0;
+function newRowId() { return ++_rowIdCtr; }
+function newGrpId() { return ++_grpIdCtr; }
+
+// ── Dim accessors ────────────────────────────────────────────
+function getList(d)    { return d==='x'?M.x_list   :d==='y'?M.y_list   :d==='br'?M.br_list  :M.b_list;    }
+function getRowIds(d)  { return d==='x'?M.x_rowIds :d==='y'?M.y_rowIds :d==='br'?M.br_rowIds:M.b_rowIds;  }
+function getGroups(d)  { return d==='x'?M.x_groups :d==='y'?M.y_groups :d==='br'?M.br_groups:M.b_groups;  }
+function getHidden(d)  { return d==='x'?M.x_hidden :d==='y'?M.y_hidden :d==='br'?M.br_hidden:M.b_hidden;  }
+function setGroups(d,v){ if(d==='x')M.x_groups=v; else if(d==='y')M.y_groups=v; else if(d==='br')M.br_groups=v; else M.b_groups=v; }
+function setHidden(d,v){ if(d==='x')M.x_hidden=v; else if(d==='y')M.y_hidden=v; else if(d==='br')M.br_hidden=v; else M.b_hidden=v; }
+
+// Per-panel selected groups  (Set of group ids)
+const SEL_GROUPS = { x: new Set(), y: new Set(), b: new Set(), br: new Set() };
+
+// ═══════════════════════════════════════════════════════════════
+// EXPAND
+// ═══════════════════════════════════════════════════════════════
+function expand(list, mirror, dim) {
+  const hidden = dim ? getHidden(dim) : null;
+  const ids    = dim ? getRowIds(dim) : null;
+  const base = [];
+  for (let ri = 0; ri < list.length; ri++) {
+    if (hidden && ids && hidden.has(ids[ri])) continue;
+    const [ci, cnt] = list[ri];
+    const hex = M.color(ci);
+    for (let i = 0; i < cnt; i++) base.push(hex);
+  }
+  if (!base.length) return [];
+  if (!mirror) return base;
+  const rev = [...base].reverse();
+  return [...rev, ...base];
+}
+
+// REPLACE the entire expandBorder() function
+function expandBorder() {
+  const lim = getThreadLimits();
+  const borderSide = lim.borderSide;
+  if (borderSide === 0) return { left: [], right: [] };
+
+  function buildPattern(list, hidden, ids) {
+    const pattern = [];
+    for (let ri = 0; ri < list.length; ri++) {
+      if (hidden.has(ids[ri])) continue;
+      const [ci, cnt] = list[ri];
+      const hex = M.color(ci);
+      for (let i = 0; i < cnt; i++) pattern.push(hex);
+    }
+    return pattern;
+  }
+
+  const trimToSide = (pattern) => {
+    const arr = [];
+    for (let i = 0; i < borderSide; i++) {
+      arr.push(i < pattern.length ? pattern[i] : null);
+    }
+    return arr;
+  };
+
+  const leftPattern = buildPattern(M.b_list, M.b_hidden, M.b_rowIds);
+  const isMirrored  = document.getElementById('borderMirror')?.checked !== false;
+
+  let rightPattern;
+  if (isMirrored) {
+    // Mirror: reverse left so outer edge reflects outer edge
+    rightPattern = [...leftPattern].reverse();
+  } else {
+    // Independent: br_list row 0 = leftmost (inner) thread of right border
+    rightPattern = M.br_list.length > 0
+      ? buildPattern(M.br_list, M.br_hidden, M.br_rowIds)
+      : [...leftPattern].reverse();   // graceful fallback
+  }
+
+  return { left: trimToSide(leftPattern), right: trimToSide(rightPattern) };
+}
+
+// ═══════════════════════════════════════════════════════════════
+// TWILL
+// ═══════════════════════════════════════════════════════════════
+function twillBit(row, col, t) {
+  switch (t) {
+    case '1x1':   return (row + col) % 2;
+    case '2x2':   return Math.floor(((row + col) % 4) / 2);
+    case 'weft':  return 1;
+    case 'warp':  return 0;
+    case 'border': return 0;
+    default:      return (row + col) % 2;
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// HEX → RGB
+// ═══════════════════════════════════════════════════════════════
+function h2r(h) {
+  h = h.replace('#', '');
+  return [parseInt(h.slice(0,2),16), parseInt(h.slice(2,4),16), parseInt(h.slice(4,6),16)];
+}
+
+// ═══════════════════════════════════════════════════════════════
+// RAF-THROTTLED REDRAW
+// All callers use scheduleRedraw() so multiple rapid changes
+// (scrubber drag, resize observer, etc.) collapse into one
+// paint per animation frame — eliminates lag entirely.
+// ═══════════════════════════════════════════════════════════════
+let _rafPending = false;
+function scheduleRedraw() {
+  if (_rafPending) return;
+  _rafPending = true;
+  scheduleSave();
+  requestAnimationFrame(() => { _rafPending = false; redraw(); });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+function _renderFastTile(ctx, W, H, warp, weft, twill, startThread, endThread, fracX, pxPerThread) {
+  const tileW      = endThread - startThread;
+  if (tileW <= 0) return;
+  const borderOnly   = twill === 'border';
+  const warpOnlyMode = twill === 'warp';
+  const weftOnlyMode = twill === 'weft';
+  const weftEmpty    = weft.length === 0 || warpOnlyMode;
+  const tileH        = weftEmpty ? 1 : Math.max(1, weft.length);
+
+  const tc  = document.getElementById('tileCanvas');
+  tc.width  = tileW;
+  tc.height = tileH;
+  const tctx = tc.getContext('2d');
+  const img  = tctx.createImageData(tileW, tileH);
+  const px32 = new Uint32Array(img.data.buffer);
+
+  function mkpx(r,g,b) { return (0xFF000000|(b<<16)|(g<<8)|r)>>>0; }
+  const TRANS = 0x00000000;
+
+  const warpCache = new Uint32Array(tileW);
+  const warpNull  = new Uint8Array(tileW);
+  for (let ci = 0; ci < tileW; ci++) {
+    const h = warp[startThread + ci];
+    if (h == null) { warpNull[ci] = 1; continue; }
+    const [r,g,b] = h2r(h); warpCache[ci] = mkpx(r,g,b);
+  }
+
+  for (let row = 0; row < tileH; row++) {
+    const weftHex = (!weftEmpty && weft.length) ? weft[row % weft.length] : null;
+    let er=0, eg=0, eb=0, weftPx=TRANS;
+    if (weftHex) { [er,eg,eb] = h2r(weftHex); weftPx = mkpx(er,eg,eb); }
+
+    for (let ci = 0; ci < tileW; ci++) {
+      const pi  = row * tileW + ci;
+      const col = startThread + ci;
+
+      if (weftOnlyMode) { px32[pi] = weftHex ? weftPx : TRANS; continue; }
+      if (warpNull[ci]) {
+        px32[pi] = (!borderOnly && !warpOnlyMode && weftHex) ? weftPx : TRANS;
+        continue;
+      }
+      const wc = warpCache[ci];
+      if (weftEmpty || !weftHex) { px32[pi] = wc; continue; }
+      px32[pi] = twillBit(row, col, twill) === 1 ? weftPx : wc;
+    }
+  }
+  tctx.putImageData(img, 0, 0);
+
+  // How many tile columns map to the canvas width at this zoom
+  const srcW  = Math.min(tileW - fracX, W / pxPerThread);
+  const destH = Math.max(1, Math.round(tileH * (W / srcW)));
+
+  // Smooth only when many threads compress into < 1.2px — otherwise crisp
+  ctx.imageSmoothingEnabled = pxPerThread < 1.2;
+  if (ctx.imageSmoothingEnabled) ctx.imageSmoothingQuality = 'medium';
+
+  ctx.drawImage(tc, fracX, 0, srcW, tileH, 0, 0, W, destH);
+
+  // Tile vertically
+  for (let y = destH; y < H; y += destH) {
+    const rH = Math.min(destH, H - y);
+    ctx.drawImage(ctx.canvas, 0, 0, W, rH, 0, y, W, rH);
+  }
+}
+
+
+
+
+
+
+
+
+// Returns a canvas gradient giving a cylindrical highlight.
+// dir 'v' → horizontal gradient (warp thread);  'h' → vertical (weft thread).
+function _cylinderGrad(ctx, x, y, w, h, r, g, b, dir) {
+  const size = dir === 'v' ? w : h;
+  if (size < 2) { ctx.fillStyle = `rgb(${r},${g},${b})`; return null; }
+  const hi = c => Math.min(255, c + 62);
+  const lo = c => Math.max(0,   c - 52);
+  const grd = dir === 'v'
+    ? ctx.createLinearGradient(x,     0, x + w, 0)
+    : ctx.createLinearGradient(0, y,     0, y + h);
+  grd.addColorStop(0,    `rgb(${lo(r)},${lo(g)},${lo(b)})`);
+  grd.addColorStop(0.22, `rgb(${hi(r)},${hi(g)},${hi(b)})`);
+  grd.addColorStop(0.58, `rgb(${r},${g},${b})`);
+  grd.addColorStop(1,    `rgb(${lo(r)},${lo(g)},${lo(b)})`);
+  return grd;
+}
+
+function _renderHighDetail(ctx, W, H, warp, weft, twill, startThread, endThread, fracX, pxPerThread) {
+  const borderOnly   = twill === 'border';
+  const warpOnlyMode = twill === 'warp';
+  const weftOnlyMode = twill === 'weft';
+  const weftEmpty    = weft.length === 0 || warpOnlyMode;
+  const nWeft        = weft.length || 1;
+  const pxR          = pxPerThread;                    // weft row height = thread width (square)
+  const rowsInView   = Math.ceil(H / pxR) + 1;
+  const DIM          = 0.42;                            // shadow factor for under-thread
+  const hi           = c => Math.min(255, c + 62);
+  const lo           = c => Math.max(0,   c - 52);
+
+  ctx.clearRect(0, 0, W, H);
+
+  // ── Warp-only / empty-weft fast path ──────────────────────
+  if (weftEmpty) {
+    let x = -fracX * pxPerThread;
+    for (let ci = startThread; x < W; ci++, x += pxPerThread) {
+      if (ci >= warp.length) break;
+      const h = warp[ci]; if (h == null) continue;
+      const [r,g,b] = h2r(h);
+      const grd = _cylinderGrad(ctx, x, 0, pxPerThread, H, r, g, b, 'v');
+      ctx.fillStyle = grd || `rgb(${r},${g},${b})`;
+      ctx.fillRect(x, 0, pxPerThread, H);
+    }
+    return;
+  }
+
+  // ── Weft-only fast path ────────────────────────────────────
+  if (weftOnlyMode) {
+    const startRow = Math.floor(viewPanY);
+    const fracY = viewPanY - startRow;
+    const fracOffset = fracY * pxR;
+    for (let ri = startRow; ri < nWeft && (ri - startRow) * pxR < H + fracOffset; ri++) {
+      const y = (ri - startRow) * pxR - fracOffset; if (y >= H) break;
+      const h = weft[ri % nWeft]; const [r,g,b] = h2r(h);
+      const grd = _cylinderGrad(ctx, 0, y, W, pxR, r, g, b, 'h');
+      ctx.fillStyle = grd || `rgb(${r},${g},${b})`;
+      ctx.fillRect(0, y, W, pxR);
+    }
+    return;
+  }
+
+  // ── Pass 1: solid weft bands (background fill) ────────────
+  let prevHex = null;
+  const startRow = Math.floor(viewPanY);
+  const fracY = viewPanY - startRow;
+  const fracOffset = fracY * pxR;
+  for (let ri = startRow; ri < nWeft && (ri - startRow) * pxR < H + fracOffset; ri++) {
+    const y = (ri - startRow) * pxR - fracOffset; if (y >= H) break;
+    const h = weft[ri % nWeft];
+    if (h !== prevHex) { ctx.fillStyle = h; prevHex = h; }
+    ctx.fillRect(0, y, W, pxR);
+  }
+
+  // ── Pass 2: warp columns ──────────────────────────────────
+  // For each column: dim the whole column (under-weft background),
+  // then paint the warp-on-top rows with cylindrical shading.
+  let x = -fracX * pxPerThread;
+  for (let ci = startThread; x < W; ci++, x += pxPerThread) {
+    if (ci >= warp.length) break;
+    const warpHex = warp[ci];
+    if (warpHex == null) continue;
+    const [wr,wg,wb] = h2r(warpHex);
+
+    // Step A: dim entire column (seen as warp peeking under weft)
+    ctx.fillStyle = `rgb(${(wr*DIM)|0},${(wg*DIM)|0},${(wb*DIM)|0})`;
+    ctx.fillRect(x, 0, pxPerThread, H);
+
+    // Step B: paint warp-on-top rows with cylindrical gradient
+    const grd = _cylinderGrad(ctx, x, 0, pxPerThread, H, wr, wg, wb, 'v');
+    if (grd) ctx.fillStyle = grd;
+    else     ctx.fillStyle = `rgb(${wr},${wg},${wb})`;
+
+    for (let ri = startRow; ri < nWeft && (ri - startRow) * pxR < H + fracOffset; ri++) {
+      const y = (ri - startRow) * pxR - fracOffset; if (y >= H) break;
+      if (twillBit(ri, ci, twill) === 1) continue;  // weft on top → skip
+      ctx.fillRect(x, y, pxPerThread, pxR);
+    }
+
+    // Thread-edge shadow lines (visible when threads are wide enough)
+    if (pxPerThread >= 5) {
+      ctx.fillStyle = 'rgba(0,0,0,0.2)';
+      ctx.fillRect(x,                     0, 0.75, H);
+      ctx.fillRect(x + pxPerThread - 0.75, 0, 0.75, H);
+    }
+  }
+
+  // ── Pass 3: weft threads on top (cylindrical re-paint) ────
+  for (let ri = startRow; ri < nWeft && (ri - startRow) * pxR < H + fracOffset; ri++) {
+    const y = (ri - startRow) * pxR - fracOffset; if (y >= H) break;
+    const weftHex = weft[ri % nWeft];
+    const [er,eg,eb] = h2r(weftHex);
+
+    // One gradient per weft row (spans full row height, reused for all runs)
+    const grd = _cylinderGrad(ctx, 0, y, W, pxR, er, eg, eb, 'h');
+
+    // Walk the visible columns and collect contiguous weft-on-top runs
+    let runStart = null;
+    let cx = -fracX * pxPerThread;
+    const flushRun = (endX) => {
+      if (runStart == null) return;
+      ctx.fillStyle = grd || `rgb(${er},${eg},${eb})`;
+      ctx.fillRect(runStart, y, endX - runStart, pxR);
+      runStart = null;
+    };
+    for (let ci = startThread; cx < W; ci++, cx += pxPerThread) {
+      if (ci >= warp.length) { flushRun(cx); break; }
+      const onTop = warp[ci] != null && twillBit(ri, ci, twill) === 1;
+      if (onTop) { if (runStart == null) runStart = cx; }
+      else         flushRun(cx);
+    }
+    flushRun(W);
+
+    // Row-edge shadow lines
+    if (pxR >= 5) {
+      ctx.fillStyle = 'rgba(0,0,0,0.18)';
+      ctx.fillRect(0, y,              W, 0.75);
+      ctx.fillRect(0, y + pxR - 0.75, W, 0.75);
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function redraw() {
+  // Check for limit violations first
+  const validationOk = displayValidationErrors();
+  if (!validationOk) {
+    // Don't render if limits are exceeded
+    const overlay = document.getElementById('emptyOverlay');
+    if (overlay) overlay.style.display = 'flex';
+    const vc0 = document.getElementById('visCanvas');
+    if (vc0) {
+      const area = document.getElementById('previewArea');
+      const dispW = area ? Math.max(1, area.clientWidth - 48) : 1;
+      const canvasH = Math.max(40, parseInt(document.getElementById('canvasH').value) || 320);
+      vc0.width = dispW; vc0.height = canvasH;
+      vc0.getContext('2d').clearRect(0, 0, dispW, canvasH);
+    }
+    return;
+  }
+
+  const twill   = document.getElementById('twillSel').value;
+  const xMirror = document.getElementById('xMirror').checked;
+  const yMirror = false;
+  M.twill    = twill;
+  M.x_mirror = xMirror;
+  M.y_mirror = yMirror;
+
+  const frame   = document.getElementById('canvasFrame');
+  const overlay = document.getElementById('emptyOverlay');
+
+  const area    = document.getElementById('previewArea');
+  const dispW   = area.clientWidth - 48;
+
+  const totalWarpThreads = Math.max(100, parseInt(document.getElementById('totalWarpIn').value) || 5700);
+  const totalWarpNote = document.getElementById('totalWarpNote');
+  if (totalWarpNote) totalWarpNote.textContent = totalWarpThreads.toLocaleString() + ' threads';
+
+  const canvasH = Math.max(getMinCanvasHeight(), parseInt(document.getElementById('canvasH').value) || 320);
+
+  const xBase = expand(M.x_list, xMirror, 'x');
+  const yBase = expand(M.active_y(), yMirror, 'y');
+  const bBoth  = expandBorder();
+  const bArr   = bBoth.left;  // left border (used for progress/stats)
+  const bArrR  = bBoth.right; // right border
+
+  const has      = xBase.length > 0 && yBase.length > 0;
+  const warpOnly = xBase.length > 0 && yBase.length === 0;
+
+  let showContent;
+  if (twill === 'warp') {
+    showContent = xBase.length > 0 || bArr.length > 0;
+  } else if (twill === 'weft') {
+    showContent = yBase.length > 0;
+  } else if (twill === 'border') {
+    showContent = bArr.length > 0;
+  } else {
+    showContent = has || warpOnly;
+  }
+  overlay.style.display = showContent ? 'none' : 'flex';
+
+  const lim        = getThreadLimits();
+  const borderSide = lim.borderSide;
+  let fullWarp = new Array(totalWarpThreads).fill(null);
+
+  const bLeft  = bArr.slice();
+  for (let i = 0; i < bLeft.length && i < totalWarpThreads; i++) {
+    fullWarp[i] = bLeft[i];
+  }
+
+  const bRight = bArrR.slice();
+  for (let i = 0; i < bRight.length; i++) {
+    const pos = totalWarpThreads - bRight.length + i;
+    if (pos >= 0) fullWarp[pos] = bRight[i];
+  }
+
+  if ((has || warpOnly) && xBase.length > 0) {
+    const designStart = borderSide;
+    const designEnd   = totalWarpThreads - borderSide;
+    const designSpace = designEnd - designStart;
+    const designOffset = Math.max(0, Math.floor((designSpace - xBase.length) / 2));
+    let pos = designStart + designOffset;
+    for (let i = 0; i < xBase.length && pos < designEnd; i++, pos++) {
+      fullWarp[pos] = xBase[i];
+    }
+  }
+
+  const fullWeft = yBase;
+
+  if (!has && !warpOnly) {
+    // No pattern — just show the checkerboard (CSS on frame) with a blank canvas
+    const vc0 = document.getElementById('visCanvas');
+    vc0.width = dispW; vc0.height = canvasH;
+    vc0.getContext('2d').clearRect(0, 0, dispW, canvasH);
+    frame.style.width  = dispW + 'px';
+    frame.style.height = canvasH + 'px';
+    updateNavStats(0, 0, 0);
+    updateDiagram(0, 0, 0);
+    return;
+  }
+
+  const weftEmpty    = fullWeft.length === 0;
+  const borderOnly   = twill === 'border';
+  const warpOnlyMode = twill === 'warp';
+  const weftOnlyMode = twill === 'weft';
+
+  // ── viewport setup ────────────────────────────────────────
+  const W = dispW, H = canvasH;
+  const vc = document.getElementById('visCanvas');
+  vc.width  = W; vc.height = H;
+  frame.style.width     = W + 'px';
+  frame.style.height    = H + 'px';
+  frame.style.transform = 'none';   // clear any stale CSS transform
+
+  const nW         = totalWarpThreads;
+  const pxPerThread = (W / nW) * viewZoom;  // pixels per thread at current zoom
+  const visThreads  = W / pxPerThread;      // number of visible threads
+  
+  // Clamp viewPanX to valid range to prevent over-panning
+  viewPanX = Math.max(0, Math.min(Math.max(0, nW - visThreads), viewPanX));
+  
+  // Clamp viewPanY to valid range (vertical pan)
+  const pxR = pxPerThread;  // pixel height per weft row
+  const visRows = H / pxR;
+  const nH = fullWeft.length || 1;
+  viewPanY = Math.max(0, Math.min(Math.max(0, nH - visRows), viewPanY));
+
+  const startThread = Math.floor(viewPanX);
+  const fracX       = viewPanX - startThread;  // fractional offset within first visible thread
+  const endThread   = Math.min(nW, startThread + Math.ceil(visThreads) + 1);
+  const vctx        = vc.getContext('2d');
+
+  // ── LOD dispatch with blend zone ──────────────────────────
+  if (pxPerThread >= LOD_TRANS_HI) {
+    _renderHighDetail(vctx, W, H, fullWarp, fullWeft, twill,
+                      startThread, endThread, fracX, pxPerThread);
+  } else if (pxPerThread < LOD_TRANS_LO) {
+    _renderFastTile(vctx, W, H, fullWarp, fullWeft, twill,
+                    startThread, endThread, fracX, pxPerThread);
+  } else {
+    // Blend zone: cross-fade from fast → detail to avoid popping
+    _renderFastTile(vctx, W, H, fullWarp, fullWeft, twill,
+                    startThread, endThread, fracX, pxPerThread);
+    const blendAlpha = (pxPerThread - LOD_TRANS_LO) / (LOD_TRANS_HI - LOD_TRANS_LO);
+    const tmp = document.createElement('canvas');
+    tmp.width = W; tmp.height = H;
+    _renderHighDetail(tmp.getContext('2d'), W, H, fullWarp, fullWeft, twill,
+                      startThread, endThread, fracX, pxPerThread);
+    vctx.globalAlpha = blendAlpha;
+    vctx.drawImage(tmp, 0, 0);
+    vctx.globalAlpha = 1;
+  }
+
+  // ── stats ─────────────────────────────────────────────────
+  const patternUsed = xBase.length + bArr.length * 2;
+  const bCount      = bArr.length;
+  updateNavStats(totalWarpThreads, warpOnly ? 0 : fullWeft.length, bCount);
+  updateDiagram(bCount, xBase.length, bCount);
+
+  const warn = document.getElementById('densityWarn');
+  warn.classList.toggle('visible', pxPerThread < 1);
+  document.getElementById('statW').textContent = W + 'px';
+  document.getElementById('statTile').textContent =
+    `${endThread - startThread}×${fullWeft.length || 1}`;
+  document.getElementById('previewMeta').textContent =
+    `${nW.toLocaleString()} warp · ${(endThread - startThread).toLocaleString()} visible` +
+    ` · ${pxPerThread.toFixed(2)}px/thread · ×${viewZoom.toFixed(1)}`;
+
+
+}
+
+function updateNavStats(warp, weft, border) {
+  document.getElementById('navWarp').textContent  = warp  || '—';
+  document.getElementById('navWeft').textContent  = weft  || '—';
+  document.getElementById('navBorder').textContent= border|| '—';
+  document.getElementById('navTotal').textContent = warp  || '—';
+}
+
+function getMinCanvasHeight() {
+  const yMirror = false;
+  const yBase = expand(M.active_y(), yMirror, 'y');
+  const weftRepeatLength = yBase.length || 1;
+  
+  // Get display width and total warp threads
+  const area = document.getElementById('previewArea');
+  const dispW = area ? Math.max(1, area.clientWidth - 48) : 1;
+  const totalWarpThreads = Math.max(100, parseInt(document.getElementById('totalWarpIn').value) || 5700);
+  
+  // Calculate pixels per thread at BASE zoom (1.0) — independent of current zoom
+  const basePxPerThread = dispW / totalWarpThreads;
+  
+  // Minimum height = one complete weft repeat at base pixel density (not affected by zoom)
+  return Math.max(1, Math.ceil(weftRepeatLength * basePxPerThread));
+}
+
+function syncCanvasMinHeight() {
+  const hInput = document.getElementById('canvasH');
+  if (!hInput) return;
+  const minH = getMinCanvasHeight();
+  hInput.min = minH;
+  const current = Math.max(0, parseInt(hInput.value) || 0);
+  if (current < minH) hInput.value = minH;
+}
+
+function updateDiagram(bL, main, bR) {
+  const total = bL + main + bR || 1;
+  const bl = document.getElementById('pdBL');
+  const br = document.getElementById('pdBR');
+  const blLbl = document.getElementById('pdBLlbl');
+  const brLbl = document.getElementById('pdBRlbl');
+  const bPct = (bL / total * 100).toFixed(1);
+  bl.style.width = bPct + '%';
+  br.style.width = bPct + '%';
+  const show = bL > 0;
+  blLbl.style.display = show ? '' : 'none';
+  brLbl.style.display = show ? '' : 'none';
+}
+
+// ═══════════════════════════════════════════════════════════════
+// RESIZE HANDLE
+// ═══════════════════════════════════════════════════════════════
+(function initResize() {
+  const handle = document.getElementById('resizeHandle');
+  const frame  = document.getElementById('canvasFrame');
+  const hInput = document.getElementById('canvasH');
+  let dragging = false, startY = 0, startH = 0;
+
+  handle.addEventListener('mousedown', e => {
+    e.preventDefault(); dragging = true;
+    startY = e.clientY; startH = frame.offsetHeight;
+    document.body.style.cursor = 'ns-resize';
+    document.body.style.userSelect = 'none';
+  });
+  const getMaxCanvasHeight = () => {
+    const top = frame.getBoundingClientRect().top;
+    return Math.min(800, Math.max(getMinCanvasHeight(), window.innerHeight - top - 20));
+  };
+
+  document.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    const dy   = e.clientY - startY;
+    const maxH = getMaxCanvasHeight();
+    const minH = getMinCanvasHeight();
+    const newH = Math.max(minH, Math.min(maxH, startH + dy));
+    frame.style.height = newH + 'px';
+    hInput.value = Math.round(newH);
+    displayValidationErrors();
+    scheduleRedraw();
+  });
+  document.addEventListener('mouseup', () => {
+    if (!dragging) return;
+    dragging = false;
+    document.body.style.cursor = '';
+    document.body.style.userSelect = '';
+  });
+
+  handle.addEventListener('touchstart', e => {
+    e.preventDefault(); dragging = true;
+    startY = e.touches[0].clientY; startH = frame.offsetHeight;
+  }, {passive:false});
+  document.addEventListener('touchmove', e => {
+    if (!dragging) return;
+    const dy   = e.touches[0].clientY - startY;
+    const maxH = getMaxCanvasHeight();
+    const minH = getMinCanvasHeight();
+    const newH = Math.max(minH, Math.min(maxH, startH + dy));
+    frame.style.height = newH + 'px';
+    hInput.value = Math.round(newH);
+    displayValidationErrors();
+    scheduleRedraw();
+  }, {passive:false});
+  document.addEventListener('touchend', () => { dragging = false; });
+})();
+
+new ResizeObserver(() => scheduleRedraw()).observe(document.getElementById('previewArea'));
+
+// totalWarpIn is read-only, computed by recalcThreadCount() — no direct listener needed
+
+document.getElementById('totalBorderIn').addEventListener('input', () => {
+  const val = parseInt(document.getElementById('totalBorderIn').value) || 0;
+  if (val > 300) {
+    document.getElementById('totalBorderIn').value = 300;
+  }
+  recalcThreadCount(); // border affects total warp
+  updateTotal('b');
+  displayValidationErrors();
+  scheduleRedraw();
+  scheduleSave();
+});
+document.getElementById('twillSel').addEventListener('change', () => { redraw(); scheduleSave(); });
+document.getElementById('canvasH').addEventListener('change', () => { redraw(); scheduleSave(); });
+document.getElementById('xMirror').addEventListener('change', () => { updateTotal('x'); scheduleRedraw(); scheduleSave(); });
+
+// ═══════════════════════════════════════════════════════════════
+// SECTION COLLAPSE
+// ═══════════════════════════════════════════════════════════════
+function toggleSec(id) {
+  document.getElementById(id).classList.toggle('collapsed');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PALETTE
+// ═══════════════════════════════════════════════════════════════
+function renderPalette() {
+  const list = document.getElementById('palList');
+  list.innerHTML = '';
+  M.colors.forEach((hex, idx) => {
+    const row = document.createElement('div');
+    row.className = 'pal-row';
+    row.innerHTML = `
+      <div class="hex-wrap">
+        <input class="hex-in" type="text" maxlength="7" value="${hex}" spellcheck="false">
+        <div class="nat-wrap">
+          <div class="sw" style="background:${hex}"></div>
+          <input type="color" value="${hex}">
+        </div>
+      </div>
+      <button class="bx" title="Remove">✕</button>
+    `;
+    const hexIn = row.querySelector('.hex-in');
+    const natIn = row.querySelector('input[type=color]');
+    const sw    = row.querySelector('.sw');
+    let _undoPushedForHex = false;
+    function applyHex(val) {
+      if (!val.startsWith('#')) val = '#' + val;
+      if (!/^#[0-9a-fA-F]{6}$/.test(val)) return;
+      if (!_undoPushedForHex) { pushUndo(); _undoPushedForHex = true; setTimeout(()=>{_undoPushedForHex=false;},500); }
+      M.colors[idx] = val;
+      natIn.value = val; hexIn.value = val; sw.style.background = val;
+      refreshDropBtns(); scheduleRedraw();
+    }
+    hexIn.addEventListener('input', e => applyHex(e.target.value));
+    natIn.addEventListener('input', e => applyHex(e.target.value));
+    row.querySelector('.bx').addEventListener('click', () => removePalColor(idx));
+    list.appendChild(row);
+  });
+}
+
+function addPalColor(hex) {
+  pushUndo();
+  hex = hex || document.getElementById('newPicker').value;
+  M.colors.push(hex);
+  renderPalette(); renderSeq('x'); renderWeftPanel(); renderBorderPanel(); scheduleRedraw();
+}
+
+function removePalColor(idx) {
+  pushUndo();
+  M.colors.splice(idx, 1);
+  function cleanDim(d) {
+    const lst = getList(d), ids = getRowIds(d), grps = getGroups(d);
+    const kept = [], keptIds = [], removedIds = [];
+    for (let j = 0; j < lst.length; j++) {
+      const r = lst[j];
+      if (r[0] === idx+1) { removedIds.push(ids[j]); continue; }
+      kept.push([r[0] > idx+1 ? r[0]-1 : r[0], r[1]]);
+      keptIds.push(ids[j]);
+    }
+    if (d==='x'){ M.x_list=kept; M.x_rowIds=keptIds; }
+    else if(d==='y'){ M.y_list=kept; M.y_rowIds=keptIds; }
+    else { M.b_list=kept; M.b_rowIds=keptIds; }
+    for (const g of grps) g.rowIds = g.rowIds.filter(rid => !removedIds.includes(rid));
+    setGroups(d, grps.filter(g => g.rowIds.length > 0));
+  }
+  cleanDim('x'); cleanDim('y'); cleanDim('b'); cleanDim('br');
+  renderPalette(); renderSeq('x'); renderWeftPanel(); renderBorderPanel(); scheduleRedraw();
+}
+
+function refreshDropBtns() {
+  document.querySelectorAll('.cdrop-btn[data-ci]').forEach(btn => {
+    const ci = parseInt(btn.dataset.ci);
+    if (M.colors[ci-1]) btn.querySelector('.sw').style.background = M.color(ci);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════
+// DROPDOWN
+// ═══════════════════════════════════════════════════════════════
+let openDrop = null;
+document.addEventListener('click', () => {
+  if (openDrop) { openDrop.querySelector('.cdrop-menu').classList.remove('open'); openDrop = null; }
+});
+
+function buildDropdown(ci, dim, rowIdx) {
+  const wrap = document.createElement('div');
+  wrap.className = 'cdrop';
+  const btn  = document.createElement('div');
+  btn.className = 'cdrop-btn';
+  btn.dataset.ci = ci;
+  btn.innerHTML = `<div class="sw" style="background:${M.color(ci)}"></div><div class="caret"></div>`;
+  const menu = document.createElement('div');
+  menu.className = 'cdrop-menu';
+
+  btn.addEventListener('click', e => {
+    e.stopPropagation();
+    menu.innerHTML = '';
+    M.colors.forEach((hex, i) => {
+      const opt = document.createElement('button');
+      opt.className = 'cdrop-opt'; opt.style.background = hex;
+      opt.dataset.ci = i+1; opt.title = hex;
+      opt.addEventListener('click', ev => {
+        ev.stopPropagation();
+        pushUndo();
+        const newCi = i+1;
+        const lst = dim === 'x' ? M.x_list
+          : dim === 'y' ? M.y_list
+          : dim === 'br' ? M.br_list
+          : M.b_list;
+        const targets = SEL[dim].has(rowIdx) && SEL[dim].size > 1 ? [...SEL[dim]] : [rowIdx];
+        for (const t of targets) { lst[t][0] = newCi; }
+        menu.classList.remove('open'); openDrop = null;
+        renderSeq(dim);
+        updateTotal(dim); scheduleRedraw();
+      });
+      menu.appendChild(opt);
+    });
+    if (openDrop && openDrop !== wrap) openDrop.querySelector('.cdrop-menu').classList.remove('open');
+    const isOpen = menu.classList.toggle('open');
+    openDrop = isOpen ? wrap : null;
+  });
+
+  wrap.appendChild(btn); wrap.appendChild(menu);
+  return wrap;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// MULTI-SELECT STATE
+// ═══════════════════════════════════════════════════════════════
+const SEL = { x: new Set(), y: new Set(), b: new Set(), br: new Set() };
+
+function clearOtherSels(dim) {
+  ['x','y','b','br'].forEach(d => { if (d !== dim) SEL[d].clear(); });
+}
+
+// Active panel (last panel the user interacted with — drives keyboard shortcuts)
+let activeDim = 'x';
+function setActiveDim(d) { activeDim = d; }
+
+// Clipboard  { dim, rows:[[ci,cnt],...], groups:[{name,offsets:[...]}] }
+let CB = null;
+
+// ═══════════════════════════════════════════════════════════════
+// DRAG-TO-REORDER
+// ═══════════════════════════════════════════════════════════════
+const dragState = { active: false, dim: null, fromIdx: -1, overIdx: -1 };
+
+function dragMove(clientY) {
+  if (!dragState.active) return;
+  const cid = dragState.dim === 'x' ? 'xRows' : dragState.dim === 'y' ? 'yRows' : dragState.dim === 'br' ? 'bRowsRight' : 'bRows';
+  const container = document.getElementById(cid);
+  if (!container) return;
+  const rows = [...container.querySelectorAll('.seq-row')];
+  rows.forEach(r => r.classList.remove('seq-drag-over-top', 'seq-drag-over-bottom'));
+  let closest = null, closestDist = Infinity;
+  for (const r of rows) {
+    const rect = r.getBoundingClientRect();
+    const mid  = rect.top + rect.height / 2;
+    const dist = Math.abs(clientY - mid);
+    if (dist < closestDist) { closestDist = dist; closest = r; }
+  }
+  if (closest) {
+    const rect  = closest.getBoundingClientRect();
+    const isTop = clientY < rect.top + rect.height / 2;
+    closest.classList.add(isTop ? 'seq-drag-over-top' : 'seq-drag-over-bottom');
+    dragState.overIdx = parseInt(closest.dataset.idx) + (isTop ? 0 : 1);
+  }
+}
+
+function dragEnd() {
+  if (!dragState.active) return;
+  dragState.active = false;
+  const { dim, fromIdx } = dragState;
+  const list = getList(dim);
+  const cid  = dim === 'x' ? 'xRows' : dim === 'y' ? 'yRows' : dim === 'br' ? 'bRowsRight' : 'bRows';
+  const container = document.getElementById(cid);
+  if (container) {
+    container.querySelectorAll('.seq-row').forEach(r =>
+      r.classList.remove('seq-dragging','seq-drag-over-top','seq-drag-over-bottom'));
+  }
+  const toIdx = dragState.overIdx;
+  if (toIdx >= 0 && toIdx !== fromIdx && toIdx !== fromIdx + 1) {
+    pushUndo();
+    const rowIds = getRowIds(dim);
+    const [item]   = list.splice(fromIdx, 1);
+    const [itemId] = rowIds.splice(fromIdx, 1);
+    const insertAt = toIdx > fromIdx ? toIdx - 1 : toIdx;
+    list.splice(insertAt, 0, item);
+    rowIds.splice(insertAt, 0, itemId);
+    SEL[dim].clear();
+    renderSeq(dim);
+    updateTotal(dim); scheduleRedraw();
+  }
+  dragState.overIdx = -1;
+}
+
+document.addEventListener('mousemove', e => dragMove(e.clientY));
+document.addEventListener('mouseup',   () => dragEnd());
+
+document.addEventListener('touchmove', e => {
+  if (!dragState.active) return;
+  e.preventDefault();
+  dragMove(e.touches[0].clientY);
+}, { passive: false });
+document.addEventListener('touchend',  () => dragEnd());
+
+// ═══════════════════════════════════════════════════════════════
+// SEQUENCE RENDERER  (groups, copy/paste, right-click)
+// ═══════════════════════════════════════════════════════════════
+function renderSeq(dim) {
+  const list   = getList(dim);
+  const rowIds = getRowIds(dim);
+  const groups = getGroups(dim);
+  const bMirrored = document.getElementById('borderMirror')?.checked !== false;
+  const container = document.getElementById(
+    dim==='x' ? 'xRows' :
+    dim==='y' ? 'yRows' :
+    dim==='br' ? 'bRowsRight' :
+    bMirrored  ? 'bRows' : 'bRowsLeft'
+  );
+  if (!container) return;
+
+  for (const idx of [...SEL[dim]]) { if (idx >= list.length) SEL[dim].delete(idx); }
+
+  // Map rowIdx → group
+  const inGroup = new Map();
+  for (const g of groups) {
+    for (const rid of g.rowIds) {
+      const idx = rowIds.indexOf(rid);
+      if (idx >= 0) inGroup.set(idx, g);
+    }
+  }
+
+  // Build segments: {type:'group',g,indices} | {type:'row',idx}
+  const segs = [];
+  let si = 0;
+  while (si < list.length) {
+    const g = inGroup.get(si);
+    if (g) {
+      const indices = g.rowIds.map(rid => rowIds.indexOf(rid)).filter(x => x >= 0).sort((a,b)=>a-b);
+      segs.push({ type:'group', g, indices });
+      si = indices[indices.length-1] + 1;
+    } else {
+      segs.push({ type:'row', idx:si });
+      si++;
+    }
+  }
+
+  container.innerHTML = '';
+  const frag = document.createDocumentFragment();
+  let insPos = 0;
+
+  for (const seg of segs) {
+    frag.appendChild(makeInsBtn(dim, insPos, null));
+    if (seg.type === 'group') {
+      frag.appendChild(makeGroupEl(dim, seg.g, seg.indices));
+      insPos = seg.indices[seg.indices.length-1] + 1;
+    } else {
+      frag.appendChild(makeRowEl(dim, seg.idx));
+      insPos = seg.idx + 1;
+    }
+  }
+  frag.appendChild(makeInsBtn(dim, list.length, null));
+
+  const addBtn = document.createElement('button');
+  addBtn.className = 'btn-ghost'; addBtn.style.marginTop = '2px';
+  addBtn.textContent = '＋ Add Row';
+  addBtn.addEventListener('mouseenter', () => setActiveDim(dim));
+  addBtn.addEventListener('click', () => {
+    pushUndo();
+    list.push([1, 4]);
+    getRowIds(dim).push(newRowId());
+    renderSeq(dim); updateTotal(dim); scheduleRedraw();
+  });
+  frag.appendChild(addBtn);
+
+  container.appendChild(frag);
+  updateTotal(dim);
+}
+
+// ── Insert button ─────────────────────────────────────────────
+// groupId: if set, row inserted here joins that group
+function makeInsBtn(dim, insertIdx, groupId) {
+  const btn = document.createElement('button');
+  btn.className = 'ins-btn'; btn.title = 'Insert row here'; btn.textContent = '＋';
+
+  btn.addEventListener('click', () => {
+    pushUndo();
+    const lst = getList(dim), ids = getRowIds(dim);
+    const newId = newRowId();
+    lst.splice(insertIdx, 0, [1, 4]);
+    ids.splice(insertIdx, 0, newId);
+    // Add to parent group if applicable
+    if (groupId != null) {
+      const grp = getGroups(dim).find(g => g.id === groupId);
+      if (grp) {
+        const prevId = insertIdx > 0 ? ids[insertIdx-1] : null;
+        const nextId = ids[insertIdx+1] || null;
+        let pos = grp.rowIds.length;
+        if (prevId && grp.rowIds.includes(prevId)) pos = grp.rowIds.indexOf(prevId)+1;
+        else if (nextId && grp.rowIds.includes(nextId)) pos = grp.rowIds.indexOf(nextId);
+        grp.rowIds.splice(pos, 0, newId);
+      }
+    }
+    renderSeq(dim); updateTotal(dim); scheduleRedraw();
+  });
+
+  btn.addEventListener('contextmenu', e => {
+    e.preventDefault(); e.stopPropagation();
+    setActiveDim(dim);
+    if (!CB || CB.dim !== dim) return;
+    openCtxMenu(e, [{
+      label: `Paste ${CB.rows.length} row${CB.rows.length>1?'s':''}`,
+      kbd: 'Ctrl+V',
+      action: () => pasteAt(dim, insertIdx),
+    }]);
+  });
+
+  return btn;
+}
+
+// ── Individual row element ────────────────────────────────────
+function makeRowEl(dim, i) {
+  const list = getList(dim);
+  const [ci, cnt] = list[i];
+  const bMirrored0 = document.getElementById('borderMirror')?.checked !== false;
+  const contId = dim==='x'?'xRows':dim==='y'?'yRows':dim==='br'?'bRowsRight':bMirrored0?'bRows':'bRowsLeft';
+
+  const row = document.createElement('div');
+  const ids0 = getRowIds(dim), rid0 = ids0[i];
+  const isHidden0 = getHidden(dim).has(rid0);
+  row.className = 'seq-row'
+    + (SEL[dim].has(i)  ? ' sel-active' : '')
+    + (isHidden0        ? ' row-hidden'  : '');
+  row.dataset.dim = dim; row.dataset.idx = i;
+
+  row.addEventListener('mouseenter', () => setActiveDim(dim));
+
+  row.addEventListener('contextmenu', e => {
+    e.preventDefault(); e.stopPropagation();
+    setActiveDim(dim);
+    if (!SEL[dim].has(i)) {
+      clearOtherSels(dim); SEL[dim].clear(); SEL[dim].add(i);
+      const cont = document.getElementById(contId);
+      if (cont) cont.querySelectorAll('.seq-row').forEach(r =>
+        r.classList.toggle('sel-active', SEL[dim].has(parseInt(r.dataset.idx))));
+    }
+    showRowCtxMenu(e, dim, null, i);
+  });
+
+  // Drag handle
+  const handle = document.createElement('span');
+  handle.className = 'seq-drag-handle'; handle.title = 'Drag to reorder'; handle.textContent = '⠿';
+  handle.addEventListener('mousedown', e => {
+    e.preventDefault();
+    dragState.active=true; dragState.dim=dim; dragState.fromIdx=i; dragState.overIdx=i;
+    row.classList.add('seq-dragging');
+  });
+  handle.addEventListener('touchstart', e => {
+    e.preventDefault();
+    dragState.active=true; dragState.dim=dim; dragState.fromIdx=i; dragState.overIdx=i;
+    row.classList.add('seq-dragging');
+  }, { passive:false });
+
+  // Selection dot
+  const dot = document.createElement('span');
+  dot.className = 'seq-sel-dot'; dot.title = 'Select row (Shift=range)';
+  dot.addEventListener('click', e => {
+    e.stopPropagation();
+    clearOtherSels(dim); SEL_GROUPS[dim].clear();
+    const list2 = getList(dim);
+    if (e.shiftKey && lastClicked[dim] >= 0 && lastClicked[dim] < list2.length) {
+      // Range select: fill between lastClicked and i
+      const lo = Math.min(lastClicked[dim], i);
+      const hi = Math.max(lastClicked[dim], i);
+      for (let r = lo; r <= hi; r++) SEL[dim].add(r);
+    } else {
+      if (SEL[dim].has(i)) { SEL[dim].delete(i); } else { SEL[dim].add(i); }
+      lastClicked[dim] = i;
+    }
+    document.getElementById(contId).querySelectorAll('.seq-row').forEach(r =>
+      r.classList.toggle('sel-active', SEL[dim].has(parseInt(r.dataset.idx))));
+    renderSeq(dim); // refresh group selected state
+  });
+
+  const drop = buildDropdown(ci, dim, i);
+
+  const numIn = document.createElement('input');
+  numIn.type = 'number'; numIn.className = 'seq-n'; numIn.min = 1;
+  const lim0 = getThreadLimits();
+  numIn.max = dim==='x' ? Math.min(3000, lim0.maxWarpBands) : dim==='y' ? 3000 : dim==='b' || dim==='br' ? 300 : 99999;
+  numIn.value = cnt;
+  numIn.addEventListener('input', e => {
+    pushUndo();
+    const lim    = getThreadLimits();
+    const maxVal = dim==='x' ? Math.min(3000, lim.maxWarpBands) : dim==='y' ? 3000 : dim==='b' || dim==='br' ? 300 : 99999;
+    const val    = Math.max(1, Math.min(maxVal, parseInt(e.target.value)||1));
+    const targets = SEL[dim].has(i) && SEL[dim].size > 1 ? [...SEL[dim]] : [i];
+    for (const t of targets) list[t][1] = val;
+    if (targets.length > 1) {
+      document.getElementById(contId).querySelectorAll('.seq-row').forEach(r => {
+        const ri = parseInt(r.dataset.idx);
+        if (ri !== i && SEL[dim].has(ri)) { const inp = r.querySelector('.seq-n'); if (inp) inp.value = val; }
+      });
+    }
+    displayValidationErrors();
+    updateTotal(dim); scheduleRedraw();
+  });
+
+  const rmBtn = document.createElement('button');
+  rmBtn.className = 'seq-rm'; rmBtn.title = 'Remove'; rmBtn.textContent = '✕';
+  rmBtn.addEventListener('click', () => {
+    pushUndo();
+    const ids  = getRowIds(dim), grps = getGroups(dim);
+    const rid  = ids[i];
+    list.splice(i,1); ids.splice(i,1);
+    for (const g of grps) g.rowIds = g.rowIds.filter(r => r !== rid);
+    setGroups(dim, grps.filter(g => g.rowIds.length > 0));
+    SEL[dim].clear();
+    renderSeq(dim); updateTotal(dim); scheduleRedraw();
+  });
+
+  row.appendChild(handle); row.appendChild(dot); row.appendChild(drop);
+  row.appendChild(numIn);  row.appendChild(rmBtn);
+  return row;
+}
+
+// ── Group element ─────────────────────────────────────────────
+function makeGroupEl(dim, grp, indices) {
+  const list = getList(dim);
+
+  const wrap = document.createElement('div');
+  const isGrpSel = SEL_GROUPS[dim].has(grp.id);
+  const isGrpHidden = grp.hidden || false;
+  wrap.className = 'seq-group'
+    + (grp.collapsed  ? ' collapsed'   : '')
+    + (isGrpSel       ? ' grp-selected': '')
+    + (isGrpHidden    ? ' grp-hidden'  : '');
+  wrap.dataset.groupId = grp.id;
+
+  // Header
+  const hd = document.createElement('div');
+  hd.className = 'seq-group-hd';
+  hd.addEventListener('mouseenter', () => setActiveDim(dim));
+
+  const colBtn = document.createElement('button');
+  colBtn.className = 'seq-group-collapse'; colBtn.textContent = '▾'; colBtn.title = 'Collapse/expand';
+  colBtn.addEventListener('click', e => { e.stopPropagation(); grp.collapsed = !grp.collapsed; renderSeq(dim); });
+
+  const nameEl = document.createElement('span');
+  nameEl.className = 'seq-group-name'; nameEl.contentEditable = 'true';
+  nameEl.spellcheck = false; nameEl.textContent = grp.name || 'Group';
+  nameEl.title = 'Click to rename';
+  nameEl.addEventListener('click', e => e.stopPropagation());
+  nameEl.addEventListener('blur',  () => { grp.name = nameEl.textContent.trim() || 'Group'; nameEl.textContent = grp.name; });
+  nameEl.addEventListener('keydown', e => { if (e.key==='Enter'){e.preventDefault();nameEl.blur();} e.stopPropagation(); });
+
+  const badge = document.createElement('span');
+  badge.className = 'seq-group-badge';
+  badge.textContent = indices.reduce((s,idx) => s + list[idx][1], 0);
+
+  const prev = document.createElement('canvas');
+  prev.className = 'seq-group-preview'; prev.height = 8;
+  prev.width = grp.collapsed ? 80 : 52;
+  drawGroupPreview(prev, indices, list);
+
+  // Click header body → select group (Shift = add to group selection)
+  hd.addEventListener('click', e => {
+    if (e.target === nameEl || e.target === colBtn || colBtn.contains(e.target)) return;
+    setActiveDim(dim);
+    if (e.shiftKey) {
+      // Shift-click: toggle this group in SEL_GROUPS, keep other groups selected
+      if (SEL_GROUPS[dim].has(grp.id)) SEL_GROUPS[dim].delete(grp.id);
+      else SEL_GROUPS[dim].add(grp.id);
+      // Also select all row indices for all selected groups
+      SEL[dim].clear();
+      const ids2 = getRowIds(dim), grps2 = getGroups(dim);
+      for (const g of grps2) {
+        if (SEL_GROUPS[dim].has(g.id)) {
+          g.rowIds.map(rid=>ids2.indexOf(rid)).filter(x=>x>=0).forEach(x=>SEL[dim].add(x));
+        }
+      }
+    } else {
+      clearOtherSels(dim); SEL[dim].clear();
+      SEL_GROUPS[dim].clear(); SEL_GROUPS[dim].add(grp.id);
+      for (const idx of indices) SEL[dim].add(idx);
+    }
+    renderSeq(dim);
+  });
+  hd.addEventListener('contextmenu', e => {
+    e.preventDefault(); e.stopPropagation();
+    setActiveDim(dim); clearOtherSels(dim); SEL[dim].clear();
+    SEL_GROUPS[dim].clear(); SEL_GROUPS[dim].add(grp.id);
+    for (const idx of indices) SEL[dim].add(idx);
+    renderSeq(dim);
+    showGroupCtxMenu(e, dim, grp, indices);
+  });
+
+  hd.appendChild(colBtn); hd.appendChild(nameEl); hd.appendChild(badge); hd.appendChild(prev);
+  wrap.appendChild(hd);
+
+  // Body (rows inside group, only when expanded)
+  if (!grp.collapsed) {
+    const body = document.createElement('div');
+    body.className = 'seq-group-body';
+    for (let j = 0; j < indices.length; j++) {
+      body.appendChild(makeInsBtn(dim, indices[j], grp.id));
+      body.appendChild(makeRowEl(dim, indices[j]));
+    }
+    body.appendChild(makeInsBtn(dim, indices[indices.length-1]+1, grp.id));
+    wrap.appendChild(body);
+  }
+
+  return wrap;
+}
+
+function drawGroupPreview(canvas, indices, list) {
+  const total = indices.reduce((s,idx) => s + list[idx][1], 0);
+  if (!total) return;
+  const w = canvas.width, h = canvas.height;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0,0,w,h);
+  let x = 0;
+  for (const idx of indices) {
+    const [ci, cnt] = list[idx];
+    ctx.fillStyle = M.color(ci);
+    const sw = (cnt/total)*w;
+    ctx.fillRect(x, 0, sw, h);
+    x += sw;
+  }
+}
+
+// ── Context menu ──────────────────────────────────────────────
+function openCtxMenu(e, items) {
+  const menu = document.getElementById('ctxMenu');
+  menu.innerHTML = '';
+  for (const it of items) {
+    if (it.sep) { const s=document.createElement('div'); s.className='ctx-sep'; menu.appendChild(s); continue; }
+    const btn = document.createElement('button');
+    btn.className = 'ctx-item' + (it.danger ? ' danger' : '');
+    const lbl = document.createElement('span'); lbl.textContent = it.label; btn.appendChild(lbl);
+    if (it.kbd) { const k=document.createElement('span'); k.className='ctx-kbd'; k.textContent=it.kbd; btn.appendChild(k); }
+    btn.addEventListener('mousedown', ev => { ev.preventDefault(); ev.stopPropagation(); it.action(); closeCtxMenu(); });
+    menu.appendChild(btn);
+  }
+  menu.classList.add('open');
+  const vw=window.innerWidth, vh=window.innerHeight;
+  let x=e.clientX, y=e.clientY;
+  menu.style.left=x+'px'; menu.style.top=y+'px';
+  requestAnimationFrame(() => {
+    const r=menu.getBoundingClientRect();
+    if (r.right  > vw) x = vw - r.width  - 4;
+    if (r.bottom > vh) y = vh - r.height - 4;
+    menu.style.left=Math.max(4,x)+'px'; menu.style.top=Math.max(4,y)+'px';
+  });
+}
+function closeCtxMenu() {
+  const m = document.getElementById('ctxMenu'); if (m) m.classList.remove('open');
+}
+document.addEventListener('click',   () => closeCtxMenu());
+document.addEventListener('keydown', e => { if (e.key==='Escape') closeCtxMenu(); });
+
+function showRowCtxMenu(e, dim, grp, rowIdx) {
+  const sel = [...SEL[dim]].sort((a,b)=>a-b);
+  if (!sel.length) return;
+
+  const isContig = sel.length===1 || sel.every((v,i,a) => i===0||v===a[i-1]+1);
+  const noGrpOverlap = (() => {
+    const ids=getRowIds(dim), grps=getGroups(dim);
+    const inG=new Set();
+    for(const g of grps) for(const rid of g.rowIds){ const idx=ids.indexOf(rid); if(idx>=0) inG.add(idx); }
+    return !sel.some(i => inG.has(i));
+  })();
+  const canGroup = isContig && noGrpOverlap;
+
+  // Hide / show state of selected rows
+  const ids = getRowIds(dim), hidden = getHidden(dim);
+  const anyVisible = sel.some(i => !hidden.has(ids[i]));
+  const anyHidden  = sel.some(i =>  hidden.has(ids[i]));
+
+  const items = [
+    { label:'Copy', kbd:'Ctrl+C', action:()=>copySelection(dim) },
+    { label:'Cut',  kbd:'Ctrl+X', action:()=>{ pushUndo(); cutSelection(dim); } },
+  ];
+  if (canGroup) {
+    items.push({ sep:true });
+    items.push({ label:'Group', kbd:'Ctrl+G', action:()=>{ pushUndo(); groupSelection(dim); } });
+  }
+  if (grp) {
+    items.push({ sep:true });
+    items.push({ label:'Ungroup', action:()=>{
+      pushUndo();
+      const gs=getGroups(dim); const i=gs.findIndex(g=>g.id===grp.id);
+      if(i>=0) gs.splice(i,1); renderSeq(dim);
+    }});
+  }
+  items.push({ sep:true });
+  if (anyVisible) items.push({ label:'Hide',    action:()=>{ pushUndo(); setRowsHidden(dim, sel, true);  } });
+  if (anyHidden)  items.push({ label:'Show',    action:()=>{ pushUndo(); setRowsHidden(dim, sel, false); } });
+  items.push({ sep:true });
+  items.push({ label:'Delete', kbd:'Del', danger:true, action:()=>{ pushUndo(); deleteSelection(dim); } });
+
+  openCtxMenu(e, items);
+}
+
+// Group-specific context menu
+function showGroupCtxMenu(e, dim, grp, indices) {
+  const hidden = getHidden(dim), ids = getRowIds(dim);
+  const anyRowVisible = indices.some(i => !hidden.has(ids[i]));
+  const items = [
+    { label:'Copy',  kbd:'Ctrl+C', action:()=>copySelection(dim) },
+    { label:'Cut',   kbd:'Ctrl+X', action:()=>{ pushUndo(); cutSelection(dim); } },
+    { sep:true },
+    { label: grp.hidden ? 'Show Group' : 'Hide Group',
+      action:()=>{ pushUndo(); grp.hidden = !grp.hidden;
+        // Also hide/show individual rows
+        setRowsHidden(dim, indices, grp.hidden);
+      }
+    },
+    { sep:true },
+    { label:'Ungroup', action:()=>{
+      pushUndo();
+      const gs=getGroups(dim); const idx=gs.findIndex(g=>g.id===grp.id);
+      if(idx>=0) gs.splice(idx,1); SEL_GROUPS[dim].delete(grp.id); renderSeq(dim);
+    }},
+    { sep:true },
+    { label:'Delete Group', danger:true, action:()=>{ pushUndo(); deleteSelection(dim); } },
+  ];
+  openCtxMenu(e, items);
+}
+
+function setRowsHidden(dim, indices, hide) {
+  const ids = getRowIds(dim), hidden = getHidden(dim);
+  for (const i of indices) {
+    if (hide) hidden.add(ids[i]);
+    else      hidden.delete(ids[i]);
+  }
+  renderSeq(dim); updateTotal(dim); scheduleRedraw();
+}
+
+// ── Clipboard operations ──────────────────────────────────────
+function isContiguousSel(dim) {
+  const sel=[...SEL[dim]].sort((a,b)=>a-b);
+  if(!sel.length) return false;
+  return sel.every((v,i,a) => i===0||v===a[i-1]+1);
+}
+
+function copySelection(dim) {
+  const sel=[...SEL[dim]].sort((a,b)=>a-b);
+  if(!sel.length) return;
+  const list=getList(dim), ids=getRowIds(dim), grps=getGroups(dim);
+  const rows = sel.map(i=>[...list[i]]);
+  const selIds = sel.map(i=>ids[i]);
+  const cbGrps = [];
+  for(const g of grps){
+    const gi=g.rowIds.map(rid=>ids.indexOf(rid)).filter(x=>x>=0);
+    if(gi.length&&gi.every(idx=>SEL[dim].has(idx))){
+      cbGrps.push({ name:g.name, offsets:gi.map(idx=>sel.indexOf(idx)) });
+    }
+  }
+  CB = { dim, rows, groups:cbGrps };
+}
+
+function cutSelection(dim) { copySelection(dim); deleteSelection(dim); }
+
+function deleteSelection(dim) {
+  const sel=[...SEL[dim]].sort((a,b)=>b-a);
+  if(!sel.length) return;
+  const list=getList(dim), ids=getRowIds(dim), grps=getGroups(dim);
+  const removedIds=sel.map(i=>ids[i]);
+  for(const i of sel){ list.splice(i,1); ids.splice(i,1); }
+  for(const g of grps) g.rowIds=g.rowIds.filter(rid=>!removedIds.includes(rid));
+  setGroups(dim, grps.filter(g=>g.rowIds.length>0));
+  SEL[dim].clear();
+  renderSeq(dim); updateTotal(dim); scheduleRedraw();
+}
+
+function groupSelection(dim) {
+  const sel=[...SEL[dim]].sort((a,b)=>a-b);
+  if(!sel.length||!isContiguousSel(dim)) return;
+  const ids=getRowIds(dim), grps=getGroups(dim);
+  // Ensure none in existing group
+  const inG=new Set();
+  for(const g of grps) for(const rid of g.rowIds){ const idx=ids.indexOf(rid); if(idx>=0) inG.add(idx); }
+  if(sel.some(i=>inG.has(i))) return;
+  const grpRowIds=sel.map(i=>ids[i]);
+  grps.push({ id:newGrpId(), name:'Group', rowIds:grpRowIds, collapsed:false });
+  SEL[dim].clear();
+  renderSeq(dim); updateTotal(dim); scheduleRedraw();
+}
+
+function pasteAt(dim, insertIdx) {
+  if(!CB||CB.dim!==dim) return;
+  const list=getList(dim), ids=getRowIds(dim), grps=getGroups(dim);
+  const newRows=CB.rows.map(r=>[...r]);
+  const newIds=newRows.map(()=>newRowId());
+  list.splice(insertIdx,0,...newRows);
+  ids.splice(insertIdx,0,...newIds);
+  for(const cg of CB.groups){
+    const gIds=cg.offsets.map(off=>newIds[off]);
+    grps.push({ id:newGrpId(), name:cg.name+' copy', rowIds:gIds, collapsed:false });
+  }
+  SEL[dim].clear();
+  for(let i=insertIdx;i<insertIdx+newRows.length;i++) SEL[dim].add(i);
+  renderSeq(dim); updateTotal(dim); scheduleRedraw();
+}
+
+
+// ═══════════════════════════════════════════════════════════════
+// UNDO / REDO  (unlimited steps, up to 100 stored)
+// We snapshot the mutable parts of M + SEL + SEL_GROUPS + CB.
+// Call pushUndo() before any destructive action.
+// ═══════════════════════════════════════════════════════════════
+const UNDO_STACK = [];  // array of snapshots (oldest first)
+const REDO_STACK = [];
+const UNDO_LIMIT = 100;
+
+function snapshotDim(d) {
+  return {
+    list:   getList(d).map(r=>[...r]),
+    rowIds: [...getRowIds(d)],
+    groups: JSON.parse(JSON.stringify(getGroups(d))),
+    hidden: new Set(getHidden(d)),
+  };
+}
+function restoreDim(d, snap) {
+  const list = getList(d), ids = getRowIds(d);
+  list.length = 0; list.push(...snap.list.map(r=>[...r]));
+  ids.length  = 0; ids.push(...snap.rowIds);
+  setGroups(d, JSON.parse(JSON.stringify(snap.groups)));
+  setHidden(d, new Set(snap.hidden));
+}
+
+function takeSnapshot() {
+  return {
+    x: snapshotDim('x'), y: snapshotDim('y'), b: snapshotDim('b'), br: snapshotDim('br'),
+    selX:[...SEL.x], selY:[...SEL.y], selB:[...SEL.b], selBr:[...SEL.br],
+    sgX:[...SEL_GROUPS.x], sgY:[...SEL_GROUPS.y], sgB:[...SEL_GROUPS.b], sgBr:[...SEL_GROUPS.br],
+    cb: CB ? JSON.parse(JSON.stringify(CB)) : null,
+    colors: [...M.colors],
+  };
+}
+
+function pushUndo() {
+  UNDO_STACK.push(takeSnapshot());
+  if (UNDO_STACK.length > UNDO_LIMIT) UNDO_STACK.shift();
+  REDO_STACK.length = 0;
+  updateUndoUI();
+}
+
+function applySnapshot(snap) {
+  restoreDim('x', snap.x); restoreDim('y', snap.y); restoreDim('b', snap.b); restoreDim('br', snap.br);
+  SEL.x = new Set(snap.selX); SEL.y = new Set(snap.selY); SEL.b = new Set(snap.selB);
+  SEL.br = snap.selBr ? new Set(snap.selBr) : new Set();
+  SEL_GROUPS.x = new Set(snap.sgX); SEL_GROUPS.y = new Set(snap.sgY); SEL_GROUPS.b = new Set(snap.sgB);
+  SEL_GROUPS.br = snap.sgBr ? new Set(snap.sgBr) : new Set();
+  CB = snap.cb ? JSON.parse(JSON.stringify(snap.cb)) : null;
+  if (snap.colors) { M.colors.length = 0; M.colors.push(...snap.colors); renderPalette(); }
+  renderSeq('x'); renderSeq('y'); renderSeq('b');
+  if (!document.getElementById('borderMirror').checked) renderSeq('br');
+  updateTotal('b'); updateTotal('x'); scheduleRedraw();
+}
+
+function doUndo() {
+  if (!UNDO_STACK.length) return;
+  REDO_STACK.push(takeSnapshot());
+  applySnapshot(UNDO_STACK.pop());
+  updateUndoUI();
+}
+
+function doRedo() {
+  if (!REDO_STACK.length) return;
+  UNDO_STACK.push(takeSnapshot());
+  applySnapshot(REDO_STACK.pop());
+  updateUndoUI();
+}
+
+function updateUndoUI() {
+  const u = document.getElementById('undoBtn');
+  const r = document.getElementById('redoBtn');
+  if (u) u.disabled = UNDO_STACK.length === 0;
+  if (r) r.disabled = REDO_STACK.length === 0;
+}
+
+document.getElementById('undoBtn').addEventListener('click', doUndo);
+document.getElementById('redoBtn').addEventListener('click', doRedo);
+
+// ── Last-clicked row index per dim (for Shift-range selection) ──
+const lastClicked = { x:-1, y:-1, b:-1 };
+
+// ── Keyboard shortcuts ────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if (e.target && (e.target.isContentEditable || ['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName))) return;
+  const dim = activeDim;
+  if (e.ctrlKey || e.metaKey) {
+    switch (e.key) {
+      case '=': case '+': e.preventDefault(); setZoom(viewZoom * (1 + ZOOM_STEP), null); return;
+      case '-':           e.preventDefault(); setZoom(viewZoom * (1 - ZOOM_STEP), null); return;
+      case '0':           e.preventDefault(); resetZoom(); return;
+    }
+    switch (e.key.toLowerCase()) {
+      case 'z': e.preventDefault(); doUndo(); return;
+      case 'y': e.preventDefault(); doRedo(); return;
+      case 'c':
+        if(SEL[dim].size||SEL_GROUPS[dim].size){ e.preventDefault(); copySelection(dim); } break;
+      case 'x':
+        if(SEL[dim].size||SEL_GROUPS[dim].size){ e.preventDefault(); cutSelection(dim); } break;
+      case 'v':
+        if(CB&&CB.dim===dim){
+          e.preventDefault();
+          const lst=getList(dim), sel=[...SEL[dim]];
+          const at=sel.length?Math.max(...sel)+1:lst.length;
+          pushUndo(); pasteAt(dim,at);
+        } break;
+      case 'g':
+        if(SEL[dim].size&&isContiguousSel(dim)){ e.preventDefault(); pushUndo(); groupSelection(dim); } break;
+      case 'd':
+        e.preventDefault();
+        SEL[dim].clear(); SEL_GROUPS[dim].clear(); renderSeq(dim); break;
+    }
+    return;
+  }
+  if (e.key==='Delete'||e.key==='Backspace') {
+    if(SEL[dim].size||SEL_GROUPS[dim].size){ e.preventDefault(); pushUndo(); deleteSelection(dim); }
+  }
+  // ── Shift+N  →  select all rows with same thread count ──────
+  if (e.shiftKey && e.key.toLowerCase() === 'n') {
+    e.preventDefault();
+    const list = getList(dim);
+    const selArr = [...SEL[dim]];
+    if (!selArr.length) return;
+    const refCount = list[selArr[0]]?.[1];
+    if (refCount == null) return;
+    SEL[dim].clear();
+    list.forEach((row, idx) => { if (row[1] === refCount) SEL[dim].add(idx); });
+    renderSeq(dim);
+    return;
+  }
+  // ── Shift+C  →  select all rows with same color ─────────────
+  if (e.shiftKey && e.key.toLowerCase() === 'c') {
+    e.preventDefault();
+    const list = getList(dim);
+    const selArr = [...SEL[dim]];
+    if (!selArr.length) return;
+    const refCi = list[selArr[0]]?.[0];
+    if (refCi == null) return;
+    SEL[dim].clear();
+    list.forEach((row, idx) => { if (row[0] === refCi) SEL[dim].add(idx); });
+    renderSeq(dim);
+    return;
+  }
+});
+
+
+
+// ═══════════════════════════════════════════════════════════════
+// PROGRESS BAR HELPERS
+// ═══════════════════════════════════════════════════════════════
+function makeProgressBarEl(id) {
+  const wrap = document.createElement('div');
+  wrap.id = id + '-wrap';
+  wrap.className = 'thread-progress-wrap';
+  wrap.innerHTML = `
+    <div class="thread-progress-track">
+      <div class="thread-progress-fill"></div>
+      <div class="thread-progress-over" style="display:none"></div>
+    </div>
+    <div class="thread-progress-label">
+      <span class="pct"></span>
+      <span class="progress-right"></span>
+    </div>`;
+  return wrap;
+}
+
+// REPLACE the entire updateProgressBar() function
+function updateProgressBar(barId, list, capacity, mirror, showRemaining = false) {
+  const wrap = document.getElementById(barId + '-wrap');
+  if (!wrap) return;
+  if (capacity <= 0) { wrap.style.display = 'none'; return; }
+  wrap.style.display = '';
+
+  const track = wrap.querySelector('.thread-progress-track');
+  const fill  = wrap.querySelector('.thread-progress-fill');
+  const over  = wrap.querySelector('.thread-progress-over');
+  const pctEl = wrap.querySelector('.pct');
+  const right = wrap.querySelector('.progress-right');
+
+  let bands = list.map(([ci, cnt]) => ({ hex: M.color(ci), cnt }));
+  if (mirror) bands = [...[...bands].reverse(), ...bands];
+
+  const used    = bands.reduce((s, b) => s + b.cnt, 0);
+  const ratio   = Math.min(used / capacity, 1);
+  const pctVal  = used / capacity * 100;
+
+  const stops = [];
+  let cursor = 0;
+  for (const { hex, cnt } of bands) {
+    if (used === 0) break;
+    const s = (cursor / used) * ratio * 100;
+    const e = Math.min(((cursor + cnt) / used) * ratio * 100, 100);
+    if (s >= 100) break;
+    stops.push(`${hex} ${s.toFixed(2)}%`, `${hex} ${e.toFixed(2)}%`);
+    cursor += cnt;
+  }
+
+  if (stops.length) {
+    fill.style.width      = (ratio * 100).toFixed(2) + '%';
+    fill.style.background = `linear-gradient(to right,${stops.join(',')})`;
+  } else {
+    fill.style.width      = '0%';
+    fill.style.background = 'transparent';
+  }
+
+  if (used > capacity) {
+    const overW = ((used - capacity) / capacity * 100);
+    over.style.width   = Math.min(overW, 100).toFixed(2) + '%';
+    over.style.display = '';
+  } else {
+    over.style.display = 'none';
+  }
+
+  const rem = capacity - used;
+  if (used === 0) {
+    pctEl.textContent  = '0%';
+    pctEl.className    = 'pct empty';
+    right.textContent  = showRemaining
+      ? `0 / ${capacity.toLocaleString()} · Rem: ${capacity.toLocaleString()}`
+      : `0 / ${capacity.toLocaleString()}`;
+  } else if (used > capacity) {
+    pctEl.textContent  = pctVal.toFixed(0) + '% ⚠';
+    pctEl.className    = 'pct over';
+    right.textContent  = `+${(used - capacity).toLocaleString()} over`;
+  } else if (used === capacity) {
+    pctEl.textContent  = '100% ✓';
+    pctEl.className    = 'pct full';
+    right.textContent  = `${used.toLocaleString()} / ${capacity.toLocaleString()}`;
+  } else {
+    pctEl.textContent  = pctVal.toFixed(1) + '%';
+    pctEl.className    = 'pct';
+    right.textContent  = showRemaining
+      ? `${used.toLocaleString()} / ${capacity.toLocaleString()} · Rem: ${rem.toLocaleString()}`
+      : `${used.toLocaleString()} / ${capacity.toLocaleString()}`;
+  }
+}
+
+function getThreadLimits() {
+  const borderSide   = Math.max(0, parseInt(document.getElementById('totalBorderIn').value) || 150);
+  const totalBorder  = borderSide * 2;
+  // totalWarpIn is always kept in sync by recalcThreadCount()
+  const totalWarp    = Math.max(1, parseInt(document.getElementById('totalWarpIn').value) || 5700);
+  const remaining    = Math.max(0, totalWarp - totalBorder);
+  const xMirror      = document.getElementById('xMirror').checked;
+  const maxWarpBands = xMirror ? Math.floor(remaining / 2) : remaining;
+  const maxPerSide   = borderSide; // shown in UI note
+  return { totalWarp, maxPerSide, borderSide, totalBorder, remaining, maxWarpBands };
+}
+
+// ═══════════════════════════════════════════════════════════════
+// LIMIT VALIDATION
+// ═══════════════════════════════════════════════════════════════
+const LIMITS = {
+  warp: 3000,           // WARP number inputs limit
+  weftPerInput: 3000,   // WEFT number inputs limit
+  weftTotal: 7000,      // Total WEFT limit
+  borderPerInput: 300,  // BORDER number inputs limit
+  borderTotal: 600,     // Total BORDER limit
+  density: 300,         // Density limit
+  width: 100,           // Width (in) limit
+  canvasHeight: 800,    // Canvas height limit
+};
+
+function validateLimits() {
+  const errors = [];
+  
+  // Check WARP band thread count
+  const xList = M.x_list;
+  xList.forEach((row, idx) => {
+    if (row[1] > LIMITS.warp) {
+      errors.push(`⚠ Warp band ${idx + 1}: ${row[1]} threads exceeds limit of ${LIMITS.warp}`);
+    }
+  });
+  
+  // Check WEFT band thread count
+  const yList = M.y_list;
+  yList.forEach((row, idx) => {
+    if (row[1] > LIMITS.weftPerInput) {
+      errors.push(`⚠ Weft band ${idx + 1}: ${row[1]} threads exceeds limit of ${LIMITS.weftPerInput}`);
+    }
+  });
+  
+  // Check total WEFT
+  const totalWeft = yList.reduce((sum, row) => sum + row[1], 0);
+  if (totalWeft > LIMITS.weftTotal) {
+    errors.push(`⚠ Total Weft: ${totalWeft} threads exceeds limit of ${LIMITS.weftTotal}`);
+  }
+  
+  // Check BORDER band thread count
+  const bList = M.b_list;
+  bList.forEach((row, idx) => {
+    if (row[1] > LIMITS.borderPerInput) {
+      errors.push(`⚠ Border band ${idx + 1}: ${row[1]} threads exceeds limit of ${LIMITS.borderPerInput}`);
+    }
+  });
+  
+  // Check total BORDER (per side)
+  const totalBorder = bList.reduce((sum, row) => sum + row[1], 0);
+  if (totalBorder > LIMITS.borderTotal) {
+    errors.push(`⚠ Total Border per side: ${totalBorder} threads exceeds limit of ${LIMITS.borderTotal}`);
+  }
+  
+  // Check Density
+  const density = parseInt(document.getElementById('densityIn').value) || 0;
+  if (density > LIMITS.density) {
+    errors.push(`⚠ Density: ${density} exceeds limit of ${LIMITS.density}`);
+  }
+  
+  // Check Width
+  const width = parseInt(document.getElementById('widthIn').value) || 0;
+  if (width > LIMITS.width) {
+    errors.push(`⚠ Width: ${width} exceeds limit of ${LIMITS.width}`);
+  }
+  
+  // Check Canvas Height
+  const canvasH = parseInt(document.getElementById('canvasH').value) || 0;
+  if (canvasH > LIMITS.canvasHeight) {
+    errors.push(`⚠ Canvas Height: ${canvasH} exceeds limit of ${LIMITS.canvasHeight}`);
+  }
+  
+  return errors;
+}
+
+function displayValidationErrors() {
+  const errors = validateLimits();
+  let errorDisplay = document.getElementById('limitsErrorDisplay');
+  
+  if (!errorDisplay) {
+    errorDisplay = document.createElement('div');
+    errorDisplay.id = 'limitsErrorDisplay';
+    errorDisplay.style.cssText = `
+      position: fixed; top: 60px; left: 50%; transform: translateX(-50%);
+      z-index: 9998; background: #c4472a; color: white;
+      padding: 12px 20px; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      max-width: 600px; text-align: center; font-weight: 500;
+      font-family: 'DM Sans', sans-serif; font-size: 13px;
+    `;
+    document.body.appendChild(errorDisplay);
+  }
+  
+  if (errors.length > 0) {
+    errorDisplay.textContent = errors[0]; // Show first error
+    errorDisplay.style.display = 'block';
+    return false; // Has errors
+  } else {
+    errorDisplay.style.display = 'none';
+    return true; // No errors
+  }
+}
+
+function updateTotal(dim) {
+  const lim = getThreadLimits();
+
+  if (dim === 'b') {
+    const inp = document.getElementById('totalBorderIn');
+    // No hard cap — border can be any value
+
+    const badge = document.getElementById('bTotal');
+    if (badge) badge.textContent = lim.totalBorder;
+
+    const note = document.getElementById('borderMaxNote');
+    if (note) note.textContent = `${lim.borderSide} per side · ${lim.totalBorder} total`;
+
+    // Recalculate total warp since border affects it
+    recalcThreadCount();
+    updateTotal('x');
+
+    let bBar = document.getElementById('bProgress-wrap');
+    if (!bBar) {
+      bBar = makeProgressBarEl('bProgress');
+      const container = document.getElementById('bProgressContainer');
+      if (container) container.appendChild(bBar);
+    }
+    updateProgressBar('bProgress', M.b_list, lim.borderSide, false, true);
+
+    const patternTotal = M.b_list.reduce((s, r) => s + r[1], 0);
+    let bWarn = document.getElementById('bWarn');
+    if (!bWarn) {
+      bWarn = document.createElement('div');
+      bWarn.id = 'bWarn';
+      bWarn.className = 'seq-warn';
+      const container = document.getElementById('bProgressContainer');
+      if (container) container.appendChild(bWarn);
+    }
+    const bRemLeft = lim.borderSide - patternTotal;
+    if (lim.borderSide > 0 && bRemLeft < 0) {
+      bWarn.textContent = `⚠ Over by ${Math.abs(bRemLeft).toLocaleString()} threads`;
+      bWarn.classList.add('visible');
+    } else {
+      bWarn.classList.remove('visible');
+    }
+
+    return;
+  }
+
+
+
+  // ── NEW: right border has no separate progress bar UI yet; just bail ──
+  if (dim === 'br') {
+    const lim2 = getThreadLimits();
+
+    let brBar = document.getElementById('brProgress-wrap');
+    if (!brBar) {
+      brBar = makeProgressBarEl('brProgress');
+      const container = document.getElementById('brProgressContainer');
+      if (container) container.appendChild(brBar);
+    }
+    updateProgressBar('brProgress', M.br_list, lim2.borderSide, false, true);
+
+    let brWarn = document.getElementById('brWarn');
+    if (!brWarn) {
+      brWarn = document.createElement('div');
+      brWarn.id        = 'brWarn';
+      brWarn.className = 'seq-warn';
+      const container  = document.getElementById('brProgressContainer');
+      if (container) container.appendChild(brWarn);
+    }
+    const brUsed = M.br_list.reduce((s, r) => s + r[1], 0);
+    const brOver = brUsed - lim2.borderSide;
+    if (lim2.borderSide > 0 && brOver > 0) {
+      brWarn.textContent = `⚠ Over by ${brOver.toLocaleString()} threads`;
+      brWarn.classList.add('visible');
+    } else {
+      brWarn.classList.remove('visible');
+    }
+    return;
+  }
+
+
+
+
+
+  if (dim === 'x') {
+    const list  = M.x_list;
+    const base  = list.reduce((s,r) => s + r[1], 0);
+    const xMirr = document.getElementById('xMirror').checked;
+    const used  = xMirr ? base * 2 : base;
+    const el    = document.getElementById('xTotal');
+    if (el) {
+      el.textContent = used;
+      el.style.color = used > lim.remaining ? 'var(--accent)' : '';
+    }
+
+    document.querySelectorAll('#xRows .seq-n').forEach(inp => { inp.max = lim.maxWarpBands; });
+
+    let xBar = document.getElementById('xProgress-wrap');
+    if (!xBar) {
+      xBar = makeProgressBarEl('xProgress');
+      const container = document.getElementById('xProgressContainer');
+      if (container) container.appendChild(xBar);
+    }
+    updateProgressBar('xProgress', M.x_list, lim.remaining, xMirr);
+
+    let xWarn = document.getElementById('xWarn');
+    if (!xWarn) {
+      xWarn = document.createElement('div');
+      xWarn.id = 'xWarn';
+      xWarn.className = 'seq-warn';
+      const container = document.getElementById('xProgressContainer');
+      if (container) container.appendChild(xWarn);
+    }
+    const remLeft = lim.remaining - used;
+    if (remLeft < 0) {
+      xWarn.textContent = `⚠ Over by ${Math.abs(remLeft).toLocaleString()} threads`;
+      xWarn.classList.add('visible');
+    } else {
+      xWarn.classList.remove('visible');
+    }
+
+    return;
+  }
+
+
+
+
+
+
+
+
+
+
+  // weft ('y')
+  const list   = M.active_y();
+  const base   = list.reduce((s,r) => s + r[1], 0);
+  const el     = document.getElementById('yTotal');
+  if (el) el.textContent = base;
+  syncCanvasMinHeight();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// WEFT / BORDER PANELS
+// ═══════════════════════════════════════════════════════════════
+function renderWeftPanel()  { renderSeq('y'); }
+// REPLACE the entire renderBorderPanel() function
+function renderBorderPanel() {
+  const mirrored = document.getElementById('borderMirror')?.checked !== false;
+  document.getElementById('bMirrorSingle').style.display = mirrored ? ''     : 'none';
+  document.getElementById('bMirrorDual').style.display   = mirrored ? 'none' : '';
+  renderSeq('b');
+  updateTotal('b');
+  if (!mirrored) {
+    renderSeq('br');
+    updateTotal('br');
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CANVAS ZOOM & PAN
+// Pointer-centered zoom + drag-to-pan with proper viewport handling
+// ═══════════════════════════════════════════════════════════════
+let viewZoom        = 1.0;   // zoom factor (1.0 = show all threads)
+let viewPanX        = 0;     // pan offset in warp-thread units
+let viewPanY        = 0;     // pan offset in weft-row units
+const ZOOM_MIN      = 1.0;   // minimum zoom
+const ZOOM_MAX      = 80.0;  // maximum zoom
+const ZOOM_STEP     = 0.15;  // zoom step per scroll event
+const LOD_DETAIL_PX = 3.0;   // px/thread above which high-detail activates
+const LOD_TRANS_LO  = 2.5;   // blend-zone start
+const LOD_TRANS_HI  = 4.5;   // blend-zone end
+let _zoomBadgeTimer = null;
+
+function _showZoomBadge() {
+  const badge = document.getElementById('zoomBadge');
+  if (!badge) return;
+  badge.textContent = Math.round(viewZoom * 100) + '%';
+  badge.classList.add('visible');
+  clearTimeout(_zoomBadgeTimer);
+  _zoomBadgeTimer = setTimeout(() => badge.classList.remove('visible'), 1400);
+}
+
+// Pointer-centered zoom: the exact thread under pivotX stays at that screen pixel after zoom
+function setZoom(z, pivotX) {
+  const wrap = document.getElementById('canvasWrap');
+  if (!wrap) return;
+  const vc = document.getElementById('visCanvas');
+  const W = vc?.width ?? (document.getElementById('previewArea').clientWidth - 48);
+  const nW = Math.max(1, parseInt(document.getElementById('totalWarpIn').value) || 5700);
+  
+  const prevPxT = (W / nW) * viewZoom;  // pixels per thread at current zoom
+  const newZoom = Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, z));
+  const newPxT = (W / nW) * newZoom;    // pixels per thread at new zoom
+  
+  if (pivotX != null && newZoom !== viewZoom) {
+    // Find which thread is at the pivot X position
+    const pivotThread = viewPanX + pivotX / prevPxT;
+    // Adjust pan so that thread stays at pivot X
+    viewPanX = pivotThread - pivotX / newPxT;
+  }
+  
+  viewZoom = newZoom;
+  
+  // Clamp pan to valid range: ensure we don't scroll past thread boundaries
+  const visThreads = W / newPxT;
+  viewPanX = Math.max(0, Math.min(Math.max(0, nW - visThreads), viewPanX));
+  
+  _showZoomBadge();
+  scheduleRedraw();
+}
+
+function resetZoom() {
+  viewZoom = 1.0;
+  viewPanX = 0;
+  viewPanY = 0;
+  _showZoomBadge();
+  scheduleRedraw();
+}
+
+// ── Wheel zoom ───────────────────────────────────────────────
+// FIND AND REPLACE the entire (function initZoomWheel() { ... })(); block:
+
+(function initZoomAndPan() {
+  const wrap = document.getElementById('canvasWrap');
+  if (!wrap) return;
+
+  // Wheel: scroll always zooms (vertical) or pans (horizontal) — no Ctrl required
+  wrap.addEventListener('wheel', e => {
+    e.preventDefault();
+    const rect = wrap.getBoundingClientRect();
+    const pivotX = e.clientX - rect.left;
+    
+    // Vertical scroll = zoom
+    if (e.deltaY !== 0) {
+      const dir = e.deltaY < 0 ? 1 : -1;
+      setZoom(viewZoom * (1 + dir * ZOOM_STEP), pivotX);
+    }
+    // Horizontal scroll = pan (only if zoomed in)
+    else if (e.deltaX !== 0 && viewZoom > 1) {
+      const vc = document.getElementById('visCanvas');
+      const nW = Math.max(1, parseInt(document.getElementById('totalWarpIn').value) || 5700);
+      const W = vc?.width ?? 800;
+      const pxT = (W / nW) * viewZoom;
+      const visThreads = W / pxT;
+      const panDelta = e.deltaX / pxT;  // convert pixel scroll to thread units
+      viewPanX = Math.max(0, Math.min(Math.max(0, nW - visThreads), viewPanX + panDelta));
+      scheduleRedraw();
+    }
+  }, { passive: false });
+
+  // Double-click to reset zoom
+  wrap.addEventListener('dblclick', e => {
+    if (e.target.closest('.resize-handle')) return;
+    e.preventDefault();
+    resetZoom();
+  });
+})();
+
+// Drag-to-pan when zoomed in
+(function initDragPan() {
+  const wrap = document.getElementById('canvasWrap');
+  if (!wrap) return;
+  
+  let dragging = false;
+  let dragStartX = 0, dragStartY = 0;
+  let dragStartPanX = 0, dragStartPanY = 0;
+  
+  function startDrag(clientX, clientY) {
+    if (viewZoom <= 1) return;  // Only pan when zoomed
+    dragging = true;
+    dragStartX = clientX; dragStartY = clientY;
+    dragStartPanX = viewPanX; dragStartPanY = viewPanY;
+    document.body.style.cursor = 'grabbing';
+    document.body.style.userSelect = 'none';
+  }
+  
+  function updateDrag(clientX, clientY) {
+    if (!dragging) return;
+    const vc = document.getElementById('visCanvas');
+    const nW = Math.max(1, parseInt(document.getElementById('totalWarpIn').value) || 5700);
+    const W = vc?.width ?? 800;
+    const H = vc?.height ?? 320;
+    const fullWeft = expand(M.active_y(), false, 'y');
+    const nH = fullWeft.length || 1;
+    const pxT = (W / nW) * viewZoom;
+    const pxR = pxT;  // pixel height per weft row
+    
+    // Horizontal pan
+    const dx = clientX - dragStartX;
+    const threadDelta = -dx / pxT;
+    const visThreads = W / pxT;
+    viewPanX = Math.max(0, Math.min(Math.max(0, nW - visThreads), dragStartPanX + threadDelta));
+    
+    // Vertical pan
+    const dy = clientY - dragStartY;
+    const rowDelta = -dy / pxR;
+    const visRows = H / pxR;
+    viewPanY = Math.max(0, Math.min(Math.max(0, nH - visRows), dragStartPanY + rowDelta));
+    
+    scheduleRedraw();
+  }
+  
+  function stopDrag() {
+    if (!dragging) return;
+    dragging = false;
+    document.body.style.cursor = '';
+    document.body.style.userSelect = '';
+  }
+  
+  wrap.addEventListener('mousedown', e => {
+    if (e.button !== 0) return;  // left button only
+    if (e.target.closest('.resize-handle')) return;  // don't interfere with height resize
+    e.preventDefault();
+    startDrag(e.clientX, e.clientY);
+  });
+  
+  document.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    e.preventDefault();
+    updateDrag(e.clientX, e.clientY);
+  });
+  
+  document.addEventListener('mouseup', () => stopDrag());
+  
+  // Touch support for single-finger drag-to-pan
+  wrap.addEventListener('touchstart', e => {
+    if (e.touches.length !== 1) return;
+    if (e.target.closest('.resize-handle')) return;
+    e.preventDefault();
+    startDrag(e.touches[0].clientX, e.touches[0].clientY);
+  }, { passive: false });
+  
+  wrap.addEventListener('touchmove', e => {
+    if (!dragging || e.touches.length !== 1) return;
+    e.preventDefault();
+    updateDrag(e.touches[0].clientX, e.touches[0].clientY);
+  }, { passive: false });
+  
+  wrap.addEventListener('touchend', e => {
+    if (e.touches.length === 0) stopDrag();
+  });
+})();
+
+// ── Pinch zoom (touch) ───────────────────────────────────────
+
+
+(function initPinchZoom() {
+  const wrap = document.getElementById('canvasWrap');
+  if (!wrap) return;
+  let lastDist = null, lastMidX = 0;
+
+  function td(t) {
+    const dx = t[0].clientX - t[1].clientX, dy = t[0].clientY - t[1].clientY;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
+
+  wrap.addEventListener('touchstart', e => {
+    if (e.touches.length === 2) {
+      e.preventDefault();
+      lastDist = td(e.touches);
+      const r  = wrap.getBoundingClientRect();
+      lastMidX = (e.touches[0].clientX + e.touches[1].clientX) / 2 - r.left;
+    }
+  }, { passive: false });
+
+  wrap.addEventListener('touchmove', e => {
+    if (e.touches.length === 2 && lastDist !== null) {
+      e.preventDefault();
+      const d    = td(e.touches);
+      const r    = wrap.getBoundingClientRect();
+      const midX = (e.touches[0].clientX + e.touches[1].clientX) / 2 - r.left;
+      const zoomFactor = d / lastDist;  // ratio of new distance to old
+      setZoom(viewZoom * zoomFactor, midX);  // zoom centered on midpoint
+      lastDist = d; lastMidX = midX;
+    }
+  }, { passive: false });
+
+  wrap.addEventListener('touchend', e => { if (e.touches.length < 2) lastDist = null; });
+
+  let _lastTap = 0;
+  wrap.addEventListener('touchend', e => {
+    if (e.changedTouches.length === 1) {
+      const now = Date.now();
+      if (now - _lastTap < 300) { e.preventDefault(); resetZoom(); }
+      _lastTap = now;
+    }
+  });
+})();
+
+// Zoom is applied during redraw() in the viewport calculation loop
+
+// ═══════════════════════════════════════════════════════════════
+// AUTOSAVE / LOAD
+// ═══════════════════════════════════════════════════════════════
+const SAVE_KEY = 'plaidmaker_v1';
+
+function saveState() {
+  try {
+    const data = {
+      colors: M.colors,
+      x_list: M.x_list, x_groups: M.x_groups,
+      y_list: M.y_list, y_groups: M.y_groups,
+      b_list: M.b_list, b_groups: M.b_groups,
+      br_list: M.br_list, br_groups: M.br_groups,
+      x_mirror: document.getElementById('xMirror').checked,
+      b_mirror: document.getElementById('borderMirror').checked,
+      twill: document.getElementById('twillSel').value,
+      canvasH: document.getElementById('canvasH').value,
+      totalBorder: document.getElementById('totalBorderIn').value,
+      density: document.getElementById('densityIn').value,
+      width:   document.getElementById('widthIn').value,
+      projectName: document.getElementById('projectNameIn').value,
+    };
+    localStorage.setItem(SAVE_KEY, JSON.stringify(data));
+  } catch(e) {}
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(SAVE_KEY);
+    if (!raw) return false;
+    const data = JSON.parse(raw);
+    M.colors = data.colors || M.colors;
+    if (data.x_list)  { M.x_list  = data.x_list;  M.x_rowIds  = M.x_list.map(()=>newRowId());  M.x_groups  = data.x_groups  || []; }
+    if (data.y_list)  { M.y_list  = data.y_list;  M.y_rowIds  = M.y_list.map(()=>newRowId());  M.y_groups  = data.y_groups  || []; }
+    if (data.b_list)  { M.b_list  = data.b_list;  M.b_rowIds  = M.b_list.map(()=>newRowId());  M.b_groups  = data.b_groups  || []; }
+    if (data.br_list) { M.br_list = data.br_list; M.br_rowIds = M.br_list.map(()=>newRowId()); M.br_groups = data.br_groups || []; }
+    if (data.x_mirror !== undefined) document.getElementById('xMirror').checked = data.x_mirror;
+    if (data.b_mirror !== undefined) document.getElementById('borderMirror').checked = data.b_mirror;
+    if (data.twill)       document.getElementById('twillSel').value        = data.twill;
+    if (data.canvasH)     document.getElementById('canvasH').value         = data.canvasH;
+    if (data.totalBorder) document.getElementById('totalBorderIn').value = data.totalBorder;
+    if (data.density) {
+      document.getElementById('densityIn').value = data.density;
+    }
+    if (data.width) {
+      document.getElementById('widthIn').value = data.width;
+    }
+    // Recalculate total after restoring density/width/border
+    recalcThreadCount();
+    if (data.projectName) {
+      document.getElementById('projectNameIn').value = data.projectName;
+      updateNavProjectName(data.projectName);
+    }
+    return true;
+  } catch(e) { return false; }
+}
+
+function updateNavProjectName(name) {
+  const wrap  = document.getElementById('navProjectName');
+  const title = document.getElementById('navProjectTitle');
+  if (!name || !name.trim()) {
+    wrap.style.display = 'none'; return;
+  }
+  title.textContent  = name.trim();
+  wrap.style.display = '';
+}
+
+// Debounced autosave
+let _saveTimer = null;
+function scheduleSave() {
+  clearTimeout(_saveTimer);
+  _saveTimer = setTimeout(saveState, 600);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// THREAD COUNT CALCULATION  (Density × Width) + (Border × 2)
+// ═══════════════════════════════════════════════════════════════
+function recalcThreadCount() {
+  const density    = Math.max(1, parseInt(document.getElementById('densityIn').value)  || 100);
+  const widthIn    = Math.max(1, parseInt(document.getElementById('widthIn').value)    || 54);
+  const borderPer  = Math.max(0, parseInt(document.getElementById('totalBorderIn').value) || 150);
+  const total      = (density * widthIn) + (borderPer * 2);
+  document.getElementById('totalWarpIn').value = total;
+  const note = document.getElementById('totalWarpNote');
+  if (note) note.textContent = total.toLocaleString() + ' threads';
+  return total;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// BOOTSTRAP
+// ═══════════════════════════════════════════════════════════════
+initTheme();
+
+M.colors   = ['#000000', '#00ADC4', '#FFFFFF'];
+M.x_list   = [[3,100],[1,30],[3,30]];
+M.y_list   = [[3,100],[1,30],[3,30]];
+M.b_list   = [[1,60],[3,40]];
+M.br_list  = [[1,60],[3,40]];
+M.x_mirror = true;
+M.y_mirror = false;
+
+// Initialise parallel rowId arrays
+M.x_rowIds  = M.x_list.map(()=>newRowId());
+M.y_rowIds  = M.y_list.map(()=>newRowId());
+M.b_rowIds  = M.b_list.map(()=>newRowId());
+M.br_rowIds = M.br_list.map(()=>newRowId());
+M.x_groups  = []; M.y_groups  = []; M.b_groups  = []; M.br_groups = [];
+M.x_hidden  = new Set(); M.y_hidden  = new Set();
+M.b_hidden  = new Set(); M.br_hidden = new Set();
+
+document.getElementById('xMirror').checked     = true;
+document.getElementById('borderMirror').checked = true;
+
+// Set initial calculated warp
+recalcThreadCount();
+
+// Attempt to restore saved state
+const didLoad = loadState();
+
+renderPalette();
+renderSeq('x');
+renderWeftPanel();
+renderBorderPanel();
+updateTotal('y');
+updateTotal('b');
+updateTotal('x');
+scheduleRedraw();
+requestAnimationFrame(() => applyZoom());
+
+// ── Density / Width input listeners ─────────────────────────
+['densityIn', 'widthIn'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) {
+    el.addEventListener('input', () => {
+      // Enforce max limits
+      if (id === 'densityIn' && el.value > 300) el.value = 300;
+      if (id === 'widthIn' && el.value > 100) el.value = 100;
+      
+      recalcThreadCount();
+      updateTotal('b');
+      renderBorderPanel();
+      renderSeq('x');
+      displayValidationErrors();
+      scheduleRedraw();
+      scheduleSave();
+    });
+  }
+});
+
+// ── Canvas Height input listener ────────────────────────────
+document.getElementById('canvasH')?.addEventListener('input', function() {
+  // Enforce max limit
+  if (this.value > 800) this.value = 800;
+  displayValidationErrors();
+  scheduleRedraw();
+});
+
+// ── Warp/Weft/Border row change listener ────────────────────
+// This watches for changes to seq-n inputs (band thread counts)
+(function initRowValidation() {
+  const observer = new MutationObserver(() => {
+    displayValidationErrors();
+  });
+  
+  ['xRows', 'yRows', 'bRows', 'bRowsLeft', 'bRowsRight'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      observer.observe(el, { childList: true, subtree: true });
+      // Also listen for input on existing .seq-n elements
+      el.querySelectorAll('.seq-n').forEach(inp => {
+        inp.addEventListener('input', () => {
+          displayValidationErrors();
+        });
+      });
+    }
+  });
+})();
+
+// ── Border mirror toggle ─────────────────────────────────────
+document.getElementById('borderMirror').addEventListener('change', () => {
+  renderBorderPanel();
+  scheduleRedraw();
+  scheduleSave();
+});
+
+// ── Project name ─────────────────────────────────────────────
+document.getElementById('projectNameIn').addEventListener('input', e => {
+  updateNavProjectName(e.target.value);
+  scheduleSave();
+});
+
+// ── Wire all other inputs to autosave ────────────────────────
+['twillSel','canvasH','totalBorderIn','xMirror'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('change', scheduleSave);
+  if (el) el.addEventListener('input',  scheduleSave);
+});
+
+// Set activeDim when hovering a panel section
+[['x','secWarp'],['y','secWeft'],['b','secBorder']].forEach(([dim,sid])=>{
+  const el=document.getElementById(sid);
+  if(el) el.addEventListener('mouseenter',()=>setActiveDim(dim));
+});
+
+// ── Theme toggle ────────────────────────────────────────────
+document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+
+// ═══════════════════════════════════════════════════════════════
+// MOBILE TAB BAR
+// ═══════════════════════════════════════════════════════════════
+let activeMobTab = null;
+
+function activateMobileTab(secId, tabId) {
+  const sidebar = document.querySelector('.sidebar');
+  const isSame  = activeMobTab === tabId;
+
+  document.querySelectorAll('.mob-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.sec').forEach(s => s.classList.remove('mobile-active'));
+  activeMobTab = null;
+
+  if (isSame) {
+    sidebar.classList.remove('mobile-open');
+    return;
+  }
+
+  const target = document.getElementById(secId);
+  if (target) target.classList.add('mobile-active');
+
+  sidebar.scrollTop = 0;
+  sidebar.classList.add('mobile-open');
+
+  const tabEl = document.getElementById(tabId);
+  if (tabEl) tabEl.classList.add('active');
+  activeMobTab = tabId;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// NUMBER INPUT SCRUBBER  —  Figma / Photoshop style
+// ─────────────────────────────────────────────────────────────
+// Click-drag LEFT/RIGHT on any number input to decrease/increase.
+//   Default  →  1× step per pixel
+//   Shift    → 10× step per pixel  (coarse jumps)
+//   Alt/Opt  →  0.1× step per pixel  (fine tuning)
+//
+// A plain click (no drag) focuses & selects the field as normal.
+// Dynamically-added inputs (seq rows) are auto-attached via
+// MutationObserver so every number input gets scrub support.
+// ═══════════════════════════════════════════════════════════════
+(function initScrubbers() {
+  'use strict';
+
+  let state = null; // active scrub session data
+
+  function onMouseDown(e) {
+    if (e.button !== 0) return; // left-click only
+    // Don't capture on resize handle (ns-resize) - handled separately
+    const inp  = e.currentTarget;
+    const step = parseFloat(inp.step) || 1;
+    const min  = parseFloat(inp.min);
+    const max  = parseFloat(inp.max);
+    state = {
+      inp,
+      startX   : e.clientX,
+      startVal : parseFloat(inp.value) || 0,
+      step,
+      min : isNaN(min) ? -Infinity : min,
+      max : isNaN(max) ?  Infinity : max,
+      moved    : false,
+      scrubbing: false,
+    };
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup',   onMouseUp);
+  }
+
+  function onMouseMove(e) {
+    if (!state) return;
+    const dx = e.clientX - state.startX;
+
+    // Activate only after 3px horizontal movement — avoids misfires on sloppy clicks
+    if (!state.scrubbing && Math.abs(dx) > 3) {
+      state.scrubbing = true;
+      state.moved     = true;
+      document.body.style.cursor     = 'ew-resize';
+      document.body.style.userSelect = 'none';
+      // Blur so we don't accidentally edit text while dragging
+      state.inp.blur();
+    }
+
+    if (state.scrubbing) {
+      e.preventDefault();
+      // Speed modifiers
+      const mult    = e.shiftKey ? 10 : e.altKey ? 0.1 : 1;
+      // Raw value: startVal + pixels × step × multiplier
+      const rawVal  = state.startVal + dx * state.step * mult;
+      // Snap to step grid
+      const snapped = Math.round(rawVal / state.step) * state.step;
+      // Clamp to [min, max]
+      const newVal  = Math.max(state.min, Math.min(state.max, snapped));
+      // Only fire 'input' event if value actually changed (avoids needless redraws)
+      if (parseFloat(state.inp.value) !== newVal) {
+        state.inp.value = newVal;
+        state.inp.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+    }
+  }
+
+  function onMouseUp() {
+    if (!state) return;
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup',   onMouseUp);
+    document.body.style.cursor     = '';
+    document.body.style.userSelect = '';
+
+    if (!state.moved) {
+      // Pure click — let the browser focus + select-all the field
+      state.inp.focus();
+      state.inp.select();
+    }
+    state = null;
+  }
+
+  function attach(inp) {
+    if (inp._scrubAttached) return; // idempotent
+    inp._scrubAttached = true;
+    inp.addEventListener('mousedown', onMouseDown);
+  }
+
+  // Attach to all number inputs present at init time
+  document.querySelectorAll('input[type=number]').forEach(attach);
+
+  // Auto-attach to number inputs added later (seq rows are created dynamically)
+  new MutationObserver(mutations => {
+    for (const m of mutations) {
+      m.addedNodes.forEach(node => {
+        if (node.nodeType !== 1) return;
+        if (node.matches?.('input[type=number]')) attach(node);
+        node.querySelectorAll?.('input[type=number]').forEach(attach);
+      });
+    }
+  }).observe(document.body, { childList: true, subtree: true });
+})();
+</script>
+<div class="ctx-menu" id="ctxMenu"></div>
+</body>
+</html>
+
+
+
+
+
+
+
