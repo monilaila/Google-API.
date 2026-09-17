@@ -1,0 +1,220 @@
+{
+  "meta": {
+    "title": "My Website (2)",
+    "logo": "My Website (2)",
+    "filename": "index2",
+    "theme": "dark",
+    "navLinks": "Home,About,Contact",
+    "projectType": "single",
+    "projectName": "My Website (2)",
+    "allowThemeToggle": true,
+    "github": {
+      "owner": "monilaila",
+      "repo": "Google-API.",
+      "branch": "main",
+      "path": "",
+      "dirty": true
+    }
+  },
+  "blocks": [
+    {
+      "id": "b1789318257692zzd9q7",
+      "type": "theme",
+      "data": {
+        "primaryColor": "#d4a853",
+        "secondaryColor": "#5b8fd4",
+        "accentColor": "#4fa87a",
+        "bodyFont": "DM Sans",
+        "headingFont": "Playfair Display",
+        "customFontName": "",
+        "customFontUrl": ""
+      }
+    },
+    {
+      "id": "b1789318257692ubm2qk",
+      "type": "hero",
+      "data": {
+        "category": "Travel & Exploration",
+        "title": "Your Blog Title <em>Here</em>",
+        "subtitle": "A compelling subtitle for your post.",
+        "authorName": "Author Name",
+        "authorRole": "Writer",
+        "authorAvatar": "https://plus.unsplash.com/premium_photo-1776981821069-7d41ff2e8fcf?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "date": "April 2025",
+        "readTime": "5 min read",
+        "backgroundImage": "https://images.unsplash.com/photo-1777266450837-94423d75af89?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "overlayColor": "#000000",
+        "overlayOpacity": "0.75",
+        "overlayGradient": true,
+        "tags": "Tag 1,Tag 2,Tag 3"
+      }
+    },
+    {
+      "id": "b17893182576921bbgdb",
+      "type": "richtext",
+      "data": {
+        "content": "<p class=\"drop-cap\">Your opening paragraph here. Use standard HTML like <strong>bold</strong>, <em>italic</em>, and <a href=\"#\">links</a>.</p>\n<h2>A Heading</h2>\n<p>More content follows...</p>"
+      }
+    },
+    {
+      "id": "b1789318257692pl7ycc",
+      "type": "image",
+      "data": {
+        "src": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=80",
+        "caption": "Mountain panorama",
+        "wide": false
+      }
+    },
+    {
+      "id": "b17893182576923uu1u5",
+      "type": "pullquote",
+      "data": {
+        "quote": "The nomads don't move because they are restless. They move because movement is how they understand the land.",
+        "citation": "— Rustam Nazarov, Ethnographer"
+      }
+    },
+    {
+      "id": "b17893182576928knre9",
+      "type": "youtube",
+      "data": {
+        "videoId": "dQw4w9WgXcQ",
+        "title": "Watch: Six Months on the Pamir Highway",
+        "duration": "18 min"
+      }
+    },
+    {
+      "id": "b1789318257692mdyuin",
+      "type": "stats",
+      "data": {
+        "items": [
+          {
+            "num": "100",
+            "label": "Stat Label",
+            "change": "↑ Change note",
+            "color": "green"
+          },
+          {
+            "num": "2.5k",
+            "label": "Stat Label",
+            "change": "More info",
+            "color": "blue"
+          },
+          {
+            "num": "50",
+            "label": "Stat Label",
+            "change": "Some note",
+            "color": "muted"
+          },
+          {
+            "num": "8",
+            "label": "Stat Label",
+            "change": "↓ Change",
+            "color": "red"
+          }
+        ]
+      }
+    },
+    {
+      "id": "b1789318257692jiluze",
+      "type": "media",
+      "data": {
+        "layout": "lr",
+        "tag": "Architecture",
+        "title": "The Fortresses of Ishkashim",
+        "text": "Perched on river bluffs, the mud-brick fortresses of the Wakhan speak in a language older than the nations that now claim this land.",
+        "text2": "I spent two days photographing them at dawn.",
+        "image": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=700&q=80",
+        "meta": "📍 Ishkashim, Tajikistan · 📷 8 photos",
+        "linkLabel": "Read the full story →",
+        "linkUrl": "#"
+      }
+    },
+    {
+      "id": "b1789318257692q4dq9q",
+      "type": "timeline",
+      "data": {
+        "items": [
+          {
+            "date": "October 2024",
+            "title": "Departure from Osh",
+            "description": "Set off with a 28kg pack. First yurt stay at 3,000m.",
+            "image": ""
+          },
+          {
+            "date": "November 2024",
+            "title": "Crossing Ak-Baital Pass",
+            "description": "-22°C. My water froze in 40 minutes. Completely worth it.",
+            "image": ""
+          },
+          {
+            "date": "April 2025",
+            "title": "Return via Ishkashim",
+            "description": "First hot shower in 19 days. Best plov of my life.",
+            "image": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "b1789318257692vfjrel",
+      "type": "chart",
+      "data": {
+        "chartType": "line",
+        "title": "Route Elevation Profile",
+        "labels": "Osh,Sary-Mogol,Karakul,Murghab,Ak-Baital,Alichur,Langar,Ishkashim",
+        "datasets": [
+          {
+            "label": "Elevation (m)",
+            "data": "900,3000,3914,3612,4655,4000,2850,2680",
+            "color": "#d4a853"
+          }
+        ]
+      }
+    },
+    {
+      "id": "b1789318257692pi43lu",
+      "type": "accordion",
+      "data": {
+        "items": [
+          {
+            "question": "Question 1?",
+            "answer": "Answer 1."
+          },
+          {
+            "question": "Question 2?",
+            "answer": "Answer 2."
+          }
+        ]
+      }
+    },
+    {
+      "id": "b1789318257692ref4a8",
+      "type": "cta",
+      "data": {
+        "title": "Ready to Plan Your Expedition?",
+        "description": "Download the complete Pamir Highway guide — 68 pages of permits, routes, and cultural etiquette.",
+        "primaryLabel": "Download Free Guide →",
+        "primaryUrl": "#",
+        "secondaryLabel": "Join Community",
+        "secondaryUrl": "#",
+        "backgroundImage": ""
+      }
+    },
+    {
+      "id": "b1789318257692qffbal",
+      "type": "footer",
+      "data": {
+        "quote": "",
+        "quoteAuthor": "",
+        "links": "About,#|Archive,#|Privacy,#|RSS,#",
+        "col1Title": "",
+        "col1Text": "",
+        "col2Title": "",
+        "col2Text": "",
+        "showSocial": true,
+        "socialLinks": "https://twitter.com/,https://instagram.com/,https://facebook.com/",
+        "copyrightText": ""
+      }
+    }
+  ]
+}
