@@ -24,7 +24,10 @@
               "bodyFont": "DM Sans",
               "headingFont": "Playfair Display",
               "customFontName": "",
-              "customFontUrl": ""
+              "customFontUrl": "",
+              "lightPrimaryColor": "#b8860b",
+              "lightSecondaryColor": "#1a5fa8",
+              "lightAccentColor": "#2a7a55"
             }
           },
           {
@@ -51,7 +54,7 @@
             "type": "customblock",
             "data": {
               "blockName": "Prayer time",
-              "code": "<div class=\"bs\" data-title=\"{{TITLE}}\" data-accent=\"{{ACCENT_COLOR}}\" data-method=\"{{METHOD}}\" data-madhhab=\"{{MADHHAB}}\">\n  <div class=\"wrap\" style=\"max-width:760px;margin:0 auto;padding:48px 24px;\">\n    <div class=\"pt-card\">\n      <div class=\"pt-head\">\n        <div>\n          <div class=\"pt-kicker\">PRAYER TIMES · BANGLADESH</div>\n          <h2>{{TITLE}}</h2>\n          <p id=\"pt-date\">Calculating today's prayer times…</p>\n        </div>\n        <div class=\"pt-location\" id=\"pt-location\">📍 Locating…</div>\n      </div>\n\n```\n  <div class=\"pt-now\">\n    <div class=\"pt-now-label\">PRAYER NOW</div>\n    <div class=\"pt-now-name\" id=\"pt-now\">Calculating…</div>\n    <div class=\"pt-now-time\" id=\"pt-now-time\">--:--</div>\n  </div>\n\n  <div class=\"pt-next\">\n    <div>\n      <span class=\"pt-small\">NEXT PRAYER</span>\n      <strong id=\"pt-next-name\">--</strong>\n    </div>\n    <div class=\"pt-count\" id=\"pt-count\">--:--:--</div>\n  </div>\n\n  <div class=\"pt-grid\" id=\"pt-grid\"></div>\n  <div class=\"pt-note\">Times are calculated locally from your device location and current date.</div>\n</div>\n```\n\n  </div>\n</div>\n\n<style>\n.bs [data-title]{font-family:\"DM Sans\",sans-serif}\n.pt-card{background:var(--bg2,#1a1916);border:1px solid var(--bdr2,rgba(255,255,255,.1));border-radius:24px;padding:28px;color:var(--txt,#f0ede6);overflow:hidden}\n.pt-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start}\n.pt-kicker{font-size:11px;letter-spacing:2px;color:var(--acc,#d4a853);font-weight:700;margin-bottom:8px}\n.pt-card h2{font-family:\"Playfair Display\",serif;font-size:34px;line-height:1.1;margin:0 0 8px}\n.pt-card p{margin:0;color:var(--txt2,#a09a8f);font-size:14px}\n.pt-location{font-size:12px;color:var(--txt2,#a09a8f);white-space:nowrap}\n.pt-now{margin:28px 0 16px;padding:24px;border-radius:18px;background:var(--surf,#2a2926);text-align:center;border:1px solid color-mix(in srgb,var(--acc,#d4a853) 28%,transparent)}\n.pt-now-label,.pt-small{font-size:10px;letter-spacing:2px;color:var(--acc,#d4a853);font-weight:700}\n.pt-now-name{font-family:\"Playfair Display\",serif;font-size:31px;margin-top:6px}\n.pt-now-time{font-size:14px;color:var(--txt2,#a09a8f);margin-top:3px}\n.pt-next{display:flex;justify-content:space-between;align-items:center;padding:15px 17px;border-bottom:1px solid var(--bdr,rgba(255,255,255,.08));margin-bottom:5px}\n.pt-next strong{display:block;font-size:16px;margin-top:3px}\n.pt-count{font-variant-numeric:tabular-nums;color:var(--acc,#d4a853);font-weight:700}\n.pt-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:14px}\n.pt-item{padding:14px 8px;text-align:center;border-radius:14px;background:rgba(255,255,255,.035);border:1px solid transparent}\n.pt-item.active{border-color:var(--acc,#d4a853);background:color-mix(in srgb,var(--acc,#d4a853) 9%,transparent)}\n.pt-item b{display:block;font-size:12px;margin-bottom:5px}\n.pt-item span{font-size:14px;color:var(--txt2,#a09a8f);font-variant-numeric:tabular-nums}\n.pt-item.active span{color:var(--acc,#d4a853)}\n.pt-note{font-size:10px;color:var(--txt3,#6b6560);text-align:center;margin-top:17px}\n@media(max-width:560px){.pt-card{padding:20px}.pt-head{display:block}.pt-location{margin-top:12px}.pt-grid{grid-template-columns:repeat(3,1fr)}.pt-card h2{font-size:29px}}\n</style>\n\n<script>\n(function(){\n  const root=document.currentScript.previousElementSibling.previousElementSibling;\n  const data=root.dataset, A=data.accent||\"#d4a853\";\n  document.documentElement.style.setProperty(\"--acc\",A);\n\n  const names=[\"Fajr\",\"Dhuhr\",\"Asr\",\"Maghrib\",\"Isha\"];\n  const labels=[\"ফজর\",\"যোহর\",\"আসর\",\"মাগরিব\",\"এশা\"];\n  let lat=23.685,lon=90.3563, timer;\n\n  function rad(x){return x*Math.PI/180}\n  function deg(x){return x*180/Math.PI}\n  function fix(x){return (x%360+360)%360}\n  function jd(d){return d.getTime()/86400000+2440587.5}\n  function sun(d){\n    const J=jd(d), n=J-2451545;\n    const L=fix(280.46+.9856474*n), g=rad(fix(357.528+.9856003*n));\n    const lam=rad(fix(L+1.915*Math.sin(g)+.02*Math.sin(2*g)));\n    const e=rad(23.439-.0000004*n);\n    const dec=deg(Math.asin(Math.sin(e)*Math.sin(lam)));\n    const ra=deg(Math.atan2(Math.cos(e)*Math.sin(lam),Math.cos(lam)))/15;\n    const gmst=fix(280.46061837+360.98564736629*(J-2451545));\n    return {dec,ra,gmst};\n  }\n  function hourAngle(s,alt){\n    const x=(Math.sin(rad(alt))-Math.sin(rad(lat))*Math.sin(rad(s.dec)))/\n      (Math.cos(rad(lat))*Math.cos(rad(s.dec)));\n    return Math.acos(Math.max(-1,Math.min(1,x)))*12/Math.PI;\n  }\n  function times(){\n    const now=new Date(), s=sun(now);\n    const tz=-now.getTimezoneOffset()/60;\n    const noon=(s.ra? (s.gmst+lon/15-s.ra)/1 : 12);\n    const solarNoon=12-((s.gmst+lon-s.ra*15)/15-tz);\n    const h=hourAngle(s,-.833), hf=hourAngle(s,-18), hi=hourAngle(s,-18);\n    const rise=solarNoon-h, set=solarNoon+h;\n    const fajr=solarNoon-hf, isha=solarNoon+hi;\n    const asrAngle=deg(Math.acos((Math.sin(Math.atan(1/(data.madhhab===\"Hanafi\"?2:1))))));\n    const asrShadow=data.madhhab===\"Hanafi\"?2:1;\n    const latr=rad(lat), decr=rad(s.dec);\n    const ac=deg(Math.atan(1/(asrShadow+Math.tan(Math.abs(latr-decr)))));\n    const ha=hourAngle(s,ac);\n    return [fajr,solarNoon,solarNoon+ha,set,isha];\n  }\n  function fmt(v){\n    v=(v+24)%24;\n    let h=Math.floor(v),m=Math.round((v-h)*60);\n    if(m===60){h=(h+1)%24;m=0}\n    const ap=h>=12?\"PM\":\"AM\", hh=h%12||12;\n    return String(hh).padStart(2,\"0\")+\":\"+String(m).padStart(2,\"0\")+\" \"+ap;\n  }\n  function todayDate(){\n    return new Date().toLocaleDateString(\"en-BD\",{weekday:\"long\",year:\"numeric\",month:\"long\",day:\"numeric\"});\n  }\n  function render(){\n    const t=times(), now=new Date(), mins=now.getHours()+now.getMinutes()/60+now.getSeconds()/3600;\n    let idx=-1,next=0;\n    for(let i=0;i<t.length;i++) if(mins>=t[i]) idx=i;\n    next=idx+1;\n    if(next>=t.length) next=0;\n    const current=idx<0?4:idx;\n    const nowName=idx<0?\"Isha\":names[current];\n    const nowTime=idx<0?t[4]:t[current];\n    document.getElementById(\"pt-date\").textContent=todayDate();\n    document.getElementById(\"pt-now\").textContent=labels[current]+\" · \"+nowName;\n    document.getElementById(\"pt-now-time\").textContent=fmt(nowTime);\n    document.getElementById(\"pt-next-name\").textContent=labels[next]+\" · \"+names[next];\n\n    let target=t[next], targetDate=new Date(now);\n    if(next===0 && mins>=t[4]) targetDate.setDate(targetDate.getDate()+1);\n    targetDate.setHours(Math.floor(target),Math.round((target%1)*60),0,0);\n    let diff=Math.max(0,targetDate-now), sec=Math.floor(diff/1000);\n    document.getElementById(\"pt-count\").textContent=\n      String(Math.floor(sec/3600)).padStart(2,\"0\")+\":\"+String(Math.floor(sec%3600/60)).padStart(2,\"0\")+\":\"+String(sec%60).padStart(2,\"0\");\n\n    document.getElementById(\"pt-grid\").innerHTML=names.map((n,i)=>\n      '<div class=\"pt-item '+(i===current?'active':'')+'\"><b>'+labels[i]+'</b><span>'+fmt(t[i])+'</span></div>'\n    ).join(\"\");\n  }\n  function locate(){\n    const done=pos=>{\n      lat=pos.coords.latitude;lon=pos.coords.longitude;\n      document.getElementById(\"pt-location\").textContent=\"📍 \"+lat.toFixed(2)+\", \"+lon.toFixed(2);\n      render();clearInterval(timer);timer=setInterval(render,1000);\n    };\n    if(navigator.geolocation) navigator.geolocation.getCurrentPosition(done,()=>fallback(),{enableHighAccuracy:true,timeout:8000});\n    else fallback();\n  }\n  function fallback(){\n    document.getElementById(\"pt-location\").textContent=\"📍 Bangladesh\";\n    render();clearInterval(timer);timer=setInterval(render,1000);\n  }\n  locate();\n})();\n</script>",
+              "code": "<div class=\"bs pt-app\" data-location=\"{{LOCATION}}\" data-place=\"{{CUSTOM_NAME}}\" data-lat=\"{{CUSTOM_LAT}}\" data-lon=\"{{CUSTOM_LON}}\" data-tz=\"{{TIMEZONE}}\" data-method=\"{{METHOD}}\" data-madhhab=\"{{MADHHAB}}\" data-lang=\"{{LANG}}\" data-bn=\"{{BN_DIGITS}}\" data-h12=\"{{HOUR12}}\" data-sunrise=\"{{SHOW_SUNRISE}}\" data-hijri=\"{{SHOW_HIJRI}}\" data-hijri-offset=\"{{HIJRI_OFFSET}}\" data-adj=\"{{ADJ_FAJR}},{{ADJ_DHUHR}},{{ADJ_ASR}},{{ADJ_MAGHRIB}},{{ADJ_ISHA}}\" style=\"--pt-acc:{{ACCENT_COLOR}}\">\n  <div class=\"pt-wrap\">\n    <div class=\"pt-card\">\n      <div class=\"pt-head\">\n        <div>\n          <div class=\"pt-kicker\" data-pt=\"kicker\">PRAYER TIMES</div>\n          <h2 class=\"pt-title\">{{TITLE}}</h2>\n          <p class=\"pt-date\" data-pt=\"date\"></p>\n          <p class=\"pt-hijri\" data-pt=\"hijri\"></p>\n        </div>\n        <div class=\"pt-loc\">\n          <svg width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z\"/><circle cx=\"12\" cy=\"10\" r=\"3\"/></svg>\n          <span data-pt=\"loc\">Locating…</span>\n        </div>\n      </div>\n\n      <div class=\"pt-now\">\n        <div class=\"pt-label\" data-pt=\"nowlabel\">PRAYER NOW</div>\n        <div class=\"pt-now-name\" data-pt=\"nowname\">…</div>\n        <div class=\"pt-now-time\" data-pt=\"nowtime\"></div>\n        <div class=\"pt-bar\"><i data-pt=\"bar\"></i></div>\n      </div>\n\n      <div class=\"pt-next\">\n        <div>\n          <span class=\"pt-label\" data-pt=\"nextlabel\">NEXT PRAYER</span>\n          <strong data-pt=\"nextname\">--</strong>\n          <small data-pt=\"nexttime\"></small>\n        </div>\n        <div class=\"pt-count\" data-pt=\"count\" role=\"timer\">--:--:--</div>\n      </div>\n\n      <div class=\"pt-grid\" data-pt=\"grid\"></div>\n      <div class=\"pt-note\" data-pt=\"method\"></div>\n    </div>\n  </div>\n</div>\n\n<style>\n.pt-app{font-family:\"DM Sans\",sans-serif}\n.pt-app .pt-wrap{max-width:760px;margin:0 auto;padding:48px 24px}\n.pt-app .pt-card{background:var(--bg2,#1a1916);border:1px solid var(--bdr2,rgba(255,255,255,.1));border-radius:24px;padding:28px;color:var(--txt,#f0ede6);overflow:hidden}\n.pt-app .pt-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start}\n.pt-app .pt-kicker{font-size:11px;letter-spacing:2px;color:var(--pt-acc,#d4a853);font-weight:700;margin-bottom:8px}\n.pt-app .pt-title{font-family:\"Playfair Display\",serif;font-size:34px;line-height:1.1;margin:0 0 8px;color:inherit}\n.pt-app .pt-date,.pt-app .pt-hijri{margin:0;color:var(--txt2,#a09a8f);font-size:14px}\n.pt-app .pt-hijri{font-size:13px;margin-top:2px}\n.pt-app .pt-loc{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--txt2,#a09a8f);text-align:right;max-width:46%}\n.pt-app .pt-loc svg{flex:none;color:var(--pt-acc,#d4a853)}\n.pt-app .pt-now{margin:28px 0 16px;padding:24px;border-radius:18px;background:var(--surf,#2a2926);text-align:center;border:1px solid color-mix(in srgb,var(--pt-acc,#d4a853) 28%,transparent)}\n.pt-app .pt-label{display:block;font-size:10px;letter-spacing:2px;color:var(--pt-acc,#d4a853);font-weight:700}\n.pt-app .pt-now-name{font-family:\"Playfair Display\",serif;font-size:31px;margin-top:6px}\n.pt-app .pt-now-time{font-size:14px;color:var(--txt2,#a09a8f);margin-top:3px;min-height:1.2em}\n.pt-app .pt-bar{height:4px;border-radius:4px;background:rgba(255,255,255,.08);margin-top:16px;overflow:hidden}\n.pt-app .pt-bar i{display:block;height:100%;width:0;background:var(--pt-acc,#d4a853);border-radius:4px;transition:width .9s linear}\n.pt-app .pt-next{display:flex;justify-content:space-between;align-items:center;padding:15px 17px;border-bottom:1px solid var(--bdr,rgba(255,255,255,.08));margin-bottom:5px}\n.pt-app .pt-next strong{display:block;font-size:16px;margin-top:3px}\n.pt-app .pt-next small{display:block;font-size:12px;color:var(--txt2,#a09a8f);margin-top:2px}\n.pt-app .pt-count{font-variant-numeric:tabular-nums;color:var(--pt-acc,#d4a853);font-weight:700;font-size:20px}\n.pt-app .pt-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:14px}\n.pt-app .pt-grid.pt-six{grid-template-columns:repeat(6,1fr)}\n.pt-app .pt-item{padding:14px 6px;text-align:center;border-radius:14px;background:rgba(255,255,255,.035);border:1px solid transparent}\n.pt-app .pt-item.pt-active{border-color:var(--pt-acc,#d4a853);background:color-mix(in srgb,var(--pt-acc,#d4a853) 9%,transparent)}\n.pt-app .pt-item.pt-next-up{border-color:rgba(255,255,255,.18);border-style:dashed}\n.pt-app .pt-item b{display:block;font-size:12px}\n.pt-app .pt-item em{display:block;font-style:normal;font-size:10px;color:var(--txt3,#6b6560);margin-top:1px}\n.pt-app .pt-item span{display:block;font-size:14px;color:var(--txt2,#a09a8f);font-variant-numeric:tabular-nums;margin-top:5px}\n.pt-app .pt-item.pt-active span{color:var(--pt-acc,#d4a853)}\n.pt-app .pt-item.pt-sun b,.pt-app .pt-item.pt-sun span{opacity:.75}\n.pt-app .pt-note{font-size:10px;color:var(--txt3,#6b6560);text-align:center;margin-top:17px;line-height:1.6}\n@media(max-width:560px){\n  .pt-app .pt-wrap{padding:32px 14px}\n  .pt-app .pt-card{padding:20px}\n  .pt-app .pt-head{display:block}\n  .pt-app .pt-loc{margin-top:12px;max-width:none;text-align:left}\n  .pt-app .pt-title{font-size:29px}\n  .pt-app .pt-grid,.pt-app .pt-grid.pt-six{grid-template-columns:repeat(3,1fr)}\n}\n</style>\n\n<script>\n(function () {\n  \"use strict\";\n  var D2R = Math.PI / 180, R2D = 180 / Math.PI;\n\n  // Fajr / Isha angles (degrees below the horizon). \"im\" = Isha is a fixed number of minutes after Maghrib.\n  var METHODS = {\n    \"Karachi\": { f: 18, i: 18 },\n    \"Muslim World League\": { f: 18, i: 17 },\n    \"ISNA (North America)\": { f: 15, i: 15 },\n    \"Egyptian\": { f: 19.5, i: 17.5 },\n    \"Umm al-Qura (Makkah)\": { f: 18.5, im: 90 },\n    \"Kuwait\": { f: 18, i: 17.5 }\n  };\n  var ORDER = [\"fajr\", \"sunrise\", \"dhuhr\", \"asr\", \"maghrib\", \"isha\"];\n  var PLACES = {\n    \"Dhaka\": [23.8103, 90.4125], \"Chattogram\": [22.3569, 91.7832], \"Rajshahi\": [24.3745, 88.6042],\n    \"Khulna\": [22.8456, 89.5403], \"Sylhet\": [24.8949, 91.8687], \"Barishal\": [22.7010, 90.3535],\n    \"Rangpur\": [25.7439, 89.2752], \"Mymensingh\": [24.7471, 90.4203]\n  };\n  var NAMES = {\n    fajr: [\"Fajr\", \"ফজর\"], sunrise: [\"Sunrise\", \"সূর্যোদয়\"], dhuhr: [\"Dhuhr\", \"যোহর\"],\n    asr: [\"Asr\", \"আসর\"], maghrib: [\"Maghrib\", \"মাগরিব\"], isha: [\"Isha\", \"এশা\"], after: [\"After sunrise\", \"সূর্যোদয়ের পর\"]\n  };\n  var TXT = {\n    en: { kicker: \"PRAYER TIMES\", now: \"PRAYER NOW\", nowAfter: \"NOW\", next: \"NEXT PRAYER\", locating: \"Locating…\", unavailable: \"location unavailable\", note: \"Calculated on this device from the position of the sun for today's date.\", noFard: \"No obligatory prayer until Dhuhr\" },\n    bn: { kicker: \"নামাজের সময়সূচি\", now: \"এখনকার নামাজ\", nowAfter: \"এখন\", next: \"পরবর্তী নামাজ\", locating: \"অবস্থান খোঁজা হচ্ছে…\", unavailable: \"অবস্থান পাওয়া যায়নি\", note: \"আজকের তারিখে সূর্যের অবস্থান থেকে এই ডিভাইসেই গণনা করা হয়েছে।\", noFard: \"যোহর পর্যন্ত কোনো ফরজ নামাজ নেই\" }\n  };\n\n  // ── Sun position (NOAA / Meeus series) for a Julian day: declination (rad) and equation of time (minutes) ──\n  function jd(ms) { return ms / 86400000 + 2440587.5; }\n  function sun(J) {\n    var T = (J - 2451545) / 36525;\n    var L0 = (280.46646 + T * (36000.76983 + T * 0.0003032)) % 360;\n    var M = (357.52911 + T * (35999.05029 - 0.0001537 * T)) * D2R;\n    var e = 0.016708634 - T * (0.000042037 + 0.0000001267 * T);\n    var C = Math.sin(M) * (1.914602 - T * (0.004817 + 0.000014 * T)) + Math.sin(2 * M) * (0.019993 - 0.000101 * T) + Math.sin(3 * M) * 0.000289;\n    var om = (125.04 - 1934.136 * T) * D2R;\n    var lam = (L0 + C - 0.00569 - 0.00478 * Math.sin(om)) * D2R;\n    var eps = (23 + (26 + (21.448 - T * (46.815 + T * (0.00059 - T * 0.001813))) / 60) / 60 + 0.00256 * Math.cos(om)) * D2R;\n    var y = Math.tan(eps / 2); y *= y;\n    var L = L0 * D2R;\n    return {\n      d: Math.asin(Math.sin(eps) * Math.sin(lam)),\n      e: 4 * R2D * (y * Math.sin(2 * L) - 2 * e * Math.sin(M) + 4 * e * y * Math.sin(M) * Math.cos(2 * L) - 0.5 * y * y * Math.sin(4 * L) - 1.25 * e * e * Math.sin(2 * M))\n    };\n  }\n\n  // ── The prayer times for ONE calendar date at a place. Pure function: returns UTC milliseconds\n  //    [fajr, sunrise, dhuhr, asr, maghrib, isha] (NaN where the sun never reaches that angle). ──\n  // Each moment is solved iteratively, re-reading the sun's declination and the equation of time AT THAT\n  // MOMENT, so the answer is the same whenever it is computed and does not drift through the day.\n  function calc(lat, lon, y, m0, d, method, hanafi, adj) {\n    var noon = Date.UTC(y, m0, d, 12, 0, 0);\n    var sl = Math.sin(lat * D2R), cl = Math.cos(lat * D2R);\n    function transitAt(t) { return noon - (lon * 4 + sun(jd(t)).e) * 60000; }\n    var tr = noon - lon * 4 * 60000;\n    for (var k = 0; k < 3; k++) tr = transitAt(tr);\n    function at(alt, sign) {                       // alt: degrees (number) or function(sun) -> degrees\n      var t = tr;\n      for (var i = 0; i < 6; i++) {\n        var s = sun(jd(t));\n        var a = typeof alt === \"function\" ? alt(s) : alt;\n        var c = (Math.sin(a * D2R) - sl * Math.sin(s.d)) / (cl * Math.cos(s.d));\n        if (!(c >= -1 && c <= 1)) return NaN;\n        t = transitAt(t) + sign * Math.acos(c) * R2D * 4 * 60000;\n      }\n      return t;\n    }\n    var f = hanafi ? 2 : 1;\n    var sunrise = at(-0.833, -1), maghrib = at(-0.833, 1);\n    var fajr = at(-method.f, -1);\n    var isha = method.im ? maghrib + method.im * 60000 : at(-method.i, 1);\n    // Asr: shadow = f x object + the shadow it had at local noon, so the noon declination sets the target altitude.\n    var asrAlt = R2D * Math.atan(1 / (f + Math.tan(Math.abs(lat * D2R - sun(jd(tr)).d))));\n    var asr = at(asrAlt, 1);\n    // Very high latitudes: if the sun never gets 18 degrees below the horizon, use the \"angle / 60\" share of the night.\n    if (isNaN(fajr) || (isNaN(isha) && !method.im)) {\n      var night = 86400000 - (maghrib - sunrise);\n      if (isFinite(night)) {\n        if (isNaN(fajr)) fajr = sunrise - night * (method.f / 60);\n        if (isNaN(isha) && !method.im) isha = maghrib + night * (method.i / 60);\n      }\n    }\n    return [fajr + adj[0] * 60000, sunrise, tr + adj[1] * 60000, asr + adj[2] * 60000, maghrib + adj[3] * 60000, isha + adj[4] * 60000];\n  }\n\n  function num(v, dflt) { var n = parseFloat(v); return isFinite(n) ? n : dflt; }\n  function pad(n) { return (n < 10 ? \"0\" : \"\") + n; }\n  function rnd(ms) { return Math.round(ms / 60000) * 60000; }\n\n  function init(root) {\n    if (root.__ptInit) return;\n    root.__ptInit = true;\n    var s = root.dataset;\n    var q = function (n) { return root.querySelector('[data-pt=\"' + n + '\"]'); };\n    var el = { kicker: q(\"kicker\"), date: q(\"date\"), hijri: q(\"hijri\"), loc: q(\"loc\"), nowlabel: q(\"nowlabel\"), nowname: q(\"nowname\"), nowtime: q(\"nowtime\"), bar: q(\"bar\"), nextlabel: q(\"nextlabel\"), nextname: q(\"nextname\"), nexttime: q(\"nexttime\"), count: q(\"count\"), grid: q(\"grid\"), method: q(\"method\") };\n\n    var lang = s.lang === \"English\" ? \"en\" : (s.lang === \"বাংলা\" ? \"bn\" : \"both\");\n    var T = TXT[lang === \"bn\" ? \"bn\" : \"en\"];\n    var bnDigits = s.bn === \"true\", h12 = s.h12 !== \"false\", showSun = s.sunrise !== \"false\", showHijri = s.hijri !== \"false\";\n    var hijriOffset = Math.round(num(s.hijriOffset, 0));\n    var methodName = METHODS[s.method] ? s.method : \"Karachi\", method = METHODS[methodName];\n    var hanafi = s.madhhab === \"Hanafi\";\n    var adj = (s.adj || \"0,1,0,0,0\").split(\",\").map(function (x) { return num(x, 0); });\n    while (adj.length < 5) adj.push(0);\n    var numbering = bnDigits ? \"beng\" : \"latn\";\n    var uiLoc = (lang === \"bn\" ? \"bn\" : \"en\") + \"-u-nu-\" + numbering;\n    function dig(str) { return bnDigits ? String(str).replace(/[0-9]/g, function (c) { return \"০১২৩৪৫৬৭৮৯\".charAt(+c); }) : String(str); }\n    function nm(k) { return lang === \"en\" ? NAMES[k][0] : lang === \"bn\" ? NAMES[k][1] : NAMES[k][1] + \" · \" + NAMES[k][0]; }\n\n    // Where are we? A preset city, custom coordinates, or the visitor's device.\n    var place = null, tz = \"Asia/Dhaka\", wantDevice = s.location === \"My device location\";\n    function validTz(z) { try { new Intl.DateTimeFormat(\"en\", { timeZone: z }); return true; } catch (e) { return false; } }\n    function setPlace(lat, lon, name, zone) {\n      place = { lat: lat, lon: lon, name: name };\n      tz = validTz(zone) ? zone : \"Asia/Dhaka\";\n      fmtT = new Intl.DateTimeFormat(uiLoc, { timeZone: tz, hour: \"2-digit\", minute: \"2-digit\", hourCycle: h12 ? \"h12\" : \"h23\" });\n      fmtD = new Intl.DateTimeFormat(\"en-CA\", { timeZone: tz, year: \"numeric\", month: \"numeric\", day: \"numeric\" });\n      cacheKey = \"\"; tick();\n    }\n    var fmtT, fmtD, cacheKey = \"\", cache = null, lastIdx = -2;\n    function coordLabel(lat, lon) { return dig(Math.abs(lat).toFixed(2)) + \"°\" + (lat >= 0 ? \"N\" : \"S\") + \", \" + dig(Math.abs(lon).toFixed(2)) + \"°\" + (lon >= 0 ? \"E\" : \"W\"); }\n    if (PLACES[s.location]) {\n      setPlace(PLACES[s.location][0], PLACES[s.location][1], s.location, \"Asia/Dhaka\");\n    } else if (wantDevice) {\n      var cached = null;\n      try { cached = JSON.parse(localStorage.getItem(\"pt_loc_v1\") || \"null\"); } catch (e) {}\n      var devTz = \"Asia/Dhaka\";\n      try { devTz = Intl.DateTimeFormat().resolvedOptions().timeZone || devTz; } catch (e) {}\n      if (cached && isFinite(cached.lat) && isFinite(cached.lon)) setPlace(cached.lat, cached.lon, coordLabel(cached.lat, cached.lon), devTz);\n      else setPlace(PLACES[\"Dhaka\"][0], PLACES[\"Dhaka\"][1], T.locating, devTz);\n      if (navigator.geolocation) {\n        navigator.geolocation.getCurrentPosition(function (p) {\n          try { localStorage.setItem(\"pt_loc_v1\", JSON.stringify({ lat: p.coords.latitude, lon: p.coords.longitude })); } catch (e) {}\n          setPlace(p.coords.latitude, p.coords.longitude, coordLabel(p.coords.latitude, p.coords.longitude), devTz);\n        }, function () {\n          if (!cached) setPlace(PLACES[\"Dhaka\"][0], PLACES[\"Dhaka\"][1], \"Dhaka (\" + T.unavailable + \")\", devTz);\n        }, { maximumAge: 600000, timeout: 10000 });\n      } else if (!cached) setPlace(PLACES[\"Dhaka\"][0], PLACES[\"Dhaka\"][1], \"Dhaka (\" + T.unavailable + \")\", devTz);\n    } else {\n      var la = num(s.lat, 23.8103), lo = num(s.lon, 90.4125);\n      la = Math.max(-66, Math.min(66, la)); lo = Math.max(-180, Math.min(180, lo));\n      setPlace(la, lo, (s.place || \"\").trim() || coordLabel(la, lo), s.tz || \"Asia/Dhaka\");\n    }\n\n    // ── Day tracking ──\n    function localDate(ms) {\n      var parts = fmtD.formatToParts(new Date(ms));\n      var o = {}; parts.forEach(function (p) { o[p.type] = +p.value; });\n      return o;\n    }\n    function dayTimes(dp, delta) {\n      var x = new Date(Date.UTC(dp.year, dp.month - 1, dp.day + delta));\n      return calc(place.lat, place.lon, x.getUTCFullYear(), x.getUTCMonth(), x.getUTCDate(), method, hanafi, adj).map(function (t) { return isNaN(t) ? t : rnd(t); });\n    }\n    function tick() {\n      if (!place) return;\n      if (!document.body.contains(root)) { clearInterval(timer); return; }\n      var now = Date.now();\n      var dp = localDate(now);\n      var key = dp.year + \"-\" + dp.month + \"-\" + dp.day + \"|\" + place.lat + \",\" + place.lon + \"|\" + tz;\n      if (key !== cacheKey) {\n        cacheKey = key;\n        cache = { y: dayTimes(dp, -1), t: dayTimes(dp, 0), n: dayTimes(dp, 1) };\n        lastIdx = -2;\n        drawStatic(now);\n      }\n      // Timeline: yesterday's Isha, today's six moments, tomorrow's Fajr.\n      var ev = [{ k: \"isha\", t: cache.y[5] }];\n      ORDER.forEach(function (k, i) { ev.push({ k: k, t: cache.t[i] }); });\n      ev.push({ k: \"fajr\", t: cache.n[0] });\n      ev = ev.filter(function (e) { return !isNaN(e.t); });\n      var idx = -1;\n      for (var i = 0; i < ev.length; i++) if (now >= ev[i].t) idx = i;\n      if (idx < 0 || idx >= ev.length - 1) { el.count.textContent = \"--:--:--\"; return; }\n      var cur = ev[idx], end = ev[idx + 1];\n      var nextP = null;\n      for (var j = idx + 1; j < ev.length; j++) if (ev[j].k !== \"sunrise\") { nextP = ev[j]; break; }\n\n      if (idx !== lastIdx) {\n        lastIdx = idx;\n        var afterSun = cur.k === \"sunrise\";\n        el.nowlabel.textContent = afterSun ? T.nowAfter : T.now;\n        el.nowname.textContent = afterSun ? (lang === \"en\" ? NAMES.after[0] : lang === \"bn\" ? NAMES.after[1] : NAMES.after[1] + \" · \" + NAMES.after[0]) : nm(cur.k);\n        el.nowtime.textContent = afterSun\n          ? T.noFard\n          : fmtT.format(cur.t) + \"  →  \" + NAMES[end.k][lang === \"bn\" ? 1 : 0] + \" \" + fmtT.format(end.t);\n        el.nextlabel.textContent = T.next;\n        el.nextname.textContent = nextP ? nm(nextP.k) : \"--\";\n        el.nexttime.textContent = nextP ? fmtT.format(nextP.t) : \"\";\n        var cells = el.grid.children;\n        for (var c = 0; c < cells.length; c++) {\n          var k = cells[c].getAttribute(\"data-k\");\n          cells[c].classList.toggle(\"pt-active\", k === cur.k);\n          cells[c].classList.toggle(\"pt-next-up\", !!nextP && k === nextP.k);\n        }\n      }\n      var left = Math.max(0, Math.ceil((nextP.t - now) / 1000));\n      el.count.textContent = dig(pad(Math.floor(left / 3600)) + \":\" + pad(Math.floor(left % 3600 / 60)) + \":\" + pad(left % 60));\n      el.bar.style.width = Math.max(0, Math.min(100, (now - cur.t) / (end.t - cur.t) * 100)).toFixed(2) + \"%\";\n    }\n\n    function drawStatic(now) {\n      el.kicker.textContent = T.kicker;\n      el.loc.textContent = place.name;\n      var dl = (lang === \"bn\" ? \"bn\" : \"en\") + \"-u-nu-\" + numbering;\n      el.date.textContent = new Intl.DateTimeFormat(dl, { timeZone: tz, weekday: \"long\", year: \"numeric\", month: \"long\", day: \"numeric\" }).format(new Date(now));\n      if (showHijri) {\n        try {\n          el.hijri.textContent = new Intl.DateTimeFormat((lang === \"bn\" ? \"bn\" : \"en\") + \"-u-ca-islamic-umalqura-nu-\" + numbering, { timeZone: tz, day: \"numeric\", month: \"long\", year: \"numeric\" }).format(new Date(now + hijriOffset * 86400000));\n        } catch (e) { el.hijri.textContent = \"\"; }\n      } else el.hijri.textContent = \"\";\n      var keys = showSun ? ORDER : ORDER.filter(function (k) { return k !== \"sunrise\"; });\n      el.grid.className = \"pt-grid\" + (showSun ? \" pt-six\" : \"\");\n      el.grid.innerHTML = keys.map(function (k) {\n        var i = ORDER.indexOf(k), t = cache.t[i];\n        var label = lang === \"en\" ? \"<b>\" + NAMES[k][0] + \"</b>\" : lang === \"bn\" ? \"<b>\" + NAMES[k][1] + \"</b>\" : \"<b>\" + NAMES[k][1] + \"</b><em>\" + NAMES[k][0] + \"</em>\";\n        return '<div class=\"pt-item' + (k === \"sunrise\" ? \" pt-sun\" : \"\") + '\" data-k=\"' + k + '\">' + label + \"<span>\" + (isNaN(t) ? \"--:--\" : fmtT.format(t)) + \"</span></div>\";\n      }).join(\"\");\n      var im = method.im ? (lang === \"bn\" ? \"এশা মাগরিবের \" + dig(method.im) + \" মিনিট পর\" : \"Isha \" + method.im + \" min after Maghrib\") : \"\";\n      var ang = method.im ? (dig(method.f) + \"°\") : (dig(method.f) + \"° / \" + dig(method.i) + \"°\");\n      el.method.textContent = T.note + \"  \" + methodName + \" (\" + ang + (im ? \", \" + im : \"\") + \") · \" + (hanafi ? \"Hanafi Asr\" : \"Standard Asr\") + \" · \" + tz;\n    }\n\n    var timer = setInterval(tick, 1000);\n    document.addEventListener(\"visibilitychange\", function () { if (!document.hidden) tick(); });\n    tick();\n  }\n\n  var roots = document.querySelectorAll(\".pt-app\");\n  for (var r = 0; r < roots.length; r++) init(roots[r]);\n})();\n</script>",
               "description": "",
               "savedBlockId": "cb_1789839288201_clkwg",
               "controls": [
@@ -62,37 +65,195 @@
                   "default": "Prayer Times"
                 },
                 {
-                  "token": "ACCENT_COLOR",
-                  "label": "Accent Color",
-                  "type": "color",
-                  "default": "#da8189"
+                  "token": "LOCATION",
+                  "label": "Location",
+                  "type": "select",
+                  "hint": "Preset cities use Bangladesh time. \"My device location\" asks each visitor's browser for permission.",
+                  "options": [
+                    "Dhaka",
+                    "Chattogram",
+                    "Rajshahi",
+                    "Khulna",
+                    "Sylhet",
+                    "Barishal",
+                    "Rangpur",
+                    "Mymensingh",
+                    "My device location",
+                    "Custom coordinates"
+                  ],
+                  "default": "Dhaka"
+                },
+                {
+                  "token": "CUSTOM_NAME",
+                  "label": "Custom place name",
+                  "type": "text",
+                  "hint": "Only used with Custom coordinates",
+                  "default": ""
+                },
+                {
+                  "token": "CUSTOM_LAT",
+                  "label": "Custom latitude",
+                  "type": "text",
+                  "hint": "Decimal degrees, north is positive",
+                  "default": "23.8103"
+                },
+                {
+                  "token": "CUSTOM_LON",
+                  "label": "Custom longitude",
+                  "type": "text",
+                  "hint": "Decimal degrees, east is positive",
+                  "default": "90.4125"
+                },
+                {
+                  "token": "TIMEZONE",
+                  "label": "Custom time zone",
+                  "type": "text",
+                  "hint": "IANA name, only used with Custom coordinates",
+                  "default": "Asia/Dhaka"
                 },
                 {
                   "token": "METHOD",
-                  "label": "Calculation Method",
+                  "label": "Calculation method",
                   "type": "select",
                   "options": [
                     "Karachi",
-                    "Muslim World League"
+                    "Muslim World League",
+                    "ISNA (North America)",
+                    "Egyptian",
+                    "Umm al-Qura (Makkah)",
+                    "Kuwait"
                   ],
                   "default": "Karachi"
                 },
                 {
                   "token": "MADHHAB",
-                  "label": "Asr Method",
+                  "label": "Asr method",
                   "type": "select",
                   "options": [
                     "Hanafi",
-                    "Shafi"
+                    "Standard (Shafi, Maliki, Hanbali)"
                   ],
                   "default": "Hanafi"
+                },
+                {
+                  "token": "LANG",
+                  "label": "Language",
+                  "type": "select",
+                  "options": [
+                    "Bangla + English",
+                    "English",
+                    "বাংলা"
+                  ],
+                  "default": "Bangla + English"
+                },
+                {
+                  "token": "BN_DIGITS",
+                  "label": "Bangla digits",
+                  "type": "toggle",
+                  "default": false
+                },
+                {
+                  "token": "HOUR12",
+                  "label": "12-hour clock",
+                  "type": "toggle",
+                  "default": true
+                },
+                {
+                  "token": "SHOW_SUNRISE",
+                  "label": "Show sunrise",
+                  "type": "toggle",
+                  "default": true
+                },
+                {
+                  "token": "SHOW_HIJRI",
+                  "label": "Show Hijri date",
+                  "type": "toggle",
+                  "default": true
+                },
+                {
+                  "token": "HIJRI_OFFSET",
+                  "label": "Hijri date adjustment (days)",
+                  "type": "slider",
+                  "hint": "Match your local moon sighting",
+                  "min": -2,
+                  "max": 2,
+                  "step": 1,
+                  "default": 0
+                },
+                {
+                  "token": "ADJ_FAJR",
+                  "label": "Fajr fine-tune (min)",
+                  "type": "slider",
+                  "min": -15,
+                  "max": 15,
+                  "step": 1,
+                  "default": 0
+                },
+                {
+                  "token": "ADJ_DHUHR",
+                  "label": "Dhuhr fine-tune (min)",
+                  "type": "slider",
+                  "hint": "Standard: 1 minute after solar noon",
+                  "min": -15,
+                  "max": 15,
+                  "step": 1,
+                  "default": 1
+                },
+                {
+                  "token": "ADJ_ASR",
+                  "label": "Asr fine-tune (min)",
+                  "type": "slider",
+                  "min": -15,
+                  "max": 15,
+                  "step": 1,
+                  "default": 0
+                },
+                {
+                  "token": "ADJ_MAGHRIB",
+                  "label": "Maghrib fine-tune (min)",
+                  "type": "slider",
+                  "min": -15,
+                  "max": 15,
+                  "step": 1,
+                  "default": 0
+                },
+                {
+                  "token": "ADJ_ISHA",
+                  "label": "Isha fine-tune (min)",
+                  "type": "slider",
+                  "min": -15,
+                  "max": 15,
+                  "step": 1,
+                  "default": 0
+                },
+                {
+                  "token": "ACCENT_COLOR",
+                  "label": "Accent color",
+                  "type": "color",
+                  "default": "#d4a853"
                 }
               ],
               "controlValues": {
                 "TITLE": "Prayer Times",
-                "ACCENT_COLOR": "#da8189",
+                "LOCATION": "Dhaka",
+                "CUSTOM_NAME": "",
+                "CUSTOM_LAT": "23.8103",
+                "CUSTOM_LON": "90.4125",
+                "TIMEZONE": "Asia/Dhaka",
                 "METHOD": "Karachi",
-                "MADHHAB": "Hanafi"
+                "MADHHAB": "Hanafi",
+                "LANG": "Bangla + English",
+                "BN_DIGITS": false,
+                "HOUR12": true,
+                "SHOW_SUNRISE": true,
+                "SHOW_HIJRI": true,
+                "HIJRI_OFFSET": 0,
+                "ADJ_FAJR": 0,
+                "ADJ_DHUHR": 1,
+                "ADJ_ASR": 0,
+                "ADJ_MAGHRIB": 0,
+                "ADJ_ISHA": 0,
+                "ACCENT_COLOR": "#da8189"
               }
             }
           },
@@ -252,7 +413,7 @@
             "type": "customblock",
             "data": {
               "blockName": "Prayer time",
-              "code": "<div class=\"bs\" data-title=\"{{TITLE}}\" data-accent=\"{{ACCENT_COLOR}}\" data-method=\"{{METHOD}}\" data-madhhab=\"{{MADHHAB}}\">\n  <div class=\"wrap\" style=\"max-width:760px;margin:0 auto;padding:48px 24px;\">\n    <div class=\"pt-card\">\n      <div class=\"pt-head\">\n        <div>\n          <div class=\"pt-kicker\">PRAYER TIMES · BANGLADESH</div>\n          <h2>{{TITLE}}</h2>\n          <p id=\"pt-date\">Calculating today's prayer times…</p>\n        </div>\n        <div class=\"pt-location\" id=\"pt-location\">📍 Locating…</div>\n      </div>\n\n\n  <div class=\"pt-now\">\n    <div class=\"pt-now-label\">PRAYER NOW</div>\n    <div class=\"pt-now-name\" id=\"pt-now\">Calculating…</div>\n    <div class=\"pt-now-time\" id=\"pt-now-time\">--:--</div>\n  </div>\n\n  <div class=\"pt-next\">\n    <div>\n      <span class=\"pt-small\">NEXT PRAYER</span>\n      <strong id=\"pt-next-name\">--</strong>\n    </div>\n    <div class=\"pt-count\" id=\"pt-count\">--:--:--</div>\n  </div>\n\n  <div class=\"pt-grid\" id=\"pt-grid\"></div>\n  <div class=\"pt-note\">Times are calculated locally from your device location and current date.</div>\n</div>\n\n\n  </div>\n</div>\n\n<style>\n.bs [data-title]{font-family:\"DM Sans\",sans-serif}\n.pt-card{background:var(--bg2,#1a1916);border:1px solid var(--bdr2,rgba(255,255,255,.1));border-radius:24px;padding:28px;color:var(--txt,#f0ede6);overflow:hidden}\n.pt-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start}\n.pt-kicker{font-size:11px;letter-spacing:2px;color:var(--acc,#d4a853);font-weight:700;margin-bottom:8px}\n.pt-card h2{font-family:\"Playfair Display\",serif;font-size:34px;line-height:1.1;margin:0 0 8px}\n.pt-card p{margin:0;color:var(--txt2,#a09a8f);font-size:14px}\n.pt-location{font-size:12px;color:var(--txt2,#a09a8f);white-space:nowrap}\n.pt-now{margin:28px 0 16px;padding:24px;border-radius:18px;background:var(--surf,#2a2926);text-align:center;border:1px solid color-mix(in srgb,var(--acc,#d4a853) 28%,transparent)}\n.pt-now-label,.pt-small{font-size:10px;letter-spacing:2px;color:var(--acc,#d4a853);font-weight:700}\n.pt-now-name{font-family:\"Playfair Display\",serif;font-size:31px;margin-top:6px}\n.pt-now-time{font-size:14px;color:var(--txt2,#a09a8f);margin-top:3px}\n.pt-next{display:flex;justify-content:space-between;align-items:center;padding:15px 17px;border-bottom:1px solid var(--bdr,rgba(255,255,255,.08));margin-bottom:5px}\n.pt-next strong{display:block;font-size:16px;margin-top:3px}\n.pt-count{font-variant-numeric:tabular-nums;color:var(--acc,#d4a853);font-weight:700}\n.pt-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:14px}\n.pt-item{padding:14px 8px;text-align:center;border-radius:14px;background:rgba(255,255,255,.035);border:1px solid transparent}\n.pt-item.active{border-color:var(--acc,#d4a853);background:color-mix(in srgb,var(--acc,#d4a853) 9%,transparent)}\n.pt-item b{display:block;font-size:12px;margin-bottom:5px}\n.pt-item span{font-size:14px;color:var(--txt2,#a09a8f);font-variant-numeric:tabular-nums}\n.pt-item.active span{color:var(--acc,#d4a853)}\n.pt-note{font-size:10px;color:var(--txt3,#6b6560);text-align:center;margin-top:17px}\n@media(max-width:560px){.pt-card{padding:20px}.pt-head{display:block}.pt-location{margin-top:12px}.pt-grid{grid-template-columns:repeat(3,1fr)}.pt-card h2{font-size:29px}}\n</style>\n\n<script>\n(function(){\n  const root=document.currentScript.previousElementSibling.previousElementSibling;\n  const data=root.dataset, A=data.accent||\"#d4a853\";\n  document.documentElement.style.setProperty(\"--acc\",A);\n\n  const names=[\"Fajr\",\"Dhuhr\",\"Asr\",\"Maghrib\",\"Isha\"];\n  const labels=[\"ফজর\",\"যোহর\",\"আসর\",\"মাগরিব\",\"এশা\"];\n  let lat=23.685,lon=90.3563, timer;\n\n  function rad(x){return x*Math.PI/180}\n  function deg(x){return x*180/Math.PI}\n  function fix(x){return (x%360+360)%360}\n  function jd(d){return d.getTime()/86400000+2440587.5}\n  function sun(d){\n    const J=jd(d), n=J-2451545;\n    const L=fix(280.46+.9856474*n), g=rad(fix(357.528+.9856003*n));\n    const lam=rad(fix(L+1.915*Math.sin(g)+.02*Math.sin(2*g)));\n    const e=rad(23.439-.0000004*n);\n    const dec=deg(Math.asin(Math.sin(e)*Math.sin(lam)));\n    const ra=deg(Math.atan2(Math.cos(e)*Math.sin(lam),Math.cos(lam)))/15;\n    const gmst=fix(280.46061837+360.98564736629*(J-2451545));\n    return {dec,ra,gmst};\n  }\n  function hourAngle(s,alt){\n    const x=(Math.sin(rad(alt))-Math.sin(rad(lat))*Math.sin(rad(s.dec)))/\n      (Math.cos(rad(lat))*Math.cos(rad(s.dec)));\n    return Math.acos(Math.max(-1,Math.min(1,x)))*12/Math.PI;\n  }\n  function times(){\n    const now=new Date(), s=sun(now);\n    const tz=-now.getTimezoneOffset()/60;\n    const noon=(s.ra? (s.gmst+lon/15-s.ra)/1 : 12);\n    const solarNoon=12-((s.gmst+lon-s.ra*15)/15-tz);\n    const h=hourAngle(s,-.833), hf=hourAngle(s,-18), hi=hourAngle(s,-18);\n    const rise=solarNoon-h, set=solarNoon+h;\n    const fajr=solarNoon-hf, isha=solarNoon+hi;\n    const asrAngle=deg(Math.acos((Math.sin(Math.atan(1/(data.madhhab===\"Hanafi\"?2:1))))));\n    const asrShadow=data.madhhab===\"Hanafi\"?2:1;\n    const latr=rad(lat), decr=rad(s.dec);\n    const ac=deg(Math.atan(1/(asrShadow+Math.tan(Math.abs(latr-decr)))));\n    const ha=hourAngle(s,ac);\n    return [fajr,solarNoon,solarNoon+ha,set,isha];\n  }\n  function fmt(v){\n    v=(v+24)%24;\n    let h=Math.floor(v),m=Math.round((v-h)*60);\n    if(m===60){h=(h+1)%24;m=0}\n    const ap=h>=12?\"PM\":\"AM\", hh=h%12||12;\n    return String(hh).padStart(2,\"0\")+\":\"+String(m).padStart(2,\"0\")+\" \"+ap;\n  }\n  function todayDate(){\n    return new Date().toLocaleDateString(\"en-BD\",{weekday:\"long\",year:\"numeric\",month:\"long\",day:\"numeric\"});\n  }\n  function render(){\n    const t=times(), now=new Date(), mins=now.getHours()+now.getMinutes()/60+now.getSeconds()/3600;\n    let idx=-1,next=0;\n    for(let i=0;i<t.length;i++) if(mins>=t[i]) idx=i;\n    next=idx+1;\n    if(next>=t.length) next=0;\n    const current=idx<0?4:idx;\n    const nowName=idx<0?\"Isha\":names[current];\n    const nowTime=idx<0?t[4]:t[current];\n    document.getElementById(\"pt-date\").textContent=todayDate();\n    document.getElementById(\"pt-now\").textContent=labels[current]+\" · \"+nowName;\n    document.getElementById(\"pt-now-time\").textContent=fmt(nowTime);\n    document.getElementById(\"pt-next-name\").textContent=labels[next]+\" · \"+names[next];\n\n    let target=t[next], targetDate=new Date(now);\n    if(next===0 && mins>=t[4]) targetDate.setDate(targetDate.getDate()+1);\n    targetDate.setHours(Math.floor(target),Math.round((target%1)*60),0,0);\n    let diff=Math.max(0,targetDate-now), sec=Math.floor(diff/1000);\n    document.getElementById(\"pt-count\").textContent=\n      String(Math.floor(sec/3600)).padStart(2,\"0\")+\":\"+String(Math.floor(sec%3600/60)).padStart(2,\"0\")+\":\"+String(sec%60).padStart(2,\"0\");\n\n    document.getElementById(\"pt-grid\").innerHTML=names.map((n,i)=>\n      '<div class=\"pt-item '+(i===current?'active':'')+'\"><b>'+labels[i]+'</b><span>'+fmt(t[i])+'</span></div>'\n    ).join(\"\");\n  }\n  function locate(){\n    const done=pos=>{\n      lat=pos.coords.latitude;lon=pos.coords.longitude;\n      document.getElementById(\"pt-location\").textContent=\"📍 \"+lat.toFixed(2)+\", \"+lon.toFixed(2);\n      render();clearInterval(timer);timer=setInterval(render,1000);\n    };\n    if(navigator.geolocation) navigator.geolocation.getCurrentPosition(done,()=>fallback(),{enableHighAccuracy:true,timeout:8000});\n    else fallback();\n  }\n  function fallback(){\n    document.getElementById(\"pt-location\").textContent=\"📍 Bangladesh\";\n    render();clearInterval(timer);timer=setInterval(render,1000);\n  }\n  locate();\n})();\n</script>",
+              "code": "",
               "description": "",
               "savedBlockId": "cb_1789839288201_clkwg",
               "hiddenImages": [
@@ -263,46 +424,8 @@
                   "size": 111124
                 }
               ],
-              "controls": [
-                {
-                  "token": "TITLE",
-                  "label": "Heading",
-                  "type": "text",
-                  "default": "Prayer Times"
-                },
-                {
-                  "token": "ACCENT_COLOR",
-                  "label": "Accent Color",
-                  "type": "color",
-                  "default": "#da8189"
-                },
-                {
-                  "token": "METHOD",
-                  "label": "Calculation Method",
-                  "type": "select",
-                  "options": [
-                    "Karachi",
-                    "Muslim World League"
-                  ],
-                  "default": "Karachi"
-                },
-                {
-                  "token": "MADHHAB",
-                  "label": "Asr Method",
-                  "type": "select",
-                  "options": [
-                    "Hanafi",
-                    "Shafi"
-                  ],
-                  "default": "Hanafi"
-                }
-              ],
-              "controlValues": {
-                "TITLE": "Prayer Times",
-                "ACCENT_COLOR": "#da8189",
-                "METHOD": "Karachi",
-                "MADHHAB": "Hanafi"
-              }
+              "controls": [],
+              "controlValues": {}
             }
           },
           {
@@ -366,7 +489,10 @@
         "bodyFont": "DM Sans",
         "headingFont": "Playfair Display",
         "customFontName": "",
-        "customFontUrl": ""
+        "customFontUrl": "",
+        "lightPrimaryColor": "#b8860b",
+        "lightSecondaryColor": "#1a5fa8",
+        "lightAccentColor": "#2a7a55"
       }
     },
     {
@@ -393,7 +519,7 @@
       "type": "customblock",
       "data": {
         "blockName": "Prayer time",
-        "code": "<div class=\"bs\" data-title=\"{{TITLE}}\" data-accent=\"{{ACCENT_COLOR}}\" data-method=\"{{METHOD}}\" data-madhhab=\"{{MADHHAB}}\">\n  <div class=\"wrap\" style=\"max-width:760px;margin:0 auto;padding:48px 24px;\">\n    <div class=\"pt-card\">\n      <div class=\"pt-head\">\n        <div>\n          <div class=\"pt-kicker\">PRAYER TIMES · BANGLADESH</div>\n          <h2>{{TITLE}}</h2>\n          <p id=\"pt-date\">Calculating today's prayer times…</p>\n        </div>\n        <div class=\"pt-location\" id=\"pt-location\">📍 Locating…</div>\n      </div>\n\n```\n  <div class=\"pt-now\">\n    <div class=\"pt-now-label\">PRAYER NOW</div>\n    <div class=\"pt-now-name\" id=\"pt-now\">Calculating…</div>\n    <div class=\"pt-now-time\" id=\"pt-now-time\">--:--</div>\n  </div>\n\n  <div class=\"pt-next\">\n    <div>\n      <span class=\"pt-small\">NEXT PRAYER</span>\n      <strong id=\"pt-next-name\">--</strong>\n    </div>\n    <div class=\"pt-count\" id=\"pt-count\">--:--:--</div>\n  </div>\n\n  <div class=\"pt-grid\" id=\"pt-grid\"></div>\n  <div class=\"pt-note\">Times are calculated locally from your device location and current date.</div>\n</div>\n```\n\n  </div>\n</div>\n\n<style>\n.bs [data-title]{font-family:\"DM Sans\",sans-serif}\n.pt-card{background:var(--bg2,#1a1916);border:1px solid var(--bdr2,rgba(255,255,255,.1));border-radius:24px;padding:28px;color:var(--txt,#f0ede6);overflow:hidden}\n.pt-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start}\n.pt-kicker{font-size:11px;letter-spacing:2px;color:var(--acc,#d4a853);font-weight:700;margin-bottom:8px}\n.pt-card h2{font-family:\"Playfair Display\",serif;font-size:34px;line-height:1.1;margin:0 0 8px}\n.pt-card p{margin:0;color:var(--txt2,#a09a8f);font-size:14px}\n.pt-location{font-size:12px;color:var(--txt2,#a09a8f);white-space:nowrap}\n.pt-now{margin:28px 0 16px;padding:24px;border-radius:18px;background:var(--surf,#2a2926);text-align:center;border:1px solid color-mix(in srgb,var(--acc,#d4a853) 28%,transparent)}\n.pt-now-label,.pt-small{font-size:10px;letter-spacing:2px;color:var(--acc,#d4a853);font-weight:700}\n.pt-now-name{font-family:\"Playfair Display\",serif;font-size:31px;margin-top:6px}\n.pt-now-time{font-size:14px;color:var(--txt2,#a09a8f);margin-top:3px}\n.pt-next{display:flex;justify-content:space-between;align-items:center;padding:15px 17px;border-bottom:1px solid var(--bdr,rgba(255,255,255,.08));margin-bottom:5px}\n.pt-next strong{display:block;font-size:16px;margin-top:3px}\n.pt-count{font-variant-numeric:tabular-nums;color:var(--acc,#d4a853);font-weight:700}\n.pt-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:14px}\n.pt-item{padding:14px 8px;text-align:center;border-radius:14px;background:rgba(255,255,255,.035);border:1px solid transparent}\n.pt-item.active{border-color:var(--acc,#d4a853);background:color-mix(in srgb,var(--acc,#d4a853) 9%,transparent)}\n.pt-item b{display:block;font-size:12px;margin-bottom:5px}\n.pt-item span{font-size:14px;color:var(--txt2,#a09a8f);font-variant-numeric:tabular-nums}\n.pt-item.active span{color:var(--acc,#d4a853)}\n.pt-note{font-size:10px;color:var(--txt3,#6b6560);text-align:center;margin-top:17px}\n@media(max-width:560px){.pt-card{padding:20px}.pt-head{display:block}.pt-location{margin-top:12px}.pt-grid{grid-template-columns:repeat(3,1fr)}.pt-card h2{font-size:29px}}\n</style>\n\n<script>\n(function(){\n  const root=document.currentScript.previousElementSibling.previousElementSibling;\n  const data=root.dataset, A=data.accent||\"#d4a853\";\n  document.documentElement.style.setProperty(\"--acc\",A);\n\n  const names=[\"Fajr\",\"Dhuhr\",\"Asr\",\"Maghrib\",\"Isha\"];\n  const labels=[\"ফজর\",\"যোহর\",\"আসর\",\"মাগরিব\",\"এশা\"];\n  let lat=23.685,lon=90.3563, timer;\n\n  function rad(x){return x*Math.PI/180}\n  function deg(x){return x*180/Math.PI}\n  function fix(x){return (x%360+360)%360}\n  function jd(d){return d.getTime()/86400000+2440587.5}\n  function sun(d){\n    const J=jd(d), n=J-2451545;\n    const L=fix(280.46+.9856474*n), g=rad(fix(357.528+.9856003*n));\n    const lam=rad(fix(L+1.915*Math.sin(g)+.02*Math.sin(2*g)));\n    const e=rad(23.439-.0000004*n);\n    const dec=deg(Math.asin(Math.sin(e)*Math.sin(lam)));\n    const ra=deg(Math.atan2(Math.cos(e)*Math.sin(lam),Math.cos(lam)))/15;\n    const gmst=fix(280.46061837+360.98564736629*(J-2451545));\n    return {dec,ra,gmst};\n  }\n  function hourAngle(s,alt){\n    const x=(Math.sin(rad(alt))-Math.sin(rad(lat))*Math.sin(rad(s.dec)))/\n      (Math.cos(rad(lat))*Math.cos(rad(s.dec)));\n    return Math.acos(Math.max(-1,Math.min(1,x)))*12/Math.PI;\n  }\n  function times(){\n    const now=new Date(), s=sun(now);\n    const tz=-now.getTimezoneOffset()/60;\n    const noon=(s.ra? (s.gmst+lon/15-s.ra)/1 : 12);\n    const solarNoon=12-((s.gmst+lon-s.ra*15)/15-tz);\n    const h=hourAngle(s,-.833), hf=hourAngle(s,-18), hi=hourAngle(s,-18);\n    const rise=solarNoon-h, set=solarNoon+h;\n    const fajr=solarNoon-hf, isha=solarNoon+hi;\n    const asrAngle=deg(Math.acos((Math.sin(Math.atan(1/(data.madhhab===\"Hanafi\"?2:1))))));\n    const asrShadow=data.madhhab===\"Hanafi\"?2:1;\n    const latr=rad(lat), decr=rad(s.dec);\n    const ac=deg(Math.atan(1/(asrShadow+Math.tan(Math.abs(latr-decr)))));\n    const ha=hourAngle(s,ac);\n    return [fajr,solarNoon,solarNoon+ha,set,isha];\n  }\n  function fmt(v){\n    v=(v+24)%24;\n    let h=Math.floor(v),m=Math.round((v-h)*60);\n    if(m===60){h=(h+1)%24;m=0}\n    const ap=h>=12?\"PM\":\"AM\", hh=h%12||12;\n    return String(hh).padStart(2,\"0\")+\":\"+String(m).padStart(2,\"0\")+\" \"+ap;\n  }\n  function todayDate(){\n    return new Date().toLocaleDateString(\"en-BD\",{weekday:\"long\",year:\"numeric\",month:\"long\",day:\"numeric\"});\n  }\n  function render(){\n    const t=times(), now=new Date(), mins=now.getHours()+now.getMinutes()/60+now.getSeconds()/3600;\n    let idx=-1,next=0;\n    for(let i=0;i<t.length;i++) if(mins>=t[i]) idx=i;\n    next=idx+1;\n    if(next>=t.length) next=0;\n    const current=idx<0?4:idx;\n    const nowName=idx<0?\"Isha\":names[current];\n    const nowTime=idx<0?t[4]:t[current];\n    document.getElementById(\"pt-date\").textContent=todayDate();\n    document.getElementById(\"pt-now\").textContent=labels[current]+\" · \"+nowName;\n    document.getElementById(\"pt-now-time\").textContent=fmt(nowTime);\n    document.getElementById(\"pt-next-name\").textContent=labels[next]+\" · \"+names[next];\n\n    let target=t[next], targetDate=new Date(now);\n    if(next===0 && mins>=t[4]) targetDate.setDate(targetDate.getDate()+1);\n    targetDate.setHours(Math.floor(target),Math.round((target%1)*60),0,0);\n    let diff=Math.max(0,targetDate-now), sec=Math.floor(diff/1000);\n    document.getElementById(\"pt-count\").textContent=\n      String(Math.floor(sec/3600)).padStart(2,\"0\")+\":\"+String(Math.floor(sec%3600/60)).padStart(2,\"0\")+\":\"+String(sec%60).padStart(2,\"0\");\n\n    document.getElementById(\"pt-grid\").innerHTML=names.map((n,i)=>\n      '<div class=\"pt-item '+(i===current?'active':'')+'\"><b>'+labels[i]+'</b><span>'+fmt(t[i])+'</span></div>'\n    ).join(\"\");\n  }\n  function locate(){\n    const done=pos=>{\n      lat=pos.coords.latitude;lon=pos.coords.longitude;\n      document.getElementById(\"pt-location\").textContent=\"📍 \"+lat.toFixed(2)+\", \"+lon.toFixed(2);\n      render();clearInterval(timer);timer=setInterval(render,1000);\n    };\n    if(navigator.geolocation) navigator.geolocation.getCurrentPosition(done,()=>fallback(),{enableHighAccuracy:true,timeout:8000});\n    else fallback();\n  }\n  function fallback(){\n    document.getElementById(\"pt-location\").textContent=\"📍 Bangladesh\";\n    render();clearInterval(timer);timer=setInterval(render,1000);\n  }\n  locate();\n})();\n</script>",
+        "code": "<div class=\"bs pt-app\" data-location=\"{{LOCATION}}\" data-place=\"{{CUSTOM_NAME}}\" data-lat=\"{{CUSTOM_LAT}}\" data-lon=\"{{CUSTOM_LON}}\" data-tz=\"{{TIMEZONE}}\" data-method=\"{{METHOD}}\" data-madhhab=\"{{MADHHAB}}\" data-lang=\"{{LANG}}\" data-bn=\"{{BN_DIGITS}}\" data-h12=\"{{HOUR12}}\" data-sunrise=\"{{SHOW_SUNRISE}}\" data-hijri=\"{{SHOW_HIJRI}}\" data-hijri-offset=\"{{HIJRI_OFFSET}}\" data-adj=\"{{ADJ_FAJR}},{{ADJ_DHUHR}},{{ADJ_ASR}},{{ADJ_MAGHRIB}},{{ADJ_ISHA}}\" style=\"--pt-acc:{{ACCENT_COLOR}}\">\n  <div class=\"pt-wrap\">\n    <div class=\"pt-card\">\n      <div class=\"pt-head\">\n        <div>\n          <div class=\"pt-kicker\" data-pt=\"kicker\">PRAYER TIMES</div>\n          <h2 class=\"pt-title\">{{TITLE}}</h2>\n          <p class=\"pt-date\" data-pt=\"date\"></p>\n          <p class=\"pt-hijri\" data-pt=\"hijri\"></p>\n        </div>\n        <div class=\"pt-loc\">\n          <svg width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z\"/><circle cx=\"12\" cy=\"10\" r=\"3\"/></svg>\n          <span data-pt=\"loc\">Locating…</span>\n        </div>\n      </div>\n\n      <div class=\"pt-now\">\n        <div class=\"pt-label\" data-pt=\"nowlabel\">PRAYER NOW</div>\n        <div class=\"pt-now-name\" data-pt=\"nowname\">…</div>\n        <div class=\"pt-now-time\" data-pt=\"nowtime\"></div>\n        <div class=\"pt-bar\"><i data-pt=\"bar\"></i></div>\n      </div>\n\n      <div class=\"pt-next\">\n        <div>\n          <span class=\"pt-label\" data-pt=\"nextlabel\">NEXT PRAYER</span>\n          <strong data-pt=\"nextname\">--</strong>\n          <small data-pt=\"nexttime\"></small>\n        </div>\n        <div class=\"pt-count\" data-pt=\"count\" role=\"timer\">--:--:--</div>\n      </div>\n\n      <div class=\"pt-grid\" data-pt=\"grid\"></div>\n      <div class=\"pt-note\" data-pt=\"method\"></div>\n    </div>\n  </div>\n</div>\n\n<style>\n.pt-app{font-family:\"DM Sans\",sans-serif}\n.pt-app .pt-wrap{max-width:760px;margin:0 auto;padding:48px 24px}\n.pt-app .pt-card{background:var(--bg2,#1a1916);border:1px solid var(--bdr2,rgba(255,255,255,.1));border-radius:24px;padding:28px;color:var(--txt,#f0ede6);overflow:hidden}\n.pt-app .pt-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start}\n.pt-app .pt-kicker{font-size:11px;letter-spacing:2px;color:var(--pt-acc,#d4a853);font-weight:700;margin-bottom:8px}\n.pt-app .pt-title{font-family:\"Playfair Display\",serif;font-size:34px;line-height:1.1;margin:0 0 8px;color:inherit}\n.pt-app .pt-date,.pt-app .pt-hijri{margin:0;color:var(--txt2,#a09a8f);font-size:14px}\n.pt-app .pt-hijri{font-size:13px;margin-top:2px}\n.pt-app .pt-loc{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--txt2,#a09a8f);text-align:right;max-width:46%}\n.pt-app .pt-loc svg{flex:none;color:var(--pt-acc,#d4a853)}\n.pt-app .pt-now{margin:28px 0 16px;padding:24px;border-radius:18px;background:var(--surf,#2a2926);text-align:center;border:1px solid color-mix(in srgb,var(--pt-acc,#d4a853) 28%,transparent)}\n.pt-app .pt-label{display:block;font-size:10px;letter-spacing:2px;color:var(--pt-acc,#d4a853);font-weight:700}\n.pt-app .pt-now-name{font-family:\"Playfair Display\",serif;font-size:31px;margin-top:6px}\n.pt-app .pt-now-time{font-size:14px;color:var(--txt2,#a09a8f);margin-top:3px;min-height:1.2em}\n.pt-app .pt-bar{height:4px;border-radius:4px;background:rgba(255,255,255,.08);margin-top:16px;overflow:hidden}\n.pt-app .pt-bar i{display:block;height:100%;width:0;background:var(--pt-acc,#d4a853);border-radius:4px;transition:width .9s linear}\n.pt-app .pt-next{display:flex;justify-content:space-between;align-items:center;padding:15px 17px;border-bottom:1px solid var(--bdr,rgba(255,255,255,.08));margin-bottom:5px}\n.pt-app .pt-next strong{display:block;font-size:16px;margin-top:3px}\n.pt-app .pt-next small{display:block;font-size:12px;color:var(--txt2,#a09a8f);margin-top:2px}\n.pt-app .pt-count{font-variant-numeric:tabular-nums;color:var(--pt-acc,#d4a853);font-weight:700;font-size:20px}\n.pt-app .pt-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:14px}\n.pt-app .pt-grid.pt-six{grid-template-columns:repeat(6,1fr)}\n.pt-app .pt-item{padding:14px 6px;text-align:center;border-radius:14px;background:rgba(255,255,255,.035);border:1px solid transparent}\n.pt-app .pt-item.pt-active{border-color:var(--pt-acc,#d4a853);background:color-mix(in srgb,var(--pt-acc,#d4a853) 9%,transparent)}\n.pt-app .pt-item.pt-next-up{border-color:rgba(255,255,255,.18);border-style:dashed}\n.pt-app .pt-item b{display:block;font-size:12px}\n.pt-app .pt-item em{display:block;font-style:normal;font-size:10px;color:var(--txt3,#6b6560);margin-top:1px}\n.pt-app .pt-item span{display:block;font-size:14px;color:var(--txt2,#a09a8f);font-variant-numeric:tabular-nums;margin-top:5px}\n.pt-app .pt-item.pt-active span{color:var(--pt-acc,#d4a853)}\n.pt-app .pt-item.pt-sun b,.pt-app .pt-item.pt-sun span{opacity:.75}\n.pt-app .pt-note{font-size:10px;color:var(--txt3,#6b6560);text-align:center;margin-top:17px;line-height:1.6}\n@media(max-width:560px){\n  .pt-app .pt-wrap{padding:32px 14px}\n  .pt-app .pt-card{padding:20px}\n  .pt-app .pt-head{display:block}\n  .pt-app .pt-loc{margin-top:12px;max-width:none;text-align:left}\n  .pt-app .pt-title{font-size:29px}\n  .pt-app .pt-grid,.pt-app .pt-grid.pt-six{grid-template-columns:repeat(3,1fr)}\n}\n</style>\n\n<script>\n(function () {\n  \"use strict\";\n  var D2R = Math.PI / 180, R2D = 180 / Math.PI;\n\n  // Fajr / Isha angles (degrees below the horizon). \"im\" = Isha is a fixed number of minutes after Maghrib.\n  var METHODS = {\n    \"Karachi\": { f: 18, i: 18 },\n    \"Muslim World League\": { f: 18, i: 17 },\n    \"ISNA (North America)\": { f: 15, i: 15 },\n    \"Egyptian\": { f: 19.5, i: 17.5 },\n    \"Umm al-Qura (Makkah)\": { f: 18.5, im: 90 },\n    \"Kuwait\": { f: 18, i: 17.5 }\n  };\n  var ORDER = [\"fajr\", \"sunrise\", \"dhuhr\", \"asr\", \"maghrib\", \"isha\"];\n  var PLACES = {\n    \"Dhaka\": [23.8103, 90.4125], \"Chattogram\": [22.3569, 91.7832], \"Rajshahi\": [24.3745, 88.6042],\n    \"Khulna\": [22.8456, 89.5403], \"Sylhet\": [24.8949, 91.8687], \"Barishal\": [22.7010, 90.3535],\n    \"Rangpur\": [25.7439, 89.2752], \"Mymensingh\": [24.7471, 90.4203]\n  };\n  var NAMES = {\n    fajr: [\"Fajr\", \"ফজর\"], sunrise: [\"Sunrise\", \"সূর্যোদয়\"], dhuhr: [\"Dhuhr\", \"যোহর\"],\n    asr: [\"Asr\", \"আসর\"], maghrib: [\"Maghrib\", \"মাগরিব\"], isha: [\"Isha\", \"এশা\"], after: [\"After sunrise\", \"সূর্যোদয়ের পর\"]\n  };\n  var TXT = {\n    en: { kicker: \"PRAYER TIMES\", now: \"PRAYER NOW\", nowAfter: \"NOW\", next: \"NEXT PRAYER\", locating: \"Locating…\", unavailable: \"location unavailable\", note: \"Calculated on this device from the position of the sun for today's date.\", noFard: \"No obligatory prayer until Dhuhr\" },\n    bn: { kicker: \"নামাজের সময়সূচি\", now: \"এখনকার নামাজ\", nowAfter: \"এখন\", next: \"পরবর্তী নামাজ\", locating: \"অবস্থান খোঁজা হচ্ছে…\", unavailable: \"অবস্থান পাওয়া যায়নি\", note: \"আজকের তারিখে সূর্যের অবস্থান থেকে এই ডিভাইসেই গণনা করা হয়েছে।\", noFard: \"যোহর পর্যন্ত কোনো ফরজ নামাজ নেই\" }\n  };\n\n  // ── Sun position (NOAA / Meeus series) for a Julian day: declination (rad) and equation of time (minutes) ──\n  function jd(ms) { return ms / 86400000 + 2440587.5; }\n  function sun(J) {\n    var T = (J - 2451545) / 36525;\n    var L0 = (280.46646 + T * (36000.76983 + T * 0.0003032)) % 360;\n    var M = (357.52911 + T * (35999.05029 - 0.0001537 * T)) * D2R;\n    var e = 0.016708634 - T * (0.000042037 + 0.0000001267 * T);\n    var C = Math.sin(M) * (1.914602 - T * (0.004817 + 0.000014 * T)) + Math.sin(2 * M) * (0.019993 - 0.000101 * T) + Math.sin(3 * M) * 0.000289;\n    var om = (125.04 - 1934.136 * T) * D2R;\n    var lam = (L0 + C - 0.00569 - 0.00478 * Math.sin(om)) * D2R;\n    var eps = (23 + (26 + (21.448 - T * (46.815 + T * (0.00059 - T * 0.001813))) / 60) / 60 + 0.00256 * Math.cos(om)) * D2R;\n    var y = Math.tan(eps / 2); y *= y;\n    var L = L0 * D2R;\n    return {\n      d: Math.asin(Math.sin(eps) * Math.sin(lam)),\n      e: 4 * R2D * (y * Math.sin(2 * L) - 2 * e * Math.sin(M) + 4 * e * y * Math.sin(M) * Math.cos(2 * L) - 0.5 * y * y * Math.sin(4 * L) - 1.25 * e * e * Math.sin(2 * M))\n    };\n  }\n\n  // ── The prayer times for ONE calendar date at a place. Pure function: returns UTC milliseconds\n  //    [fajr, sunrise, dhuhr, asr, maghrib, isha] (NaN where the sun never reaches that angle). ──\n  // Each moment is solved iteratively, re-reading the sun's declination and the equation of time AT THAT\n  // MOMENT, so the answer is the same whenever it is computed and does not drift through the day.\n  function calc(lat, lon, y, m0, d, method, hanafi, adj) {\n    var noon = Date.UTC(y, m0, d, 12, 0, 0);\n    var sl = Math.sin(lat * D2R), cl = Math.cos(lat * D2R);\n    function transitAt(t) { return noon - (lon * 4 + sun(jd(t)).e) * 60000; }\n    var tr = noon - lon * 4 * 60000;\n    for (var k = 0; k < 3; k++) tr = transitAt(tr);\n    function at(alt, sign) {                       // alt: degrees (number) or function(sun) -> degrees\n      var t = tr;\n      for (var i = 0; i < 6; i++) {\n        var s = sun(jd(t));\n        var a = typeof alt === \"function\" ? alt(s) : alt;\n        var c = (Math.sin(a * D2R) - sl * Math.sin(s.d)) / (cl * Math.cos(s.d));\n        if (!(c >= -1 && c <= 1)) return NaN;\n        t = transitAt(t) + sign * Math.acos(c) * R2D * 4 * 60000;\n      }\n      return t;\n    }\n    var f = hanafi ? 2 : 1;\n    var sunrise = at(-0.833, -1), maghrib = at(-0.833, 1);\n    var fajr = at(-method.f, -1);\n    var isha = method.im ? maghrib + method.im * 60000 : at(-method.i, 1);\n    // Asr: shadow = f x object + the shadow it had at local noon, so the noon declination sets the target altitude.\n    var asrAlt = R2D * Math.atan(1 / (f + Math.tan(Math.abs(lat * D2R - sun(jd(tr)).d))));\n    var asr = at(asrAlt, 1);\n    // Very high latitudes: if the sun never gets 18 degrees below the horizon, use the \"angle / 60\" share of the night.\n    if (isNaN(fajr) || (isNaN(isha) && !method.im)) {\n      var night = 86400000 - (maghrib - sunrise);\n      if (isFinite(night)) {\n        if (isNaN(fajr)) fajr = sunrise - night * (method.f / 60);\n        if (isNaN(isha) && !method.im) isha = maghrib + night * (method.i / 60);\n      }\n    }\n    return [fajr + adj[0] * 60000, sunrise, tr + adj[1] * 60000, asr + adj[2] * 60000, maghrib + adj[3] * 60000, isha + adj[4] * 60000];\n  }\n\n  function num(v, dflt) { var n = parseFloat(v); return isFinite(n) ? n : dflt; }\n  function pad(n) { return (n < 10 ? \"0\" : \"\") + n; }\n  function rnd(ms) { return Math.round(ms / 60000) * 60000; }\n\n  function init(root) {\n    if (root.__ptInit) return;\n    root.__ptInit = true;\n    var s = root.dataset;\n    var q = function (n) { return root.querySelector('[data-pt=\"' + n + '\"]'); };\n    var el = { kicker: q(\"kicker\"), date: q(\"date\"), hijri: q(\"hijri\"), loc: q(\"loc\"), nowlabel: q(\"nowlabel\"), nowname: q(\"nowname\"), nowtime: q(\"nowtime\"), bar: q(\"bar\"), nextlabel: q(\"nextlabel\"), nextname: q(\"nextname\"), nexttime: q(\"nexttime\"), count: q(\"count\"), grid: q(\"grid\"), method: q(\"method\") };\n\n    var lang = s.lang === \"English\" ? \"en\" : (s.lang === \"বাংলা\" ? \"bn\" : \"both\");\n    var T = TXT[lang === \"bn\" ? \"bn\" : \"en\"];\n    var bnDigits = s.bn === \"true\", h12 = s.h12 !== \"false\", showSun = s.sunrise !== \"false\", showHijri = s.hijri !== \"false\";\n    var hijriOffset = Math.round(num(s.hijriOffset, 0));\n    var methodName = METHODS[s.method] ? s.method : \"Karachi\", method = METHODS[methodName];\n    var hanafi = s.madhhab === \"Hanafi\";\n    var adj = (s.adj || \"0,1,0,0,0\").split(\",\").map(function (x) { return num(x, 0); });\n    while (adj.length < 5) adj.push(0);\n    var numbering = bnDigits ? \"beng\" : \"latn\";\n    var uiLoc = (lang === \"bn\" ? \"bn\" : \"en\") + \"-u-nu-\" + numbering;\n    function dig(str) { return bnDigits ? String(str).replace(/[0-9]/g, function (c) { return \"০১২৩৪৫৬৭৮৯\".charAt(+c); }) : String(str); }\n    function nm(k) { return lang === \"en\" ? NAMES[k][0] : lang === \"bn\" ? NAMES[k][1] : NAMES[k][1] + \" · \" + NAMES[k][0]; }\n\n    // Where are we? A preset city, custom coordinates, or the visitor's device.\n    var place = null, tz = \"Asia/Dhaka\", wantDevice = s.location === \"My device location\";\n    function validTz(z) { try { new Intl.DateTimeFormat(\"en\", { timeZone: z }); return true; } catch (e) { return false; } }\n    function setPlace(lat, lon, name, zone) {\n      place = { lat: lat, lon: lon, name: name };\n      tz = validTz(zone) ? zone : \"Asia/Dhaka\";\n      fmtT = new Intl.DateTimeFormat(uiLoc, { timeZone: tz, hour: \"2-digit\", minute: \"2-digit\", hourCycle: h12 ? \"h12\" : \"h23\" });\n      fmtD = new Intl.DateTimeFormat(\"en-CA\", { timeZone: tz, year: \"numeric\", month: \"numeric\", day: \"numeric\" });\n      cacheKey = \"\"; tick();\n    }\n    var fmtT, fmtD, cacheKey = \"\", cache = null, lastIdx = -2;\n    function coordLabel(lat, lon) { return dig(Math.abs(lat).toFixed(2)) + \"°\" + (lat >= 0 ? \"N\" : \"S\") + \", \" + dig(Math.abs(lon).toFixed(2)) + \"°\" + (lon >= 0 ? \"E\" : \"W\"); }\n    if (PLACES[s.location]) {\n      setPlace(PLACES[s.location][0], PLACES[s.location][1], s.location, \"Asia/Dhaka\");\n    } else if (wantDevice) {\n      var cached = null;\n      try { cached = JSON.parse(localStorage.getItem(\"pt_loc_v1\") || \"null\"); } catch (e) {}\n      var devTz = \"Asia/Dhaka\";\n      try { devTz = Intl.DateTimeFormat().resolvedOptions().timeZone || devTz; } catch (e) {}\n      if (cached && isFinite(cached.lat) && isFinite(cached.lon)) setPlace(cached.lat, cached.lon, coordLabel(cached.lat, cached.lon), devTz);\n      else setPlace(PLACES[\"Dhaka\"][0], PLACES[\"Dhaka\"][1], T.locating, devTz);\n      if (navigator.geolocation) {\n        navigator.geolocation.getCurrentPosition(function (p) {\n          try { localStorage.setItem(\"pt_loc_v1\", JSON.stringify({ lat: p.coords.latitude, lon: p.coords.longitude })); } catch (e) {}\n          setPlace(p.coords.latitude, p.coords.longitude, coordLabel(p.coords.latitude, p.coords.longitude), devTz);\n        }, function () {\n          if (!cached) setPlace(PLACES[\"Dhaka\"][0], PLACES[\"Dhaka\"][1], \"Dhaka (\" + T.unavailable + \")\", devTz);\n        }, { maximumAge: 600000, timeout: 10000 });\n      } else if (!cached) setPlace(PLACES[\"Dhaka\"][0], PLACES[\"Dhaka\"][1], \"Dhaka (\" + T.unavailable + \")\", devTz);\n    } else {\n      var la = num(s.lat, 23.8103), lo = num(s.lon, 90.4125);\n      la = Math.max(-66, Math.min(66, la)); lo = Math.max(-180, Math.min(180, lo));\n      setPlace(la, lo, (s.place || \"\").trim() || coordLabel(la, lo), s.tz || \"Asia/Dhaka\");\n    }\n\n    // ── Day tracking ──\n    function localDate(ms) {\n      var parts = fmtD.formatToParts(new Date(ms));\n      var o = {}; parts.forEach(function (p) { o[p.type] = +p.value; });\n      return o;\n    }\n    function dayTimes(dp, delta) {\n      var x = new Date(Date.UTC(dp.year, dp.month - 1, dp.day + delta));\n      return calc(place.lat, place.lon, x.getUTCFullYear(), x.getUTCMonth(), x.getUTCDate(), method, hanafi, adj).map(function (t) { return isNaN(t) ? t : rnd(t); });\n    }\n    function tick() {\n      if (!place) return;\n      if (!document.body.contains(root)) { clearInterval(timer); return; }\n      var now = Date.now();\n      var dp = localDate(now);\n      var key = dp.year + \"-\" + dp.month + \"-\" + dp.day + \"|\" + place.lat + \",\" + place.lon + \"|\" + tz;\n      if (key !== cacheKey) {\n        cacheKey = key;\n        cache = { y: dayTimes(dp, -1), t: dayTimes(dp, 0), n: dayTimes(dp, 1) };\n        lastIdx = -2;\n        drawStatic(now);\n      }\n      // Timeline: yesterday's Isha, today's six moments, tomorrow's Fajr.\n      var ev = [{ k: \"isha\", t: cache.y[5] }];\n      ORDER.forEach(function (k, i) { ev.push({ k: k, t: cache.t[i] }); });\n      ev.push({ k: \"fajr\", t: cache.n[0] });\n      ev = ev.filter(function (e) { return !isNaN(e.t); });\n      var idx = -1;\n      for (var i = 0; i < ev.length; i++) if (now >= ev[i].t) idx = i;\n      if (idx < 0 || idx >= ev.length - 1) { el.count.textContent = \"--:--:--\"; return; }\n      var cur = ev[idx], end = ev[idx + 1];\n      var nextP = null;\n      for (var j = idx + 1; j < ev.length; j++) if (ev[j].k !== \"sunrise\") { nextP = ev[j]; break; }\n\n      if (idx !== lastIdx) {\n        lastIdx = idx;\n        var afterSun = cur.k === \"sunrise\";\n        el.nowlabel.textContent = afterSun ? T.nowAfter : T.now;\n        el.nowname.textContent = afterSun ? (lang === \"en\" ? NAMES.after[0] : lang === \"bn\" ? NAMES.after[1] : NAMES.after[1] + \" · \" + NAMES.after[0]) : nm(cur.k);\n        el.nowtime.textContent = afterSun\n          ? T.noFard\n          : fmtT.format(cur.t) + \"  →  \" + NAMES[end.k][lang === \"bn\" ? 1 : 0] + \" \" + fmtT.format(end.t);\n        el.nextlabel.textContent = T.next;\n        el.nextname.textContent = nextP ? nm(nextP.k) : \"--\";\n        el.nexttime.textContent = nextP ? fmtT.format(nextP.t) : \"\";\n        var cells = el.grid.children;\n        for (var c = 0; c < cells.length; c++) {\n          var k = cells[c].getAttribute(\"data-k\");\n          cells[c].classList.toggle(\"pt-active\", k === cur.k);\n          cells[c].classList.toggle(\"pt-next-up\", !!nextP && k === nextP.k);\n        }\n      }\n      var left = Math.max(0, Math.ceil((nextP.t - now) / 1000));\n      el.count.textContent = dig(pad(Math.floor(left / 3600)) + \":\" + pad(Math.floor(left % 3600 / 60)) + \":\" + pad(left % 60));\n      el.bar.style.width = Math.max(0, Math.min(100, (now - cur.t) / (end.t - cur.t) * 100)).toFixed(2) + \"%\";\n    }\n\n    function drawStatic(now) {\n      el.kicker.textContent = T.kicker;\n      el.loc.textContent = place.name;\n      var dl = (lang === \"bn\" ? \"bn\" : \"en\") + \"-u-nu-\" + numbering;\n      el.date.textContent = new Intl.DateTimeFormat(dl, { timeZone: tz, weekday: \"long\", year: \"numeric\", month: \"long\", day: \"numeric\" }).format(new Date(now));\n      if (showHijri) {\n        try {\n          el.hijri.textContent = new Intl.DateTimeFormat((lang === \"bn\" ? \"bn\" : \"en\") + \"-u-ca-islamic-umalqura-nu-\" + numbering, { timeZone: tz, day: \"numeric\", month: \"long\", year: \"numeric\" }).format(new Date(now + hijriOffset * 86400000));\n        } catch (e) { el.hijri.textContent = \"\"; }\n      } else el.hijri.textContent = \"\";\n      var keys = showSun ? ORDER : ORDER.filter(function (k) { return k !== \"sunrise\"; });\n      el.grid.className = \"pt-grid\" + (showSun ? \" pt-six\" : \"\");\n      el.grid.innerHTML = keys.map(function (k) {\n        var i = ORDER.indexOf(k), t = cache.t[i];\n        var label = lang === \"en\" ? \"<b>\" + NAMES[k][0] + \"</b>\" : lang === \"bn\" ? \"<b>\" + NAMES[k][1] + \"</b>\" : \"<b>\" + NAMES[k][1] + \"</b><em>\" + NAMES[k][0] + \"</em>\";\n        return '<div class=\"pt-item' + (k === \"sunrise\" ? \" pt-sun\" : \"\") + '\" data-k=\"' + k + '\">' + label + \"<span>\" + (isNaN(t) ? \"--:--\" : fmtT.format(t)) + \"</span></div>\";\n      }).join(\"\");\n      var im = method.im ? (lang === \"bn\" ? \"এশা মাগরিবের \" + dig(method.im) + \" মিনিট পর\" : \"Isha \" + method.im + \" min after Maghrib\") : \"\";\n      var ang = method.im ? (dig(method.f) + \"°\") : (dig(method.f) + \"° / \" + dig(method.i) + \"°\");\n      el.method.textContent = T.note + \"  \" + methodName + \" (\" + ang + (im ? \", \" + im : \"\") + \") · \" + (hanafi ? \"Hanafi Asr\" : \"Standard Asr\") + \" · \" + tz;\n    }\n\n    var timer = setInterval(tick, 1000);\n    document.addEventListener(\"visibilitychange\", function () { if (!document.hidden) tick(); });\n    tick();\n  }\n\n  var roots = document.querySelectorAll(\".pt-app\");\n  for (var r = 0; r < roots.length; r++) init(roots[r]);\n})();\n</script>",
         "description": "",
         "savedBlockId": "cb_1789839288201_clkwg",
         "controls": [
@@ -404,37 +530,195 @@
             "default": "Prayer Times"
           },
           {
-            "token": "ACCENT_COLOR",
-            "label": "Accent Color",
-            "type": "color",
-            "default": "#da8189"
+            "token": "LOCATION",
+            "label": "Location",
+            "type": "select",
+            "hint": "Preset cities use Bangladesh time. \"My device location\" asks each visitor's browser for permission.",
+            "options": [
+              "Dhaka",
+              "Chattogram",
+              "Rajshahi",
+              "Khulna",
+              "Sylhet",
+              "Barishal",
+              "Rangpur",
+              "Mymensingh",
+              "My device location",
+              "Custom coordinates"
+            ],
+            "default": "Dhaka"
+          },
+          {
+            "token": "CUSTOM_NAME",
+            "label": "Custom place name",
+            "type": "text",
+            "hint": "Only used with Custom coordinates",
+            "default": ""
+          },
+          {
+            "token": "CUSTOM_LAT",
+            "label": "Custom latitude",
+            "type": "text",
+            "hint": "Decimal degrees, north is positive",
+            "default": "23.8103"
+          },
+          {
+            "token": "CUSTOM_LON",
+            "label": "Custom longitude",
+            "type": "text",
+            "hint": "Decimal degrees, east is positive",
+            "default": "90.4125"
+          },
+          {
+            "token": "TIMEZONE",
+            "label": "Custom time zone",
+            "type": "text",
+            "hint": "IANA name, only used with Custom coordinates",
+            "default": "Asia/Dhaka"
           },
           {
             "token": "METHOD",
-            "label": "Calculation Method",
+            "label": "Calculation method",
             "type": "select",
             "options": [
               "Karachi",
-              "Muslim World League"
+              "Muslim World League",
+              "ISNA (North America)",
+              "Egyptian",
+              "Umm al-Qura (Makkah)",
+              "Kuwait"
             ],
             "default": "Karachi"
           },
           {
             "token": "MADHHAB",
-            "label": "Asr Method",
+            "label": "Asr method",
             "type": "select",
             "options": [
               "Hanafi",
-              "Shafi"
+              "Standard (Shafi, Maliki, Hanbali)"
             ],
             "default": "Hanafi"
+          },
+          {
+            "token": "LANG",
+            "label": "Language",
+            "type": "select",
+            "options": [
+              "Bangla + English",
+              "English",
+              "বাংলা"
+            ],
+            "default": "Bangla + English"
+          },
+          {
+            "token": "BN_DIGITS",
+            "label": "Bangla digits",
+            "type": "toggle",
+            "default": false
+          },
+          {
+            "token": "HOUR12",
+            "label": "12-hour clock",
+            "type": "toggle",
+            "default": true
+          },
+          {
+            "token": "SHOW_SUNRISE",
+            "label": "Show sunrise",
+            "type": "toggle",
+            "default": true
+          },
+          {
+            "token": "SHOW_HIJRI",
+            "label": "Show Hijri date",
+            "type": "toggle",
+            "default": true
+          },
+          {
+            "token": "HIJRI_OFFSET",
+            "label": "Hijri date adjustment (days)",
+            "type": "slider",
+            "hint": "Match your local moon sighting",
+            "min": -2,
+            "max": 2,
+            "step": 1,
+            "default": 0
+          },
+          {
+            "token": "ADJ_FAJR",
+            "label": "Fajr fine-tune (min)",
+            "type": "slider",
+            "min": -15,
+            "max": 15,
+            "step": 1,
+            "default": 0
+          },
+          {
+            "token": "ADJ_DHUHR",
+            "label": "Dhuhr fine-tune (min)",
+            "type": "slider",
+            "hint": "Standard: 1 minute after solar noon",
+            "min": -15,
+            "max": 15,
+            "step": 1,
+            "default": 1
+          },
+          {
+            "token": "ADJ_ASR",
+            "label": "Asr fine-tune (min)",
+            "type": "slider",
+            "min": -15,
+            "max": 15,
+            "step": 1,
+            "default": 0
+          },
+          {
+            "token": "ADJ_MAGHRIB",
+            "label": "Maghrib fine-tune (min)",
+            "type": "slider",
+            "min": -15,
+            "max": 15,
+            "step": 1,
+            "default": 0
+          },
+          {
+            "token": "ADJ_ISHA",
+            "label": "Isha fine-tune (min)",
+            "type": "slider",
+            "min": -15,
+            "max": 15,
+            "step": 1,
+            "default": 0
+          },
+          {
+            "token": "ACCENT_COLOR",
+            "label": "Accent color",
+            "type": "color",
+            "default": "#d4a853"
           }
         ],
         "controlValues": {
           "TITLE": "Prayer Times",
-          "ACCENT_COLOR": "#da8189",
+          "LOCATION": "Dhaka",
+          "CUSTOM_NAME": "",
+          "CUSTOM_LAT": "23.8103",
+          "CUSTOM_LON": "90.4125",
+          "TIMEZONE": "Asia/Dhaka",
           "METHOD": "Karachi",
-          "MADHHAB": "Hanafi"
+          "MADHHAB": "Hanafi",
+          "LANG": "Bangla + English",
+          "BN_DIGITS": false,
+          "HOUR12": true,
+          "SHOW_SUNRISE": true,
+          "SHOW_HIJRI": true,
+          "HIJRI_OFFSET": 0,
+          "ADJ_FAJR": 0,
+          "ADJ_DHUHR": 1,
+          "ADJ_ASR": 0,
+          "ADJ_MAGHRIB": 0,
+          "ADJ_ISHA": 0,
+          "ACCENT_COLOR": "#da8189"
         }
       }
     },
@@ -594,7 +878,7 @@
       "type": "customblock",
       "data": {
         "blockName": "Prayer time",
-        "code": "<div class=\"bs\" data-title=\"{{TITLE}}\" data-accent=\"{{ACCENT_COLOR}}\" data-method=\"{{METHOD}}\" data-madhhab=\"{{MADHHAB}}\">\n  <div class=\"wrap\" style=\"max-width:760px;margin:0 auto;padding:48px 24px;\">\n    <div class=\"pt-card\">\n      <div class=\"pt-head\">\n        <div>\n          <div class=\"pt-kicker\">PRAYER TIMES · BANGLADESH</div>\n          <h2>{{TITLE}}</h2>\n          <p id=\"pt-date\">Calculating today's prayer times…</p>\n        </div>\n        <div class=\"pt-location\" id=\"pt-location\">📍 Locating…</div>\n      </div>\n\n\n  <div class=\"pt-now\">\n    <div class=\"pt-now-label\">PRAYER NOW</div>\n    <div class=\"pt-now-name\" id=\"pt-now\">Calculating…</div>\n    <div class=\"pt-now-time\" id=\"pt-now-time\">--:--</div>\n  </div>\n\n  <div class=\"pt-next\">\n    <div>\n      <span class=\"pt-small\">NEXT PRAYER</span>\n      <strong id=\"pt-next-name\">--</strong>\n    </div>\n    <div class=\"pt-count\" id=\"pt-count\">--:--:--</div>\n  </div>\n\n  <div class=\"pt-grid\" id=\"pt-grid\"></div>\n  <div class=\"pt-note\">Times are calculated locally from your device location and current date.</div>\n</div>\n\n\n  </div>\n</div>\n\n<style>\n.bs [data-title]{font-family:\"DM Sans\",sans-serif}\n.pt-card{background:var(--bg2,#1a1916);border:1px solid var(--bdr2,rgba(255,255,255,.1));border-radius:24px;padding:28px;color:var(--txt,#f0ede6);overflow:hidden}\n.pt-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start}\n.pt-kicker{font-size:11px;letter-spacing:2px;color:var(--acc,#d4a853);font-weight:700;margin-bottom:8px}\n.pt-card h2{font-family:\"Playfair Display\",serif;font-size:34px;line-height:1.1;margin:0 0 8px}\n.pt-card p{margin:0;color:var(--txt2,#a09a8f);font-size:14px}\n.pt-location{font-size:12px;color:var(--txt2,#a09a8f);white-space:nowrap}\n.pt-now{margin:28px 0 16px;padding:24px;border-radius:18px;background:var(--surf,#2a2926);text-align:center;border:1px solid color-mix(in srgb,var(--acc,#d4a853) 28%,transparent)}\n.pt-now-label,.pt-small{font-size:10px;letter-spacing:2px;color:var(--acc,#d4a853);font-weight:700}\n.pt-now-name{font-family:\"Playfair Display\",serif;font-size:31px;margin-top:6px}\n.pt-now-time{font-size:14px;color:var(--txt2,#a09a8f);margin-top:3px}\n.pt-next{display:flex;justify-content:space-between;align-items:center;padding:15px 17px;border-bottom:1px solid var(--bdr,rgba(255,255,255,.08));margin-bottom:5px}\n.pt-next strong{display:block;font-size:16px;margin-top:3px}\n.pt-count{font-variant-numeric:tabular-nums;color:var(--acc,#d4a853);font-weight:700}\n.pt-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:14px}\n.pt-item{padding:14px 8px;text-align:center;border-radius:14px;background:rgba(255,255,255,.035);border:1px solid transparent}\n.pt-item.active{border-color:var(--acc,#d4a853);background:color-mix(in srgb,var(--acc,#d4a853) 9%,transparent)}\n.pt-item b{display:block;font-size:12px;margin-bottom:5px}\n.pt-item span{font-size:14px;color:var(--txt2,#a09a8f);font-variant-numeric:tabular-nums}\n.pt-item.active span{color:var(--acc,#d4a853)}\n.pt-note{font-size:10px;color:var(--txt3,#6b6560);text-align:center;margin-top:17px}\n@media(max-width:560px){.pt-card{padding:20px}.pt-head{display:block}.pt-location{margin-top:12px}.pt-grid{grid-template-columns:repeat(3,1fr)}.pt-card h2{font-size:29px}}\n</style>\n\n<script>\n(function(){\n  const root=document.currentScript.previousElementSibling.previousElementSibling;\n  const data=root.dataset, A=data.accent||\"#d4a853\";\n  document.documentElement.style.setProperty(\"--acc\",A);\n\n  const names=[\"Fajr\",\"Dhuhr\",\"Asr\",\"Maghrib\",\"Isha\"];\n  const labels=[\"ফজর\",\"যোহর\",\"আসর\",\"মাগরিব\",\"এশা\"];\n  let lat=23.685,lon=90.3563, timer;\n\n  function rad(x){return x*Math.PI/180}\n  function deg(x){return x*180/Math.PI}\n  function fix(x){return (x%360+360)%360}\n  function jd(d){return d.getTime()/86400000+2440587.5}\n  function sun(d){\n    const J=jd(d), n=J-2451545;\n    const L=fix(280.46+.9856474*n), g=rad(fix(357.528+.9856003*n));\n    const lam=rad(fix(L+1.915*Math.sin(g)+.02*Math.sin(2*g)));\n    const e=rad(23.439-.0000004*n);\n    const dec=deg(Math.asin(Math.sin(e)*Math.sin(lam)));\n    const ra=deg(Math.atan2(Math.cos(e)*Math.sin(lam),Math.cos(lam)))/15;\n    const gmst=fix(280.46061837+360.98564736629*(J-2451545));\n    return {dec,ra,gmst};\n  }\n  function hourAngle(s,alt){\n    const x=(Math.sin(rad(alt))-Math.sin(rad(lat))*Math.sin(rad(s.dec)))/\n      (Math.cos(rad(lat))*Math.cos(rad(s.dec)));\n    return Math.acos(Math.max(-1,Math.min(1,x)))*12/Math.PI;\n  }\n  function times(){\n    const now=new Date(), s=sun(now);\n    const tz=-now.getTimezoneOffset()/60;\n    const noon=(s.ra? (s.gmst+lon/15-s.ra)/1 : 12);\n    const solarNoon=12-((s.gmst+lon-s.ra*15)/15-tz);\n    const h=hourAngle(s,-.833), hf=hourAngle(s,-18), hi=hourAngle(s,-18);\n    const rise=solarNoon-h, set=solarNoon+h;\n    const fajr=solarNoon-hf, isha=solarNoon+hi;\n    const asrAngle=deg(Math.acos((Math.sin(Math.atan(1/(data.madhhab===\"Hanafi\"?2:1))))));\n    const asrShadow=data.madhhab===\"Hanafi\"?2:1;\n    const latr=rad(lat), decr=rad(s.dec);\n    const ac=deg(Math.atan(1/(asrShadow+Math.tan(Math.abs(latr-decr)))));\n    const ha=hourAngle(s,ac);\n    return [fajr,solarNoon,solarNoon+ha,set,isha];\n  }\n  function fmt(v){\n    v=(v+24)%24;\n    let h=Math.floor(v),m=Math.round((v-h)*60);\n    if(m===60){h=(h+1)%24;m=0}\n    const ap=h>=12?\"PM\":\"AM\", hh=h%12||12;\n    return String(hh).padStart(2,\"0\")+\":\"+String(m).padStart(2,\"0\")+\" \"+ap;\n  }\n  function todayDate(){\n    return new Date().toLocaleDateString(\"en-BD\",{weekday:\"long\",year:\"numeric\",month:\"long\",day:\"numeric\"});\n  }\n  function render(){\n    const t=times(), now=new Date(), mins=now.getHours()+now.getMinutes()/60+now.getSeconds()/3600;\n    let idx=-1,next=0;\n    for(let i=0;i<t.length;i++) if(mins>=t[i]) idx=i;\n    next=idx+1;\n    if(next>=t.length) next=0;\n    const current=idx<0?4:idx;\n    const nowName=idx<0?\"Isha\":names[current];\n    const nowTime=idx<0?t[4]:t[current];\n    document.getElementById(\"pt-date\").textContent=todayDate();\n    document.getElementById(\"pt-now\").textContent=labels[current]+\" · \"+nowName;\n    document.getElementById(\"pt-now-time\").textContent=fmt(nowTime);\n    document.getElementById(\"pt-next-name\").textContent=labels[next]+\" · \"+names[next];\n\n    let target=t[next], targetDate=new Date(now);\n    if(next===0 && mins>=t[4]) targetDate.setDate(targetDate.getDate()+1);\n    targetDate.setHours(Math.floor(target),Math.round((target%1)*60),0,0);\n    let diff=Math.max(0,targetDate-now), sec=Math.floor(diff/1000);\n    document.getElementById(\"pt-count\").textContent=\n      String(Math.floor(sec/3600)).padStart(2,\"0\")+\":\"+String(Math.floor(sec%3600/60)).padStart(2,\"0\")+\":\"+String(sec%60).padStart(2,\"0\");\n\n    document.getElementById(\"pt-grid\").innerHTML=names.map((n,i)=>\n      '<div class=\"pt-item '+(i===current?'active':'')+'\"><b>'+labels[i]+'</b><span>'+fmt(t[i])+'</span></div>'\n    ).join(\"\");\n  }\n  function locate(){\n    const done=pos=>{\n      lat=pos.coords.latitude;lon=pos.coords.longitude;\n      document.getElementById(\"pt-location\").textContent=\"📍 \"+lat.toFixed(2)+\", \"+lon.toFixed(2);\n      render();clearInterval(timer);timer=setInterval(render,1000);\n    };\n    if(navigator.geolocation) navigator.geolocation.getCurrentPosition(done,()=>fallback(),{enableHighAccuracy:true,timeout:8000});\n    else fallback();\n  }\n  function fallback(){\n    document.getElementById(\"pt-location\").textContent=\"📍 Bangladesh\";\n    render();clearInterval(timer);timer=setInterval(render,1000);\n  }\n  locate();\n})();\n</script>",
+        "code": "",
         "description": "",
         "savedBlockId": "cb_1789839288201_clkwg",
         "hiddenImages": [
@@ -605,46 +889,8 @@
             "size": 111124
           }
         ],
-        "controls": [
-          {
-            "token": "TITLE",
-            "label": "Heading",
-            "type": "text",
-            "default": "Prayer Times"
-          },
-          {
-            "token": "ACCENT_COLOR",
-            "label": "Accent Color",
-            "type": "color",
-            "default": "#da8189"
-          },
-          {
-            "token": "METHOD",
-            "label": "Calculation Method",
-            "type": "select",
-            "options": [
-              "Karachi",
-              "Muslim World League"
-            ],
-            "default": "Karachi"
-          },
-          {
-            "token": "MADHHAB",
-            "label": "Asr Method",
-            "type": "select",
-            "options": [
-              "Hanafi",
-              "Shafi"
-            ],
-            "default": "Hanafi"
-          }
-        ],
-        "controlValues": {
-          "TITLE": "Prayer Times",
-          "ACCENT_COLOR": "#da8189",
-          "METHOD": "Karachi",
-          "MADHHAB": "Hanafi"
-        }
+        "controls": [],
+        "controlValues": {}
       }
     },
     {
