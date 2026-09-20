@@ -55,317 +55,322 @@
     </div>
   </div>
 </section><div class="pmb"><div class="wrap pmb-in"><div><span style="display:inline-block;padding:4px 12px;border:1px solid var(--bdr2);border-radius:20px;font-size:12px;color:var(--txt2);margin:2px">Tag 1</span><span style="display:inline-block;padding:4px 12px;border:1px solid var(--bdr2);border-radius:20px;font-size:12px;color:var(--txt2);margin:2px">Tag 2</span><span style="display:inline-block;padding:4px 12px;border:1px solid var(--bdr2);border-radius:20px;font-size:12px;color:var(--txt2);margin:2px">Tag 3</span></div></div></div>
-<div class="bs" data-title="Prayer Times" data-accent="#da8189" data-method="Karachi" data-madhhab="Hanafi">
-  <div class="wrap" style="max-width:760px;margin:0 auto;padding:48px 24px;">
+<div class="bs pt-app" data-location="Dhaka" data-place="" data-lat="23.8103" data-lon="90.4125" data-tz="Asia/Dhaka" data-method="Karachi" data-madhhab="Hanafi" data-lang="Bangla + English" data-bn="false" data-h12="true" data-sunrise="true" data-hijri="true" data-hijri-offset="0" data-adj="0,1,0,0,0" style="--pt-acc:#da8189">
+  <div class="pt-wrap">
     <div class="pt-card">
       <div class="pt-head">
         <div>
-          <div class="pt-kicker">PRAYER TIMES · BANGLADESH</div>
-          <h2>Prayer Times</h2>
-          <p id="pt-date">Calculating today's prayer times…</p>
+          <div class="pt-kicker" data-pt="kicker">PRAYER TIMES</div>
+          <h2 class="pt-title">Prayer Times</h2>
+          <p class="pt-date" data-pt="date"></p>
+          <p class="pt-hijri" data-pt="hijri"></p>
         </div>
-        <div class="pt-location" id="pt-location">📍 Locating…</div>
+        <div class="pt-loc">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span data-pt="loc">Locating…</span>
+        </div>
       </div>
 
-```
-  <div class="pt-now">
-    <div class="pt-now-label">PRAYER NOW</div>
-    <div class="pt-now-name" id="pt-now">Calculating…</div>
-    <div class="pt-now-time" id="pt-now-time">--:--</div>
-  </div>
+      <div class="pt-now">
+        <div class="pt-label" data-pt="nowlabel">PRAYER NOW</div>
+        <div class="pt-now-name" data-pt="nowname">…</div>
+        <div class="pt-now-time" data-pt="nowtime"></div>
+        <div class="pt-bar"><i data-pt="bar"></i></div>
+      </div>
 
-  <div class="pt-next">
-    <div>
-      <span class="pt-small">NEXT PRAYER</span>
-      <strong id="pt-next-name">--</strong>
+      <div class="pt-next">
+        <div>
+          <span class="pt-label" data-pt="nextlabel">NEXT PRAYER</span>
+          <strong data-pt="nextname">--</strong>
+          <small data-pt="nexttime"></small>
+        </div>
+        <div class="pt-count" data-pt="count" role="timer">--:--:--</div>
+      </div>
+
+      <div class="pt-grid" data-pt="grid"></div>
+      <div class="pt-note" data-pt="method"></div>
     </div>
-    <div class="pt-count" id="pt-count">--:--:--</div>
-  </div>
-
-  <div class="pt-grid" id="pt-grid"></div>
-  <div class="pt-note">Times are calculated locally from your device location and current date.</div>
-</div>
-```
-
   </div>
 </div>
 
 <style>
-.bs [data-title]{font-family:"DM Sans",sans-serif}
-.pt-card{background:var(--bg2,#1a1916);border:1px solid var(--bdr2,rgba(255,255,255,.1));border-radius:24px;padding:28px;color:var(--txt,#f0ede6);overflow:hidden}
-.pt-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start}
-.pt-kicker{font-size:11px;letter-spacing:2px;color:var(--acc,#d4a853);font-weight:700;margin-bottom:8px}
-.pt-card h2{font-family:"Playfair Display",serif;font-size:34px;line-height:1.1;margin:0 0 8px}
-.pt-card p{margin:0;color:var(--txt2,#a09a8f);font-size:14px}
-.pt-location{font-size:12px;color:var(--txt2,#a09a8f);white-space:nowrap}
-.pt-now{margin:28px 0 16px;padding:24px;border-radius:18px;background:var(--surf,#2a2926);text-align:center;border:1px solid color-mix(in srgb,var(--acc,#d4a853) 28%,transparent)}
-.pt-now-label,.pt-small{font-size:10px;letter-spacing:2px;color:var(--acc,#d4a853);font-weight:700}
-.pt-now-name{font-family:"Playfair Display",serif;font-size:31px;margin-top:6px}
-.pt-now-time{font-size:14px;color:var(--txt2,#a09a8f);margin-top:3px}
-.pt-next{display:flex;justify-content:space-between;align-items:center;padding:15px 17px;border-bottom:1px solid var(--bdr,rgba(255,255,255,.08));margin-bottom:5px}
-.pt-next strong{display:block;font-size:16px;margin-top:3px}
-.pt-count{font-variant-numeric:tabular-nums;color:var(--acc,#d4a853);font-weight:700}
-.pt-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:14px}
-.pt-item{padding:14px 8px;text-align:center;border-radius:14px;background:rgba(255,255,255,.035);border:1px solid transparent}
-.pt-item.active{border-color:var(--acc,#d4a853);background:color-mix(in srgb,var(--acc,#d4a853) 9%,transparent)}
-.pt-item b{display:block;font-size:12px;margin-bottom:5px}
-.pt-item span{font-size:14px;color:var(--txt2,#a09a8f);font-variant-numeric:tabular-nums}
-.pt-item.active span{color:var(--acc,#d4a853)}
-.pt-note{font-size:10px;color:var(--txt3,#6b6560);text-align:center;margin-top:17px}
-@media(max-width:560px){.pt-card{padding:20px}.pt-head{display:block}.pt-location{margin-top:12px}.pt-grid{grid-template-columns:repeat(3,1fr)}.pt-card h2{font-size:29px}}
+.pt-app{font-family:"DM Sans",sans-serif}
+.pt-app .pt-wrap{max-width:760px;margin:0 auto;padding:48px 24px}
+.pt-app .pt-card{background:var(--bg2,#1a1916);border:1px solid var(--bdr2,rgba(255,255,255,.1));border-radius:24px;padding:28px;color:var(--txt,#f0ede6);overflow:hidden}
+.pt-app .pt-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start}
+.pt-app .pt-kicker{font-size:11px;letter-spacing:2px;color:var(--pt-acc,#d4a853);font-weight:700;margin-bottom:8px}
+.pt-app .pt-title{font-family:"Playfair Display",serif;font-size:34px;line-height:1.1;margin:0 0 8px;color:inherit}
+.pt-app .pt-date,.pt-app .pt-hijri{margin:0;color:var(--txt2,#a09a8f);font-size:14px}
+.pt-app .pt-hijri{font-size:13px;margin-top:2px}
+.pt-app .pt-loc{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--txt2,#a09a8f);text-align:right;max-width:46%}
+.pt-app .pt-loc svg{flex:none;color:var(--pt-acc,#d4a853)}
+.pt-app .pt-now{margin:28px 0 16px;padding:24px;border-radius:18px;background:var(--surf,#2a2926);text-align:center;border:1px solid color-mix(in srgb,var(--pt-acc,#d4a853) 28%,transparent)}
+.pt-app .pt-label{display:block;font-size:10px;letter-spacing:2px;color:var(--pt-acc,#d4a853);font-weight:700}
+.pt-app .pt-now-name{font-family:"Playfair Display",serif;font-size:31px;margin-top:6px}
+.pt-app .pt-now-time{font-size:14px;color:var(--txt2,#a09a8f);margin-top:3px;min-height:1.2em}
+.pt-app .pt-bar{height:4px;border-radius:4px;background:rgba(255,255,255,.08);margin-top:16px;overflow:hidden}
+.pt-app .pt-bar i{display:block;height:100%;width:0;background:var(--pt-acc,#d4a853);border-radius:4px;transition:width .9s linear}
+.pt-app .pt-next{display:flex;justify-content:space-between;align-items:center;padding:15px 17px;border-bottom:1px solid var(--bdr,rgba(255,255,255,.08));margin-bottom:5px}
+.pt-app .pt-next strong{display:block;font-size:16px;margin-top:3px}
+.pt-app .pt-next small{display:block;font-size:12px;color:var(--txt2,#a09a8f);margin-top:2px}
+.pt-app .pt-count{font-variant-numeric:tabular-nums;color:var(--pt-acc,#d4a853);font-weight:700;font-size:20px}
+.pt-app .pt-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:14px}
+.pt-app .pt-grid.pt-six{grid-template-columns:repeat(6,1fr)}
+.pt-app .pt-item{padding:14px 6px;text-align:center;border-radius:14px;background:rgba(255,255,255,.035);border:1px solid transparent}
+.pt-app .pt-item.pt-active{border-color:var(--pt-acc,#d4a853);background:color-mix(in srgb,var(--pt-acc,#d4a853) 9%,transparent)}
+.pt-app .pt-item.pt-next-up{border-color:rgba(255,255,255,.18);border-style:dashed}
+.pt-app .pt-item b{display:block;font-size:12px}
+.pt-app .pt-item em{display:block;font-style:normal;font-size:10px;color:var(--txt3,#6b6560);margin-top:1px}
+.pt-app .pt-item span{display:block;font-size:14px;color:var(--txt2,#a09a8f);font-variant-numeric:tabular-nums;margin-top:5px}
+.pt-app .pt-item.pt-active span{color:var(--pt-acc,#d4a853)}
+.pt-app .pt-item.pt-sun b,.pt-app .pt-item.pt-sun span{opacity:.75}
+.pt-app .pt-note{font-size:10px;color:var(--txt3,#6b6560);text-align:center;margin-top:17px;line-height:1.6}
+@media(max-width:560px){
+  .pt-app .pt-wrap{padding:32px 14px}
+  .pt-app .pt-card{padding:20px}
+  .pt-app .pt-head{display:block}
+  .pt-app .pt-loc{margin-top:12px;max-width:none;text-align:left}
+  .pt-app .pt-title{font-size:29px}
+  .pt-app .pt-grid,.pt-app .pt-grid.pt-six{grid-template-columns:repeat(3,1fr)}
+}
 </style>
 
 <script>
-(function(){
-  const root=document.currentScript.previousElementSibling.previousElementSibling;
-  const data=root.dataset, A=data.accent||"#d4a853";
-  document.documentElement.style.setProperty("--acc",A);
+(function () {
+  "use strict";
+  var D2R = Math.PI / 180, R2D = 180 / Math.PI;
 
-  const names=["Fajr","Dhuhr","Asr","Maghrib","Isha"];
-  const labels=["ফজর","যোহর","আসর","মাগরিব","এশা"];
-  let lat=23.685,lon=90.3563, timer;
+  // Fajr / Isha angles (degrees below the horizon). "im" = Isha is a fixed number of minutes after Maghrib.
+  var METHODS = {
+    "Karachi": { f: 18, i: 18 },
+    "Muslim World League": { f: 18, i: 17 },
+    "ISNA (North America)": { f: 15, i: 15 },
+    "Egyptian": { f: 19.5, i: 17.5 },
+    "Umm al-Qura (Makkah)": { f: 18.5, im: 90 },
+    "Kuwait": { f: 18, i: 17.5 }
+  };
+  var ORDER = ["fajr", "sunrise", "dhuhr", "asr", "maghrib", "isha"];
+  var PLACES = {
+    "Dhaka": [23.8103, 90.4125], "Chattogram": [22.3569, 91.7832], "Rajshahi": [24.3745, 88.6042],
+    "Khulna": [22.8456, 89.5403], "Sylhet": [24.8949, 91.8687], "Barishal": [22.7010, 90.3535],
+    "Rangpur": [25.7439, 89.2752], "Mymensingh": [24.7471, 90.4203]
+  };
+  var NAMES = {
+    fajr: ["Fajr", "ফজর"], sunrise: ["Sunrise", "সূর্যোদয়"], dhuhr: ["Dhuhr", "যোহর"],
+    asr: ["Asr", "আসর"], maghrib: ["Maghrib", "মাগরিব"], isha: ["Isha", "এশা"], after: ["After sunrise", "সূর্যোদয়ের পর"]
+  };
+  var TXT = {
+    en: { kicker: "PRAYER TIMES", now: "PRAYER NOW", nowAfter: "NOW", next: "NEXT PRAYER", locating: "Locating…", unavailable: "location unavailable", note: "Calculated on this device from the position of the sun for today's date.", noFard: "No obligatory prayer until Dhuhr" },
+    bn: { kicker: "নামাজের সময়সূচি", now: "এখনকার নামাজ", nowAfter: "এখন", next: "পরবর্তী নামাজ", locating: "অবস্থান খোঁজা হচ্ছে…", unavailable: "অবস্থান পাওয়া যায়নি", note: "আজকের তারিখে সূর্যের অবস্থান থেকে এই ডিভাইসেই গণনা করা হয়েছে।", noFard: "যোহর পর্যন্ত কোনো ফরজ নামাজ নেই" }
+  };
 
-  function rad(x){return x*Math.PI/180}
-  function deg(x){return x*180/Math.PI}
-  function fix(x){return (x%360+360)%360}
-  function jd(d){return d.getTime()/86400000+2440587.5}
-  function sun(d){
-    const J=jd(d), n=J-2451545;
-    const L=fix(280.46+.9856474*n), g=rad(fix(357.528+.9856003*n));
-    const lam=rad(fix(L+1.915*Math.sin(g)+.02*Math.sin(2*g)));
-    const e=rad(23.439-.0000004*n);
-    const dec=deg(Math.asin(Math.sin(e)*Math.sin(lam)));
-    const ra=deg(Math.atan2(Math.cos(e)*Math.sin(lam),Math.cos(lam)))/15;
-    const gmst=fix(280.46061837+360.98564736629*(J-2451545));
-    return {dec,ra,gmst};
-  }
-  function hourAngle(s,alt){
-    const x=(Math.sin(rad(alt))-Math.sin(rad(lat))*Math.sin(rad(s.dec)))/
-      (Math.cos(rad(lat))*Math.cos(rad(s.dec)));
-    return Math.acos(Math.max(-1,Math.min(1,x)))*12/Math.PI;
-  }
-  function times(){
-    const now=new Date(), s=sun(now);
-    const tz=-now.getTimezoneOffset()/60;
-    const noon=(s.ra? (s.gmst+lon/15-s.ra)/1 : 12);
-    const solarNoon=12-((s.gmst+lon-s.ra*15)/15-tz);
-    const h=hourAngle(s,-.833), hf=hourAngle(s,-18), hi=hourAngle(s,-18);
-    const rise=solarNoon-h, set=solarNoon+h;
-    const fajr=solarNoon-hf, isha=solarNoon+hi;
-    const asrAngle=deg(Math.acos((Math.sin(Math.atan(1/(data.madhhab==="Hanafi"?2:1))))));
-    const asrShadow=data.madhhab==="Hanafi"?2:1;
-    const latr=rad(lat), decr=rad(s.dec);
-    const ac=deg(Math.atan(1/(asrShadow+Math.tan(Math.abs(latr-decr)))));
-    const ha=hourAngle(s,ac);
-    return [fajr,solarNoon,solarNoon+ha,set,isha];
-  }
-  function fmt(v){
-    v=(v+24)%24;
-    let h=Math.floor(v),m=Math.round((v-h)*60);
-    if(m===60){h=(h+1)%24;m=0}
-    const ap=h>=12?"PM":"AM", hh=h%12||12;
-    return String(hh).padStart(2,"0")+":"+String(m).padStart(2,"0")+" "+ap;
-  }
-  function todayDate(){
-    return new Date().toLocaleDateString("en-BD",{weekday:"long",year:"numeric",month:"long",day:"numeric"});
-  }
-  function render(){
-    const t=times(), now=new Date(), mins=now.getHours()+now.getMinutes()/60+now.getSeconds()/3600;
-    let idx=-1,next=0;
-    for(let i=0;i<t.length;i++) if(mins>=t[i]) idx=i;
-    next=idx+1;
-    if(next>=t.length) next=0;
-    const current=idx<0?4:idx;
-    const nowName=idx<0?"Isha":names[current];
-    const nowTime=idx<0?t[4]:t[current];
-    document.getElementById("pt-date").textContent=todayDate();
-    document.getElementById("pt-now").textContent=labels[current]+" · "+nowName;
-    document.getElementById("pt-now-time").textContent=fmt(nowTime);
-    document.getElementById("pt-next-name").textContent=labels[next]+" · "+names[next];
-
-    let target=t[next], targetDate=new Date(now);
-    if(next===0 && mins>=t[4]) targetDate.setDate(targetDate.getDate()+1);
-    targetDate.setHours(Math.floor(target),Math.round((target%1)*60),0,0);
-    let diff=Math.max(0,targetDate-now), sec=Math.floor(diff/1000);
-    document.getElementById("pt-count").textContent=
-      String(Math.floor(sec/3600)).padStart(2,"0")+":"+String(Math.floor(sec%3600/60)).padStart(2,"0")+":"+String(sec%60).padStart(2,"0");
-
-    document.getElementById("pt-grid").innerHTML=names.map((n,i)=>
-      '<div class="pt-item '+(i===current?'active':'')+'"><b>'+labels[i]+'</b><span>'+fmt(t[i])+'</span></div>'
-    ).join("");
-  }
-  function locate(){
-    const done=pos=>{
-      lat=pos.coords.latitude;lon=pos.coords.longitude;
-      document.getElementById("pt-location").textContent="📍 "+lat.toFixed(2)+", "+lon.toFixed(2);
-      render();clearInterval(timer);timer=setInterval(render,1000);
+  // ── Sun position (NOAA / Meeus series) for a Julian day: declination (rad) and equation of time (minutes) ──
+  function jd(ms) { return ms / 86400000 + 2440587.5; }
+  function sun(J) {
+    var T = (J - 2451545) / 36525;
+    var L0 = (280.46646 + T * (36000.76983 + T * 0.0003032)) % 360;
+    var M = (357.52911 + T * (35999.05029 - 0.0001537 * T)) * D2R;
+    var e = 0.016708634 - T * (0.000042037 + 0.0000001267 * T);
+    var C = Math.sin(M) * (1.914602 - T * (0.004817 + 0.000014 * T)) + Math.sin(2 * M) * (0.019993 - 0.000101 * T) + Math.sin(3 * M) * 0.000289;
+    var om = (125.04 - 1934.136 * T) * D2R;
+    var lam = (L0 + C - 0.00569 - 0.00478 * Math.sin(om)) * D2R;
+    var eps = (23 + (26 + (21.448 - T * (46.815 + T * (0.00059 - T * 0.001813))) / 60) / 60 + 0.00256 * Math.cos(om)) * D2R;
+    var y = Math.tan(eps / 2); y *= y;
+    var L = L0 * D2R;
+    return {
+      d: Math.asin(Math.sin(eps) * Math.sin(lam)),
+      e: 4 * R2D * (y * Math.sin(2 * L) - 2 * e * Math.sin(M) + 4 * e * y * Math.sin(M) * Math.cos(2 * L) - 0.5 * y * y * Math.sin(4 * L) - 1.25 * e * e * Math.sin(2 * M))
     };
-    if(navigator.geolocation) navigator.geolocation.getCurrentPosition(done,()=>fallback(),{enableHighAccuracy:true,timeout:8000});
-    else fallback();
   }
-  function fallback(){
-    document.getElementById("pt-location").textContent="📍 Bangladesh";
-    render();clearInterval(timer);timer=setInterval(render,1000);
+
+  // ── The prayer times for ONE calendar date at a place. Pure function: returns UTC milliseconds
+  //    [fajr, sunrise, dhuhr, asr, maghrib, isha] (NaN where the sun never reaches that angle). ──
+  // Each moment is solved iteratively, re-reading the sun's declination and the equation of time AT THAT
+  // MOMENT, so the answer is the same whenever it is computed and does not drift through the day.
+  function calc(lat, lon, y, m0, d, method, hanafi, adj) {
+    var noon = Date.UTC(y, m0, d, 12, 0, 0);
+    var sl = Math.sin(lat * D2R), cl = Math.cos(lat * D2R);
+    function transitAt(t) { return noon - (lon * 4 + sun(jd(t)).e) * 60000; }
+    var tr = noon - lon * 4 * 60000;
+    for (var k = 0; k < 3; k++) tr = transitAt(tr);
+    function at(alt, sign) {                       // alt: degrees (number) or function(sun) -> degrees
+      var t = tr;
+      for (var i = 0; i < 6; i++) {
+        var s = sun(jd(t));
+        var a = typeof alt === "function" ? alt(s) : alt;
+        var c = (Math.sin(a * D2R) - sl * Math.sin(s.d)) / (cl * Math.cos(s.d));
+        if (!(c >= -1 && c <= 1)) return NaN;
+        t = transitAt(t) + sign * Math.acos(c) * R2D * 4 * 60000;
+      }
+      return t;
+    }
+    var f = hanafi ? 2 : 1;
+    var sunrise = at(-0.833, -1), maghrib = at(-0.833, 1);
+    var fajr = at(-method.f, -1);
+    var isha = method.im ? maghrib + method.im * 60000 : at(-method.i, 1);
+    // Asr: shadow = f x object + the shadow it had at local noon, so the noon declination sets the target altitude.
+    var asrAlt = R2D * Math.atan(1 / (f + Math.tan(Math.abs(lat * D2R - sun(jd(tr)).d))));
+    var asr = at(asrAlt, 1);
+    // Very high latitudes: if the sun never gets 18 degrees below the horizon, use the "angle / 60" share of the night.
+    if (isNaN(fajr) || (isNaN(isha) && !method.im)) {
+      var night = 86400000 - (maghrib - sunrise);
+      if (isFinite(night)) {
+        if (isNaN(fajr)) fajr = sunrise - night * (method.f / 60);
+        if (isNaN(isha) && !method.im) isha = maghrib + night * (method.i / 60);
+      }
+    }
+    return [fajr + adj[0] * 60000, sunrise, tr + adj[1] * 60000, asr + adj[2] * 60000, maghrib + adj[3] * 60000, isha + adj[4] * 60000];
   }
-  locate();
+
+  function num(v, dflt) { var n = parseFloat(v); return isFinite(n) ? n : dflt; }
+  function pad(n) { return (n < 10 ? "0" : "") + n; }
+  function rnd(ms) { return Math.round(ms / 60000) * 60000; }
+
+  function init(root) {
+    if (root.__ptInit) return;
+    root.__ptInit = true;
+    var s = root.dataset;
+    var q = function (n) { return root.querySelector('[data-pt="' + n + '"]'); };
+    var el = { kicker: q("kicker"), date: q("date"), hijri: q("hijri"), loc: q("loc"), nowlabel: q("nowlabel"), nowname: q("nowname"), nowtime: q("nowtime"), bar: q("bar"), nextlabel: q("nextlabel"), nextname: q("nextname"), nexttime: q("nexttime"), count: q("count"), grid: q("grid"), method: q("method") };
+
+    var lang = s.lang === "English" ? "en" : (s.lang === "বাংলা" ? "bn" : "both");
+    var T = TXT[lang === "bn" ? "bn" : "en"];
+    var bnDigits = s.bn === "true", h12 = s.h12 !== "false", showSun = s.sunrise !== "false", showHijri = s.hijri !== "false";
+    var hijriOffset = Math.round(num(s.hijriOffset, 0));
+    var methodName = METHODS[s.method] ? s.method : "Karachi", method = METHODS[methodName];
+    var hanafi = s.madhhab === "Hanafi";
+    var adj = (s.adj || "0,1,0,0,0").split(",").map(function (x) { return num(x, 0); });
+    while (adj.length < 5) adj.push(0);
+    var numbering = bnDigits ? "beng" : "latn";
+    var uiLoc = (lang === "bn" ? "bn" : "en") + "-u-nu-" + numbering;
+    function dig(str) { return bnDigits ? String(str).replace(/[0-9]/g, function (c) { return "০১২৩৪৫৬৭৮৯".charAt(+c); }) : String(str); }
+    function nm(k) { return lang === "en" ? NAMES[k][0] : lang === "bn" ? NAMES[k][1] : NAMES[k][1] + " · " + NAMES[k][0]; }
+
+    // Where are we? A preset city, custom coordinates, or the visitor's device.
+    var place = null, tz = "Asia/Dhaka", wantDevice = s.location === "My device location";
+    function validTz(z) { try { new Intl.DateTimeFormat("en", { timeZone: z }); return true; } catch (e) { return false; } }
+    function setPlace(lat, lon, name, zone) {
+      place = { lat: lat, lon: lon, name: name };
+      tz = validTz(zone) ? zone : "Asia/Dhaka";
+      fmtT = new Intl.DateTimeFormat(uiLoc, { timeZone: tz, hour: "2-digit", minute: "2-digit", hourCycle: h12 ? "h12" : "h23" });
+      fmtD = new Intl.DateTimeFormat("en-CA", { timeZone: tz, year: "numeric", month: "numeric", day: "numeric" });
+      cacheKey = ""; tick();
+    }
+    var fmtT, fmtD, cacheKey = "", cache = null, lastIdx = -2;
+    function coordLabel(lat, lon) { return dig(Math.abs(lat).toFixed(2)) + "°" + (lat >= 0 ? "N" : "S") + ", " + dig(Math.abs(lon).toFixed(2)) + "°" + (lon >= 0 ? "E" : "W"); }
+    if (PLACES[s.location]) {
+      setPlace(PLACES[s.location][0], PLACES[s.location][1], s.location, "Asia/Dhaka");
+    } else if (wantDevice) {
+      var cached = null;
+      try { cached = JSON.parse(localStorage.getItem("pt_loc_v1") || "null"); } catch (e) {}
+      var devTz = "Asia/Dhaka";
+      try { devTz = Intl.DateTimeFormat().resolvedOptions().timeZone || devTz; } catch (e) {}
+      if (cached && isFinite(cached.lat) && isFinite(cached.lon)) setPlace(cached.lat, cached.lon, coordLabel(cached.lat, cached.lon), devTz);
+      else setPlace(PLACES["Dhaka"][0], PLACES["Dhaka"][1], T.locating, devTz);
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (p) {
+          try { localStorage.setItem("pt_loc_v1", JSON.stringify({ lat: p.coords.latitude, lon: p.coords.longitude })); } catch (e) {}
+          setPlace(p.coords.latitude, p.coords.longitude, coordLabel(p.coords.latitude, p.coords.longitude), devTz);
+        }, function () {
+          if (!cached) setPlace(PLACES["Dhaka"][0], PLACES["Dhaka"][1], "Dhaka (" + T.unavailable + ")", devTz);
+        }, { maximumAge: 600000, timeout: 10000 });
+      } else if (!cached) setPlace(PLACES["Dhaka"][0], PLACES["Dhaka"][1], "Dhaka (" + T.unavailable + ")", devTz);
+    } else {
+      var la = num(s.lat, 23.8103), lo = num(s.lon, 90.4125);
+      la = Math.max(-66, Math.min(66, la)); lo = Math.max(-180, Math.min(180, lo));
+      setPlace(la, lo, (s.place || "").trim() || coordLabel(la, lo), s.tz || "Asia/Dhaka");
+    }
+
+    // ── Day tracking ──
+    function localDate(ms) {
+      var parts = fmtD.formatToParts(new Date(ms));
+      var o = {}; parts.forEach(function (p) { o[p.type] = +p.value; });
+      return o;
+    }
+    function dayTimes(dp, delta) {
+      var x = new Date(Date.UTC(dp.year, dp.month - 1, dp.day + delta));
+      return calc(place.lat, place.lon, x.getUTCFullYear(), x.getUTCMonth(), x.getUTCDate(), method, hanafi, adj).map(function (t) { return isNaN(t) ? t : rnd(t); });
+    }
+    function tick() {
+      if (!place) return;
+      if (!document.body.contains(root)) { clearInterval(timer); return; }
+      var now = Date.now();
+      var dp = localDate(now);
+      var key = dp.year + "-" + dp.month + "-" + dp.day + "|" + place.lat + "," + place.lon + "|" + tz;
+      if (key !== cacheKey) {
+        cacheKey = key;
+        cache = { y: dayTimes(dp, -1), t: dayTimes(dp, 0), n: dayTimes(dp, 1) };
+        lastIdx = -2;
+        drawStatic(now);
+      }
+      // Timeline: yesterday's Isha, today's six moments, tomorrow's Fajr.
+      var ev = [{ k: "isha", t: cache.y[5] }];
+      ORDER.forEach(function (k, i) { ev.push({ k: k, t: cache.t[i] }); });
+      ev.push({ k: "fajr", t: cache.n[0] });
+      ev = ev.filter(function (e) { return !isNaN(e.t); });
+      var idx = -1;
+      for (var i = 0; i < ev.length; i++) if (now >= ev[i].t) idx = i;
+      if (idx < 0 || idx >= ev.length - 1) { el.count.textContent = "--:--:--"; return; }
+      var cur = ev[idx], end = ev[idx + 1];
+      var nextP = null;
+      for (var j = idx + 1; j < ev.length; j++) if (ev[j].k !== "sunrise") { nextP = ev[j]; break; }
+
+      if (idx !== lastIdx) {
+        lastIdx = idx;
+        var afterSun = cur.k === "sunrise";
+        el.nowlabel.textContent = afterSun ? T.nowAfter : T.now;
+        el.nowname.textContent = afterSun ? (lang === "en" ? NAMES.after[0] : lang === "bn" ? NAMES.after[1] : NAMES.after[1] + " · " + NAMES.after[0]) : nm(cur.k);
+        el.nowtime.textContent = afterSun
+          ? T.noFard
+          : fmtT.format(cur.t) + "  →  " + NAMES[end.k][lang === "bn" ? 1 : 0] + " " + fmtT.format(end.t);
+        el.nextlabel.textContent = T.next;
+        el.nextname.textContent = nextP ? nm(nextP.k) : "--";
+        el.nexttime.textContent = nextP ? fmtT.format(nextP.t) : "";
+        var cells = el.grid.children;
+        for (var c = 0; c < cells.length; c++) {
+          var k = cells[c].getAttribute("data-k");
+          cells[c].classList.toggle("pt-active", k === cur.k);
+          cells[c].classList.toggle("pt-next-up", !!nextP && k === nextP.k);
+        }
+      }
+      var left = Math.max(0, Math.ceil((nextP.t - now) / 1000));
+      el.count.textContent = dig(pad(Math.floor(left / 3600)) + ":" + pad(Math.floor(left % 3600 / 60)) + ":" + pad(left % 60));
+      el.bar.style.width = Math.max(0, Math.min(100, (now - cur.t) / (end.t - cur.t) * 100)).toFixed(2) + "%";
+    }
+
+    function drawStatic(now) {
+      el.kicker.textContent = T.kicker;
+      el.loc.textContent = place.name;
+      var dl = (lang === "bn" ? "bn" : "en") + "-u-nu-" + numbering;
+      el.date.textContent = new Intl.DateTimeFormat(dl, { timeZone: tz, weekday: "long", year: "numeric", month: "long", day: "numeric" }).format(new Date(now));
+      if (showHijri) {
+        try {
+          el.hijri.textContent = new Intl.DateTimeFormat((lang === "bn" ? "bn" : "en") + "-u-ca-islamic-umalqura-nu-" + numbering, { timeZone: tz, day: "numeric", month: "long", year: "numeric" }).format(new Date(now + hijriOffset * 86400000));
+        } catch (e) { el.hijri.textContent = ""; }
+      } else el.hijri.textContent = "";
+      var keys = showSun ? ORDER : ORDER.filter(function (k) { return k !== "sunrise"; });
+      el.grid.className = "pt-grid" + (showSun ? " pt-six" : "");
+      el.grid.innerHTML = keys.map(function (k) {
+        var i = ORDER.indexOf(k), t = cache.t[i];
+        var label = lang === "en" ? "<b>" + NAMES[k][0] + "</b>" : lang === "bn" ? "<b>" + NAMES[k][1] + "</b>" : "<b>" + NAMES[k][1] + "</b><em>" + NAMES[k][0] + "</em>";
+        return '<div class="pt-item' + (k === "sunrise" ? " pt-sun" : "") + '" data-k="' + k + '">' + label + "<span>" + (isNaN(t) ? "--:--" : fmtT.format(t)) + "</span></div>";
+      }).join("");
+      var im = method.im ? (lang === "bn" ? "এশা মাগরিবের " + dig(method.im) + " মিনিট পর" : "Isha " + method.im + " min after Maghrib") : "";
+      var ang = method.im ? (dig(method.f) + "°") : (dig(method.f) + "° / " + dig(method.i) + "°");
+      el.method.textContent = T.note + "  " + methodName + " (" + ang + (im ? ", " + im : "") + ") · " + (hanafi ? "Hanafi Asr" : "Standard Asr") + " · " + tz;
+    }
+
+    var timer = setInterval(tick, 1000);
+    document.addEventListener("visibilitychange", function () { if (!document.hidden) tick(); });
+    tick();
+  }
+
+  var roots = document.querySelectorAll(".pt-app");
+  for (var r = 0; r < roots.length; r++) init(roots[r]);
 })();
 </script><div class="wrap"><div class="bs"><div class="rt"><p class="drop-cap">Your opening paragraph here. Use standard HTML like <strong>bold</strong>, <em>italic</em>, and <a href="#">links</a>.</p>
 <h2>A Heading</h2>
-<p>More content follows...</p></div></div><div class="img-b"><img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&amp;q=80" style="aspect-ratio:16/9;cursor:zoom-in" onclick="openGalleryLightbox(['https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&amp;q=80'],0)"><div class="img-cap">Mountain panorama</div></div><div class="bs"><div class="pq"><blockquote>"The nomads don't move because they are restless. They move because movement is how they understand the land."</blockquote><cite>— Rustam Nazarov, Ethnographer</cite></div></div><div class="bs"><div class="vb"><div class="vb-title">Watch: Six Months on the Pamir Highway</div><div class="vb-wrap" id="ytf52s" style="position:relative;padding-bottom:56.25%;border-radius:14px;overflow:hidden;border:1px solid rgba(240,237,230,.08);background:#000;cursor:pointer" onclick="this.innerHTML='<iframe src=\'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1\' allow=\'autoplay; encrypted-media; picture-in-picture\' allowfullscreen style=\'position:absolute;inset:0;width:100%;height:100%;border:none\'></iframe>'"><img src="https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;pointer-events:none"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none"><div style="width:64px;height:64px;background:rgba(212,168,83,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px">▶</div></div></div></div></div><div class="bs"><div class="stb"><div class="st"><div class="st-n" style="color:#4fa87a">100</div><div class="st-l">Stat Label</div><div class="st-c" style="color:#4fa87a">↑ Change note</div></div><div class="st"><div class="st-n" style="color:#5b8fd4">2.5k</div><div class="st-l">Stat Label</div><div class="st-c" style="color:#5b8fd4">More info</div></div><div class="st"><div class="st-n" style="color:#6b6560">50</div><div class="st-l">Stat Label</div><div class="st-c" style="color:#6b6560">Some note</div></div><div class="st"><div class="st-n" style="color:#c94f4f">8</div><div class="st-l">Stat Label</div><div class="st-c" style="color:#c94f4f">↓ Change</div></div></div></div><div class="bs"><div class="mb mb-lr"><div class="mb-txt"><span class="mb-tag">Architecture</span><div class="mb-ttl">The Fortresses of Ishkashim</div><div class="mb-p">Perched on river bluffs, the mud-brick fortresses of the Wakhan speak in a language older than the nations that now claim this land.</div><div class="mb-p">I spent two days photographing them at dawn.</div><div class="mb-meta">📍 Ishkashim, Tajikistan · 📷 8 photos</div><a href="#" class="mb-lnk">Read the full story →</a></div><div class="mb-img"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=700&amp;q=80" alt="" style="cursor:zoom-in" onclick="openGalleryLightbox(['https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=700&amp;q=80'],0)"></div></div></div><div class="bs"><div class="tl"><div class="tl-i"><div class="tl-dot"></div><div class="tl-dt">October 2024</div><div class="tl-tt" style="">Departure from Osh</div><div class="tl-dc">Set off with a 28kg pack. First yurt stay at 3,000m.</div></div><div class="tl-i"><div class="tl-dot"></div><div class="tl-dt">November 2024</div><div class="tl-tt" style="">Crossing Ak-Baital Pass</div><div class="tl-dc">-22°C. My water froze in 40 minutes. Completely worth it.</div></div><div class="tl-i"><div class="tl-dot"></div><div class="tl-dt">April 2025</div><div class="tl-tt" style="">Return via Ishkashim</div><div class="tl-dc">First hot shower in 19 days. Best plov of my life.</div></div></div></div><div class="bs"><div class="ch-b"><div class="ch-ttl">Route Elevation Profile</div><div class="ch-card"><div style="position:relative;height:280px"><canvas data-chart='{"chartType":"line","title":"Route Elevation Profile","labels":"Osh,Sary-Mogol,Karakul,Murghab,Ak-Baital,Alichur,Langar,Ishkashim","datasets":[{"label":"Elevation (m)","data":"900,3000,3914,3612,4655,4000,2850,2680","color":"#d4a853"}]}'></canvas></div></div></div></div><div class="bs"><div><div class="ac-i"><button class="ac-hd"><span>Question 1?</span><span class="ac-ico">+</span></button><div class="ac-body"><p>Answer 1.</p></div></div><div class="ac-i"><button class="ac-hd"><span>Question 2?</span><span class="ac-ico">+</span></button><div class="ac-body"><p>Answer 2.</p></div></div></div></div><div class="bs"><div class="cta"><div class="cta-bg"><div class="cta-inner"><div class="cta-t">Ready to Plan Your Expedition?</div><div class="cta-d">Download the complete Pamir Highway guide — 68 pages of permits, routes, and cultural etiquette.</div><div class="cta-btns"><a href="projects/loom/loom pattern 8 (7).html" target="_blank" rel="noopener" onclick="sbHandleProjectLinkClick(event)" class="btn-p">Download Free Guide →</a> <a href="#" class="btn-o">Join Community</a></div></div></div></div></div></div><div class="bs" data-title="Prayer Times" data-accent="#da8189" data-method="Karachi" data-madhhab="Hanafi">
-  <div class="wrap" style="max-width:760px;margin:0 auto;padding:48px 24px;">
-    <div class="pt-card">
-      <div class="pt-head">
-        <div>
-          <div class="pt-kicker">PRAYER TIMES · BANGLADESH</div>
-          <h2>Prayer Times</h2>
-          <p id="pt-date">Calculating today's prayer times…</p>
-        </div>
-        <div class="pt-location" id="pt-location">📍 Locating…</div>
-      </div>
-
-
-  <div class="pt-now">
-    <div class="pt-now-label">PRAYER NOW</div>
-    <div class="pt-now-name" id="pt-now">Calculating…</div>
-    <div class="pt-now-time" id="pt-now-time">--:--</div>
-  </div>
-
-  <div class="pt-next">
-    <div>
-      <span class="pt-small">NEXT PRAYER</span>
-      <strong id="pt-next-name">--</strong>
-    </div>
-    <div class="pt-count" id="pt-count">--:--:--</div>
-  </div>
-
-  <div class="pt-grid" id="pt-grid"></div>
-  <div class="pt-note">Times are calculated locally from your device location and current date.</div>
-</div>
-
-
-  </div>
-</div>
-
-<style>
-.bs [data-title]{font-family:"DM Sans",sans-serif}
-.pt-card{background:var(--bg2,#1a1916);border:1px solid var(--bdr2,rgba(255,255,255,.1));border-radius:24px;padding:28px;color:var(--txt,#f0ede6);overflow:hidden}
-.pt-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start}
-.pt-kicker{font-size:11px;letter-spacing:2px;color:var(--acc,#d4a853);font-weight:700;margin-bottom:8px}
-.pt-card h2{font-family:"Playfair Display",serif;font-size:34px;line-height:1.1;margin:0 0 8px}
-.pt-card p{margin:0;color:var(--txt2,#a09a8f);font-size:14px}
-.pt-location{font-size:12px;color:var(--txt2,#a09a8f);white-space:nowrap}
-.pt-now{margin:28px 0 16px;padding:24px;border-radius:18px;background:var(--surf,#2a2926);text-align:center;border:1px solid color-mix(in srgb,var(--acc,#d4a853) 28%,transparent)}
-.pt-now-label,.pt-small{font-size:10px;letter-spacing:2px;color:var(--acc,#d4a853);font-weight:700}
-.pt-now-name{font-family:"Playfair Display",serif;font-size:31px;margin-top:6px}
-.pt-now-time{font-size:14px;color:var(--txt2,#a09a8f);margin-top:3px}
-.pt-next{display:flex;justify-content:space-between;align-items:center;padding:15px 17px;border-bottom:1px solid var(--bdr,rgba(255,255,255,.08));margin-bottom:5px}
-.pt-next strong{display:block;font-size:16px;margin-top:3px}
-.pt-count{font-variant-numeric:tabular-nums;color:var(--acc,#d4a853);font-weight:700}
-.pt-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:14px}
-.pt-item{padding:14px 8px;text-align:center;border-radius:14px;background:rgba(255,255,255,.035);border:1px solid transparent}
-.pt-item.active{border-color:var(--acc,#d4a853);background:color-mix(in srgb,var(--acc,#d4a853) 9%,transparent)}
-.pt-item b{display:block;font-size:12px;margin-bottom:5px}
-.pt-item span{font-size:14px;color:var(--txt2,#a09a8f);font-variant-numeric:tabular-nums}
-.pt-item.active span{color:var(--acc,#d4a853)}
-.pt-note{font-size:10px;color:var(--txt3,#6b6560);text-align:center;margin-top:17px}
-@media(max-width:560px){.pt-card{padding:20px}.pt-head{display:block}.pt-location{margin-top:12px}.pt-grid{grid-template-columns:repeat(3,1fr)}.pt-card h2{font-size:29px}}
-</style>
-
-<script>
-(function(){
-  const root=document.currentScript.previousElementSibling.previousElementSibling;
-  const data=root.dataset, A=data.accent||"#d4a853";
-  document.documentElement.style.setProperty("--acc",A);
-
-  const names=["Fajr","Dhuhr","Asr","Maghrib","Isha"];
-  const labels=["ফজর","যোহর","আসর","মাগরিব","এশা"];
-  let lat=23.685,lon=90.3563, timer;
-
-  function rad(x){return x*Math.PI/180}
-  function deg(x){return x*180/Math.PI}
-  function fix(x){return (x%360+360)%360}
-  function jd(d){return d.getTime()/86400000+2440587.5}
-  function sun(d){
-    const J=jd(d), n=J-2451545;
-    const L=fix(280.46+.9856474*n), g=rad(fix(357.528+.9856003*n));
-    const lam=rad(fix(L+1.915*Math.sin(g)+.02*Math.sin(2*g)));
-    const e=rad(23.439-.0000004*n);
-    const dec=deg(Math.asin(Math.sin(e)*Math.sin(lam)));
-    const ra=deg(Math.atan2(Math.cos(e)*Math.sin(lam),Math.cos(lam)))/15;
-    const gmst=fix(280.46061837+360.98564736629*(J-2451545));
-    return {dec,ra,gmst};
-  }
-  function hourAngle(s,alt){
-    const x=(Math.sin(rad(alt))-Math.sin(rad(lat))*Math.sin(rad(s.dec)))/
-      (Math.cos(rad(lat))*Math.cos(rad(s.dec)));
-    return Math.acos(Math.max(-1,Math.min(1,x)))*12/Math.PI;
-  }
-  function times(){
-    const now=new Date(), s=sun(now);
-    const tz=-now.getTimezoneOffset()/60;
-    const noon=(s.ra? (s.gmst+lon/15-s.ra)/1 : 12);
-    const solarNoon=12-((s.gmst+lon-s.ra*15)/15-tz);
-    const h=hourAngle(s,-.833), hf=hourAngle(s,-18), hi=hourAngle(s,-18);
-    const rise=solarNoon-h, set=solarNoon+h;
-    const fajr=solarNoon-hf, isha=solarNoon+hi;
-    const asrAngle=deg(Math.acos((Math.sin(Math.atan(1/(data.madhhab==="Hanafi"?2:1))))));
-    const asrShadow=data.madhhab==="Hanafi"?2:1;
-    const latr=rad(lat), decr=rad(s.dec);
-    const ac=deg(Math.atan(1/(asrShadow+Math.tan(Math.abs(latr-decr)))));
-    const ha=hourAngle(s,ac);
-    return [fajr,solarNoon,solarNoon+ha,set,isha];
-  }
-  function fmt(v){
-    v=(v+24)%24;
-    let h=Math.floor(v),m=Math.round((v-h)*60);
-    if(m===60){h=(h+1)%24;m=0}
-    const ap=h>=12?"PM":"AM", hh=h%12||12;
-    return String(hh).padStart(2,"0")+":"+String(m).padStart(2,"0")+" "+ap;
-  }
-  function todayDate(){
-    return new Date().toLocaleDateString("en-BD",{weekday:"long",year:"numeric",month:"long",day:"numeric"});
-  }
-  function render(){
-    const t=times(), now=new Date(), mins=now.getHours()+now.getMinutes()/60+now.getSeconds()/3600;
-    let idx=-1,next=0;
-    for(let i=0;i<t.length;i++) if(mins>=t[i]) idx=i;
-    next=idx+1;
-    if(next>=t.length) next=0;
-    const current=idx<0?4:idx;
-    const nowName=idx<0?"Isha":names[current];
-    const nowTime=idx<0?t[4]:t[current];
-    document.getElementById("pt-date").textContent=todayDate();
-    document.getElementById("pt-now").textContent=labels[current]+" · "+nowName;
-    document.getElementById("pt-now-time").textContent=fmt(nowTime);
-    document.getElementById("pt-next-name").textContent=labels[next]+" · "+names[next];
-
-    let target=t[next], targetDate=new Date(now);
-    if(next===0 && mins>=t[4]) targetDate.setDate(targetDate.getDate()+1);
-    targetDate.setHours(Math.floor(target),Math.round((target%1)*60),0,0);
-    let diff=Math.max(0,targetDate-now), sec=Math.floor(diff/1000);
-    document.getElementById("pt-count").textContent=
-      String(Math.floor(sec/3600)).padStart(2,"0")+":"+String(Math.floor(sec%3600/60)).padStart(2,"0")+":"+String(sec%60).padStart(2,"0");
-
-    document.getElementById("pt-grid").innerHTML=names.map((n,i)=>
-      '<div class="pt-item '+(i===current?'active':'')+'"><b>'+labels[i]+'</b><span>'+fmt(t[i])+'</span></div>'
-    ).join("");
-  }
-  function locate(){
-    const done=pos=>{
-      lat=pos.coords.latitude;lon=pos.coords.longitude;
-      document.getElementById("pt-location").textContent="📍 "+lat.toFixed(2)+", "+lon.toFixed(2);
-      render();clearInterval(timer);timer=setInterval(render,1000);
-    };
-    if(navigator.geolocation) navigator.geolocation.getCurrentPosition(done,()=>fallback(),{enableHighAccuracy:true,timeout:8000});
-    else fallback();
-  }
-  function fallback(){
-    document.getElementById("pt-location").textContent="📍 Bangladesh";
-    render();clearInterval(timer);timer=setInterval(render,1000);
-  }
-  locate();
-})();
-</script><div style="display:none" data-sb-hidden-assets><img src="assets/images/294b578fb513da51.jpg"></div>
+<p>More content follows...</p></div></div><div class="img-b"><img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&amp;q=80" style="aspect-ratio:16/9;cursor:zoom-in" onclick="openGalleryLightbox(['https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&amp;q=80'],0)"><div class="img-cap">Mountain panorama</div></div><div class="bs"><div class="pq"><blockquote>"The nomads don't move because they are restless. They move because movement is how they understand the land."</blockquote><cite>— Rustam Nazarov, Ethnographer</cite></div></div><div class="bs"><div class="vb"><div class="vb-title">Watch: Six Months on the Pamir Highway</div><div class="vb-wrap" id="ytf52s" style="position:relative;padding-bottom:56.25%;border-radius:14px;overflow:hidden;border:1px solid rgba(240,237,230,.08);background:#000;cursor:pointer" onclick="this.innerHTML='<iframe src=\'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1\' allow=\'autoplay; encrypted-media; picture-in-picture\' allowfullscreen style=\'position:absolute;inset:0;width:100%;height:100%;border:none\'></iframe>'"><img src="https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;pointer-events:none"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none"><div style="width:64px;height:64px;background:rgba(212,168,83,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px">▶</div></div></div></div></div><div class="bs"><div class="stb"><div class="st"><div class="st-n" style="color:#4fa87a">100</div><div class="st-l">Stat Label</div><div class="st-c" style="color:#4fa87a">↑ Change note</div></div><div class="st"><div class="st-n" style="color:#5b8fd4">2.5k</div><div class="st-l">Stat Label</div><div class="st-c" style="color:#5b8fd4">More info</div></div><div class="st"><div class="st-n" style="color:#6b6560">50</div><div class="st-l">Stat Label</div><div class="st-c" style="color:#6b6560">Some note</div></div><div class="st"><div class="st-n" style="color:#c94f4f">8</div><div class="st-l">Stat Label</div><div class="st-c" style="color:#c94f4f">↓ Change</div></div></div></div><div class="bs"><div class="mb mb-lr"><div class="mb-txt"><span class="mb-tag">Architecture</span><div class="mb-ttl">The Fortresses of Ishkashim</div><div class="mb-p">Perched on river bluffs, the mud-brick fortresses of the Wakhan speak in a language older than the nations that now claim this land.</div><div class="mb-p">I spent two days photographing them at dawn.</div><div class="mb-meta">📍 Ishkashim, Tajikistan · 📷 8 photos</div><a href="#" class="mb-lnk">Read the full story →</a></div><div class="mb-img"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=700&amp;q=80" alt="" style="cursor:zoom-in" onclick="openGalleryLightbox(['https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=700&amp;q=80'],0)"></div></div></div><div class="bs"><div class="tl"><div class="tl-i"><div class="tl-dot"></div><div class="tl-dt">October 2024</div><div class="tl-tt" style="">Departure from Osh</div><div class="tl-dc">Set off with a 28kg pack. First yurt stay at 3,000m.</div></div><div class="tl-i"><div class="tl-dot"></div><div class="tl-dt">November 2024</div><div class="tl-tt" style="">Crossing Ak-Baital Pass</div><div class="tl-dc">-22°C. My water froze in 40 minutes. Completely worth it.</div></div><div class="tl-i"><div class="tl-dot"></div><div class="tl-dt">April 2025</div><div class="tl-tt" style="">Return via Ishkashim</div><div class="tl-dc">First hot shower in 19 days. Best plov of my life.</div></div></div></div><div class="bs"><div class="ch-b"><div class="ch-ttl">Route Elevation Profile</div><div class="ch-card"><div style="position:relative;height:280px"><canvas data-chart='{"chartType":"line","title":"Route Elevation Profile","labels":"Osh,Sary-Mogol,Karakul,Murghab,Ak-Baital,Alichur,Langar,Ishkashim","datasets":[{"label":"Elevation (m)","data":"900,3000,3914,3612,4655,4000,2850,2680","color":"#d4a853"}]}'></canvas></div></div></div></div><div class="bs"><div><div class="ac-i"><button class="ac-hd"><span>Question 1?</span><span class="ac-ico">+</span></button><div class="ac-body"><p>Answer 1.</p></div></div><div class="ac-i"><button class="ac-hd"><span>Question 2?</span><span class="ac-ico">+</span></button><div class="ac-body"><p>Answer 2.</p></div></div></div></div><div class="bs"><div class="cta"><div class="cta-bg"><div class="cta-inner"><div class="cta-t">Ready to Plan Your Expedition?</div><div class="cta-d">Download the complete Pamir Highway guide — 68 pages of permits, routes, and cultural etiquette.</div><div class="cta-btns"><a href="projects/loom/loom pattern 8 (7).html" target="_blank" rel="noopener" onclick="sbHandleProjectLinkClick(event)" class="btn-p">Download Free Guide →</a> <a href="#" class="btn-o">Join Community</a></div></div></div></div></div></div><div style="margin:2rem auto;max-width:760px;border:1.5px dashed rgba(240,237,230,.14);border-radius:12px;padding:2.5rem;text-align:center;color:#6b6560;font-size:13px;">Custom Block — <em>no code yet</em><br><span style="font-size:11px;opacity:.6">Open the editor to paste or upload code</span></div><div style="display:none" data-sb-hidden-assets><img src="assets/images/294b578fb513da51.jpg"></div>
 <footer><div class="wrap">
   
   <div class="ft-in" style="display:grid;grid-template-columns:1fr;gap:2.5rem;margin-bottom:1.75rem;align-items:start">
