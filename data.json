@@ -595,7 +595,7 @@
     ],
     "google": {
       "clientId": "583545653555-qc48sfb9402lbn94sd686mrdipddb2kk.apps.googleusercontent.com",
-      "scriptUrl": "https://script.google.com/macros/s/AKfycbzdu53SWlWihueXaRANhsZ6PZMw8T-03J7YFJGcido0h5axDxWOLxwJWFPkMLFUpSL7/exec",
+      "scriptUrl": "",
       "ghUser": "monilaila",
       "domain": "",
       "done": {
