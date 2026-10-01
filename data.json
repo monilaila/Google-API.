@@ -18,16 +18,16 @@
             "id": "b1789650862986otcqgt",
             "type": "theme",
             "data": {
-              "primaryColor": "#d4a853",
-              "secondaryColor": "#5b8fd4",
-              "accentColor": "#4fa87a",
+              "primaryColor": "#0ea5e9",
+              "secondaryColor": "#6366f1",
+              "accentColor": "#10b981",
               "bodyFont": "DM Sans",
               "headingFont": "Playfair Display",
               "customFontName": "",
               "customFontUrl": "",
-              "lightPrimaryColor": "#b8860b",
-              "lightSecondaryColor": "#1a5fa8",
-              "lightAccentColor": "#2a7a55"
+              "lightPrimaryColor": "#0369a1",
+              "lightSecondaryColor": "#4338ca",
+              "lightAccentColor": "#059669"
             }
           },
           {
@@ -47,6 +47,59 @@
               "overlayOpacity": "0.75",
               "overlayGradient": true,
               "tags": "Tag 1,Tag 2,Tag 3"
+            }
+          },
+          {
+            "id": "bmupwvi07x71",
+            "type": "reviewblock",
+            "data": {
+              "title": "What people say",
+              "subtitle": "Sign in with Google to leave your own review.",
+              "clientId": "",
+              "scriptUrl": "",
+              "tab": "Sheet1",
+              "ratingOn": true,
+              "maxRating": 5,
+              "requireRating": true,
+              "minLen": 10,
+              "maxLen": 1000,
+              "pageSize": 10,
+              "allowEdit": true,
+              "maxPerEmail": 1,
+              "cooldownSec": 30,
+              "confirmSeconds": 5,
+              "moderation": "auto",
+              "onlyGmail": false,
+              "allowedDomain": "",
+              "showAverage": true,
+              "showBreakdown": true,
+              "showAvatar": true,
+              "showAge": true,
+              "showRefresh": true,
+              "starColor": "",
+              "cardBg": "",
+              "radius": "soft",
+              "spacing": "normal",
+              "align": "left",
+              "texts": {
+                "signInPrompt": "Sign in with Google to write a review",
+                "writeTitle": "Write a review",
+                "namePlaceholder": "Your name",
+                "messagePlaceholder": "Share your experience…",
+                "submit": "Review and send",
+                "yourReview": "Your review",
+                "edit": "Edit your review",
+                "confirmTitle": "Send this review?",
+                "confirmWarning": "Once you send this, it is public and you cannot take it back. Please read it again and check it carefully.",
+                "confirmSend": "Send review",
+                "cancel": "Cancel",
+                "success": "Thank you! Your review has been posted.",
+                "emptyTitle": "No reviews yet",
+                "emptyText": "Be the first to share your experience.",
+                "privacy": "We use Google Sign-In to verify your email. Your email is saved with your review and is never shown on the page.",
+                "privacyLinkText": "Privacy policy",
+                "privacyLinkUrl": ""
+              }
             }
           },
           {
@@ -471,51 +524,6 @@
             }
           },
           {
-            "id": "bmupb1prozlw",
-            "type": "formblock",
-            "data": {
-              "title": "Contact Us",
-              "subtitle": "Fill out the form below and we'll get back to you.",
-              "scriptUrl": "",
-              "sheetName": "Sheet1",
-              "steps": [
-                {
-                  "id": "step1",
-                  "title": "Your Information",
-                  "fields": [
-                    {
-                      "id": "f1",
-                      "type": "text",
-                      "label": "Full Name",
-                      "placeholder": "Enter your name",
-                      "required": true,
-                      "width": "full"
-                    },
-                    {
-                      "id": "f2",
-                      "type": "text",
-                      "label": "Email Address",
-                      "placeholder": "your@email.com",
-                      "required": true,
-                      "width": "full"
-                    }
-                  ]
-                }
-              ],
-              "settings": {
-                "submitText": "Submit",
-                "successMessage": "Thank you! Your submission has been received.",
-                "successRedirect": "",
-                "showProgress": true,
-                "collectDeviceInfo": false,
-                "deviceConsentText": "I agree to share my device information for analytics purposes.",
-                "antiSpam": true,
-                "submissionLimit": 1
-              },
-              "uniqueFields": []
-            }
-          },
-          {
             "id": "b1789650862986u90nfu",
             "type": "footer",
             "data": {
@@ -584,23 +592,35 @@
       "site-signin-web",
       "ytd",
       "444"
-    ]
+    ],
+    "google": {
+      "clientId": "583545653555-qc48sfb9402lbn94sd686mrdipddb2kk.apps.googleusercontent.com",
+      "scriptUrl": "https://script.google.com/macros/s/AKfycbzdu53SWlWihueXaRANhsZ6PZMw8T-03J7YFJGcido0h5axDxWOLxwJWFPkMLFUpSL7/exec",
+      "ghUser": "monilaila",
+      "domain": "",
+      "done": {
+        "1": true,
+        "2": true,
+        "3": true,
+        "4": true
+      }
+    }
   },
   "blocks": [
     {
       "id": "b1789650862986otcqgt",
       "type": "theme",
       "data": {
-        "primaryColor": "#d4a853",
-        "secondaryColor": "#5b8fd4",
-        "accentColor": "#4fa87a",
+        "primaryColor": "#0ea5e9",
+        "secondaryColor": "#6366f1",
+        "accentColor": "#10b981",
         "bodyFont": "DM Sans",
         "headingFont": "Playfair Display",
         "customFontName": "",
         "customFontUrl": "",
-        "lightPrimaryColor": "#b8860b",
-        "lightSecondaryColor": "#1a5fa8",
-        "lightAccentColor": "#2a7a55"
+        "lightPrimaryColor": "#0369a1",
+        "lightSecondaryColor": "#4338ca",
+        "lightAccentColor": "#059669"
       }
     },
     {
@@ -620,6 +640,59 @@
         "overlayOpacity": "0.75",
         "overlayGradient": true,
         "tags": "Tag 1,Tag 2,Tag 3"
+      }
+    },
+    {
+      "id": "bmupwvi07x71",
+      "type": "reviewblock",
+      "data": {
+        "title": "What people say",
+        "subtitle": "Sign in with Google to leave your own review.",
+        "clientId": "",
+        "scriptUrl": "",
+        "tab": "Sheet1",
+        "ratingOn": true,
+        "maxRating": 5,
+        "requireRating": true,
+        "minLen": 10,
+        "maxLen": 1000,
+        "pageSize": 10,
+        "allowEdit": true,
+        "maxPerEmail": 1,
+        "cooldownSec": 30,
+        "confirmSeconds": 5,
+        "moderation": "auto",
+        "onlyGmail": false,
+        "allowedDomain": "",
+        "showAverage": true,
+        "showBreakdown": true,
+        "showAvatar": true,
+        "showAge": true,
+        "showRefresh": true,
+        "starColor": "",
+        "cardBg": "",
+        "radius": "soft",
+        "spacing": "normal",
+        "align": "left",
+        "texts": {
+          "signInPrompt": "Sign in with Google to write a review",
+          "writeTitle": "Write a review",
+          "namePlaceholder": "Your name",
+          "messagePlaceholder": "Share your experience…",
+          "submit": "Review and send",
+          "yourReview": "Your review",
+          "edit": "Edit your review",
+          "confirmTitle": "Send this review?",
+          "confirmWarning": "Once you send this, it is public and you cannot take it back. Please read it again and check it carefully.",
+          "confirmSend": "Send review",
+          "cancel": "Cancel",
+          "success": "Thank you! Your review has been posted.",
+          "emptyTitle": "No reviews yet",
+          "emptyText": "Be the first to share your experience.",
+          "privacy": "We use Google Sign-In to verify your email. Your email is saved with your review and is never shown on the page.",
+          "privacyLinkText": "Privacy policy",
+          "privacyLinkUrl": ""
+        }
       }
     },
     {
@@ -1041,51 +1114,6 @@
         ],
         "controls": [],
         "controlValues": {}
-      }
-    },
-    {
-      "id": "bmupb1prozlw",
-      "type": "formblock",
-      "data": {
-        "title": "Contact Us",
-        "subtitle": "Fill out the form below and we'll get back to you.",
-        "scriptUrl": "",
-        "sheetName": "Sheet1",
-        "steps": [
-          {
-            "id": "step1",
-            "title": "Your Information",
-            "fields": [
-              {
-                "id": "f1",
-                "type": "text",
-                "label": "Full Name",
-                "placeholder": "Enter your name",
-                "required": true,
-                "width": "full"
-              },
-              {
-                "id": "f2",
-                "type": "text",
-                "label": "Email Address",
-                "placeholder": "your@email.com",
-                "required": true,
-                "width": "full"
-              }
-            ]
-          }
-        ],
-        "settings": {
-          "submitText": "Submit",
-          "successMessage": "Thank you! Your submission has been received.",
-          "successRedirect": "",
-          "showProgress": true,
-          "collectDeviceInfo": false,
-          "deviceConsentText": "I agree to share my device information for analytics purposes.",
-          "antiSpam": true,
-          "submissionLimit": 1
-        },
-        "uniqueFields": []
       }
     },
     {
