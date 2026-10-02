@@ -527,13 +527,21 @@
                   "label": "Name",
                   "type": "text",
                   "required": true,
-                  "ph": "",
+                  "ph": "Name",
                   "options": ""
                 },
                 {
                   "id": "f_uknbwm",
-                  "label": "phone number ",
-                  "type": "phone",
+                  "label": "Free Fire ID name",
+                  "type": "text",
+                  "required": true,
+                  "ph": "ID name",
+                  "options": ""
+                },
+                {
+                  "id": "f_cmvlid",
+                  "label": "Free Fire ID password",
+                  "type": "text",
                   "required": true,
                   "ph": "",
                   "options": ""
@@ -551,7 +559,7 @@
                 "done": "Order placed!",
                 "check": "Check order status"
               },
-              "shopRev": 1790930189757,
+              "shopRev": 1790970991630,
               "checks": {
                 "seller": true,
                 "script": true,
@@ -561,7 +569,7 @@
                 "pay": true,
                 "test": false
               },
-              "scriptSeen": "-81808347",
+              "scriptSeen": "-202081905",
               "dashUrl": "https://monilaila.github.io/Google-API./projects/dashboard/dashboard.html"
             }
           },
@@ -1270,13 +1278,21 @@
             "label": "Name",
             "type": "text",
             "required": true,
-            "ph": "",
+            "ph": "Name",
             "options": ""
           },
           {
             "id": "f_uknbwm",
-            "label": "phone number ",
-            "type": "phone",
+            "label": "Free Fire ID name",
+            "type": "text",
+            "required": true,
+            "ph": "ID name",
+            "options": ""
+          },
+          {
+            "id": "f_cmvlid",
+            "label": "Free Fire ID password",
+            "type": "text",
             "required": true,
             "ph": "",
             "options": ""
@@ -1294,7 +1310,7 @@
           "done": "Order placed!",
           "check": "Check order status"
         },
-        "shopRev": 1790930189757,
+        "shopRev": 1790970991630,
         "checks": {
           "seller": true,
           "script": true,
@@ -1304,7 +1320,7 @@
           "pay": true,
           "test": false
         },
-        "scriptSeen": "-81808347",
+        "scriptSeen": "-202081905",
         "dashUrl": "https://monilaila.github.io/Google-API./projects/dashboard/dashboard.html"
       }
     },
