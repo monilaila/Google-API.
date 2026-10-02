@@ -1267,19 +1267,20 @@ async function shMineRefresh(S){
         r.results.forEach(function(x){
           var o = S.mine.filter(function(m){ return m.id === x.id; })[0]; if(!o || x.gone) return;
           if(x.status){ o.st = x.status; }
-          if(x.status === 'Done' || x.status === 'Cancelled') S.fin.push({ id:o.id, st:x.status, total:o.total }); else keep.push(o);
+          if(/^(done|complete|completed|cancelled|canceled)$/i.test(String(x.status||''))) S.fin.push({ id:o.id, st:x.status, total:o.total }); else keep.push(o);
         });
         S.mine = keep; shMineSave(S);
       }
     }
     if(S.sess){
       var m = await shPost(S, { type:'shopmine' });
-      if(m && m.ok) S.others = (m.orders||[]).filter(function(o){ return o.status !== 'Done' && o.status !== 'Cancelled' && !S.mine.some(function(k){ return k.id === o.orderId; }); });
+      if(m && m.ok) S.others = (m.orders||[]).filter(function(o){ return !/^(done|complete|completed|cancelled|canceled)$/i.test(String(o.status||'')) && !S.mine.some(function(k){ return k.id === o.orderId; }); });
     }
   } catch(e){}
   S.busyMine = false; shRender(S);
 }
 function shMineHTML(S, T, e){
+  if(!S.live) return '';
   var rows = '', chip = function(st){ return '<em class="sh-s ' + e(String(st||'pending').toLowerCase()) + '">' + e(st||'Pending') + '</em>'; };
   S.mine.forEach(function(o){ rows += '<div class="sh-ord"><div><b>' + e(o.id) + '</b><small>' + shMoney(S, o.total) + ' &middot; ' + T('code') + ': <b>' + e(o.code) + '</b></small></div>' + chip(o.st) + '</div>'; });
   (S.others||[]).forEach(function(o){ rows += '<div class="sh-ord"><div><b>' + e(o.orderId) + '</b><small>' + shMoney(S, o.total) + '</small></div>' + chip(o.status) + '</div>'; });
@@ -1290,7 +1291,7 @@ function shMineHTML(S, T, e){
 function shRender(S){
   var C = S.cfg, h = '', e = rvEsc, T = function(k){ return e(shTx(S,k)); };
   if(!S.live) h += '<div class="sh-note">' + T('preview') + '</div>';
-  if(C.title) h += '<div class="sh-title">' + e(C.title) + '</div>';
+  if(C.title || C.dash) h += '<div class="sh-tb"><div class="sh-title">' + e(C.title) + '</div>' + (C.dash ? '<a class="sh-dash" title="Seller" aria-label="Seller"' + (S.live ? ' href="dashboard/"' : '') + '><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></a>' : '') + '</div>';
   if(S.view === 'gallery'){
     h += shMineHTML(S, T, e);
     h += '<div class="sh-grid">' + C.products.map(function(p){
