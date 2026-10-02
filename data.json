@@ -670,6 +670,28 @@
             }
           },
           {
+            "id": "bmur1ta7p95c",
+            "type": "masonry",
+            "data": {
+              "title": "",
+              "description": "",
+              "descPosition": "below",
+              "clickMode": "detail",
+              "items": [
+                {
+                  "src": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=80",
+                  "title": "Card Title",
+                  "description": "A short description of this project or item.",
+                  "aspectRatio": "original",
+                  "linkUrl": "projects/dashboard/dashboard.html",
+                  "tag": "Featured",
+                  "tagColor": "#d4a853",
+                  "openInNewTab": true
+                }
+              ]
+            }
+          },
+          {
             "id": "b1790864350575xe3wfq",
             "type": "footer",
             "data": {
@@ -1393,6 +1415,28 @@
           {
             "question": "How good is the refund policy?",
             "answer": "Reliable, fast, simple refund policy. So that you can trust us."
+          }
+        ]
+      }
+    },
+    {
+      "id": "bmur1ta7p95c",
+      "type": "masonry",
+      "data": {
+        "title": "",
+        "description": "",
+        "descPosition": "below",
+        "clickMode": "detail",
+        "items": [
+          {
+            "src": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=80",
+            "title": "Card Title",
+            "description": "A short description of this project or item.",
+            "aspectRatio": "original",
+            "linkUrl": "projects/dashboard/dashboard.html",
+            "tag": "Featured",
+            "tagColor": "#d4a853",
+            "openInNewTab": true
           }
         ]
       }
