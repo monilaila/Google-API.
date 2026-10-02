@@ -74,7 +74,7 @@ function draw(){
  var L=st.orders.filter(function(o){return grp(o)===st.tab});
  L.sort(function(x,y){var d=new Date(x.created)-new Date(y.created);return st.tab==='hist'?-d:d});if(st.tab==='hist')L=L.slice(0,30);
  h+=L.length?L.map(card).join(''):(st.loaded?'<div class="mt">'+(st.tab==='new'?'No new orders.':st.tab==='hist'?'No finished orders yet.':'Nothing to process.')+'</div>':'<div class="sk"></div><div class="sk"></div><div class="sk"></div>');
- if(st.next)h+='<div style="text-align:center"><button data-a="more2">Load older orders</button></div>';
+ if(st.next&&st.tab!=='hist')h+='<div style="text-align:center"><button data-a="more2">Load older orders</button></div>';
  a.innerHTML=h;title()}
 function initG(){if(!window.google||!google.accounts){return setTimeout(initG,300)}
  google.accounts.id.initialize({client_id:CFG.cid,callback:onCred,auto_select:false});var g=$('#g');if(g)google.accounts.id.renderButton(g,{theme:'outline',size:'large'})}
