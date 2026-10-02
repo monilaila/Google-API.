@@ -286,7 +286,7 @@ window.addEventListener('load',function(){
       var W=canvas.parentElement.offsetWidth||760,H=360;
       canvas.width=W;canvas.height=H;
       var renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,alpha:true});
-      renderer.setSize(W,H);renderer.setClearColor(true?0x0f0e0c:0xfafaf7);
+      renderer.setSize(W,H);renderer.setClearColor(false?0x0f0e0c:0xfafaf7);
       var scene=new THREE.Scene();
       var camera=new THREE.PerspectiveCamera(55,W/H,.1,100);
       scene.add(new THREE.AmbientLight(0xffffff,.4));
