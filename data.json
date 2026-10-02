@@ -550,8 +550,13 @@
               },
               "shopRev": 1790930189757,
               "checks": {
-                "seller": false,
-                "script": true
+                "seller": true,
+                "script": true,
+                "auth": false,
+                "trigger": true,
+                "deploy": true,
+                "pay": true,
+                "test": false
               },
               "scriptSeen": "-81808347"
             }
@@ -1250,8 +1255,13 @@
         },
         "shopRev": 1790930189757,
         "checks": {
-          "seller": false,
-          "script": true
+          "seller": true,
+          "script": true,
+          "auth": false,
+          "trigger": true,
+          "deploy": true,
+          "pay": true,
+          "test": false
         },
         "scriptSeen": "-81808347"
       }
