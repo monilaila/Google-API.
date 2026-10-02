@@ -2,7 +2,7 @@
   "meta": {
     "title": "Home",
     "logo": "Rejaul_Korim_RK",
-    "filename": "index2",
+    "filename": "index",
     "theme": "light",
     "navLinks": "Home,About,Contact",
     "projectType": "website",
@@ -11,7 +11,7 @@
     "pages": [
       {
         "id": "pg_1790864350575",
-        "filename": "index2",
+        "filename": "index",
         "title": "Home",
         "blocks": [
           {
