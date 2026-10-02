@@ -531,5 +531,5 @@ footer{background:var(--bg2);border-top:1px solid var(--bdr);padding:2.5rem 0;ma
 .h-soc-btn { border-radius: 8px; border-width: 1.5px; background: transparent; }
 .h-soc-btn:hover { transform: translateY(-2px); }
 
-#mnnygi .mn-card:hover{border-color:var(--bdr2);}#mnnygi .mn-card:hover .mn-overlay{background:rgba(0,0,0,.18)!important;}#mnnygi .mn-card:hover .mn-visit{opacity:1!important;}
+#mnkwrt .mn-card:hover{border-color:var(--bdr2);}#mnkwrt .mn-card:hover .mn-overlay{background:rgba(0,0,0,.18)!important;}#mnkwrt .mn-card:hover .mn-visit{opacity:1!important;}
 '+cp.files[key].content+'
