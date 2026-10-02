@@ -569,7 +569,7 @@
                 "pay": true,
                 "test": false
               },
-              "scriptSeen": "-202081905",
+              "scriptSeen": "396509152",
               "dashUrl": "https://monilaila.github.io/Google-API./projects/dashboard/dashboard.html"
             }
           },
@@ -683,13 +683,6 @@
                   "answer": "Reliable, fast, simple refund policy. So that you can trust us."
                 }
               ]
-            }
-          },
-          {
-            "id": "bmurdh0dn31v",
-            "type": "divider",
-            "data": {
-              "symbol": "✦"
             }
           },
           {
@@ -1320,7 +1313,7 @@
           "pay": true,
           "test": false
         },
-        "scriptSeen": "-202081905",
+        "scriptSeen": "396509152",
         "dashUrl": "https://monilaila.github.io/Google-API./projects/dashboard/dashboard.html"
       }
     },
@@ -1434,13 +1427,6 @@
             "answer": "Reliable, fast, simple refund policy. So that you can trust us."
           }
         ]
-      }
-    },
-    {
-      "id": "bmurdh0dn31v",
-      "type": "divider",
-      "data": {
-        "symbol": "✦"
       }
     },
     {
