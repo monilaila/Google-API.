@@ -693,6 +693,17 @@
             }
           },
           {
+            "id": "bmurb0xsin06",
+            "type": "audio",
+            "data": {
+              "title": "Audio Title",
+              "artist": "Artist Name",
+              "duration": "0:00",
+              "thumbnail": "",
+              "src": ""
+            }
+          },
+          {
             "id": "b1790864350575xe3wfq",
             "type": "footer",
             "data": {
@@ -1441,6 +1452,17 @@
             "openInNewTab": true
           }
         ]
+      }
+    },
+    {
+      "id": "bmurb0xsin06",
+      "type": "audio",
+      "data": {
+        "title": "Audio Title",
+        "artist": "Artist Name",
+        "duration": "0:00",
+        "thumbnail": "",
+        "src": ""
       }
     },
     {
