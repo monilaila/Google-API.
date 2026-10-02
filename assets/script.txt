@@ -855,7 +855,7 @@ function rvSetup(sec){
     var io = new IntersectionObserver(function(es){ if(es[0] && es[0].isIntersecting){ io.disconnect(); go(); } }, { rootMargin:'300px' });
     io.observe(sec);
   } else go();
-  SBG.subscribe(function(st){ rvAuth(S, st); });
+  SBG.subscribe(function(st){ rvAuth(S, rvState(S)); });
 }
 function rvPreview(S){
   var max = S.cfg.max || 5, now = Date.now();
@@ -921,20 +921,24 @@ function rvAuth(S, st){
   else if(!st.signedIn){ if(was){ S.mine = null; S.count = 0; } if(S.loaded) rvRender(S); }
 }
 async function rvPost(S, payload){
-  var st = SBG.state();
-  payload.type = 'review'; payload.tab = S.tab; payload.token = st.token;
+  var st = rvState(S);
+  payload.type = 'review'; payload.tab = S.tab; payload.token = st.token; if(!st.token && st.sess) payload.sess = st.sess;
   var ctrl = new AbortController(); var to = setTimeout(function(){ ctrl.abort(); }, 25000);
   try {
     var r = await fetch(S.script, { method:'POST', body: JSON.stringify(payload), signal: ctrl.signal });
     return JSON.parse(await r.text());
   } finally { clearTimeout(to); }
 }
-function rvIsAuthErr(code){ return code==='EXPIRED' || code==='NO_TOKEN' || code==='BAD_TOKEN'; }
+function rvIsAuthErr(code){ return code==='EXPIRED' || code==='NO_TOKEN' || code==='BAD_TOKEN' || code==='BAD_SESSION'; }
+function rvSessGet(S){ try { for(var i=0;i<localStorage.length;i++){ var k = localStorage.key(i); if(k && k.indexOf('sb_sess_') === 0){ var j = JSON.parse(localStorage.getItem(k) || 'null'); if(j && j.code && j.sc && j.sc === S.script && j.exp*1000 > Date.now()+60000) return j; } } } catch(e){} return null; }
+function rvSessDrop(){ try { var ks = []; for(var i=0;i<localStorage.length;i++){ var k = localStorage.key(i); if(k && k.indexOf('sb_sess_') === 0) ks.push(k); } ks.forEach(function(k){ localStorage.removeItem(k); }); } catch(e){} }
+function rvState(S){ var s = SBG.state(); if(s.signedIn) return s; var j = rvSessGet(S); if(j) return { signedIn:true, expired:false, name:j.name||'', email:j.email||'', picture:'', sess:j.code, token:'', status:s.status }; return s; }
+function rvExpire(){ rvSessDrop(); SBG.expire(); }
 async function rvMine(S, quiet){
   try {
     var j = await rvPost(S, { action:'mine' });
     if(j && j.ok){ S.mine = j.mine; S.count = j.count || 0; if(!S.mine) S.showForm = true; }
-    else if(j && rvIsAuthErr(j.code)){ SBG.expire(); }
+    else if(j && rvIsAuthErr(j.code)){ rvExpire(); }
     else if(!quiet){ S.note = (j && j.error) || ''; }
   } catch(e){}
   rvRender(S);
@@ -1077,7 +1081,7 @@ function rvConfirm(S){
       return;
     }
     var m = (j && (j.error || j.message)) || 'Network error. Check your connection and try again.';
-    if(j && rvIsAuthErr(j.code)){ SBG.expire(); close(); S.err = 'Your Google sign-in expired. Sign in again, then press send. Your review is kept.'; rvRender(S); return; }
+    if(j && rvIsAuthErr(j.code)){ rvExpire(); close(); S.err = 'Your Google sign-in expired. Sign in again, then press send. Your review is kept.'; rvRender(S); return; }
     merr.textContent = m; merr.className = 'rv-err show';
     left = Math.max(2, Math.min(secs, 5)); send.disabled = true; tick();
   };
@@ -1093,7 +1097,7 @@ document.addEventListener('click', function(e){
   if(a === 'refresh'){ if(S.auth.preview || S.busy) return; S.cool = Date.now() + 15000; rvLoad(S, true); setTimeout(function(){ rvRender(S); }, 15100); }
   else if(a === 'retry'){ rvLoad(S, true); }
   else if(a === 'more'){ rvMore(S); }
-  else if(a === 'signout'){ SBG.signOut(); }
+  else if(a === 'signout'){ rvSessDrop(); SBG.signOut(); }
   else if(a === 'another'){ S.showForm = true; rvRender(S); }
   else if(a === 'edit'){ S.mode = 'edit'; S.draft = { name: S.mine.n, rating: S.mine.r || 0, msg: S.mine.m }; rvRender(S); }
   else if(a === 'canceledit'){ S.mode = 'view'; S.draft = { name: S.draft.name, rating: 0, msg: '' }; rvRender(S); }
@@ -1157,7 +1161,7 @@ async function shExchange(S){
   S.exch = true;
   try {
     var r = await shRaw(S, { type:'session', token: S.g.token, want:'customer' });
-    if(r && r.ok){ shSave(S, { code:r.sess, exp:r.expires, email:r.email, name:r.name }); S.msg = ''; }
+    if(r && r.ok){ shSave(S, { code:r.sess, exp:r.expires, email:r.email, name:r.name, sc:S.script }); S.msg = ''; }
     else S.msg = (r && r.error) || shTx(S,'nonet');
   } catch(e){ S.msg = shTx(S,'nonet'); }
   S.exch = false; shRender(S); shMineRefresh(S);
