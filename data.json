@@ -3,11 +3,11 @@
     "title": "Home",
     "logo": "Rejaul_Korim_RK",
     "filename": "index2",
-    "theme": "dark",
+    "theme": "light",
     "navLinks": "Home,About,Contact",
     "projectType": "website",
     "projectName": "Rejaul_Korim_RK",
-    "allowThemeToggle": true,
+    "allowThemeToggle": false,
     "pages": [
       {
         "id": "pg_1790864350575",
@@ -56,73 +56,12 @@
             }
           },
           {
-            "id": "b1790864350575ujaxbe",
-            "type": "pullquote",
-            "data": {
-              "quote": "This is a trusted service. We offer best price.",
-              "citation": " Rejaul Korim",
-              "quoteStyle": "big"
-            }
-          },
-          {
             "id": "b1790864350575j7b2eb",
             "type": "youtube",
             "data": {
               "videoId": "dQw4w9WgXcQ",
               "title": "How to buy from us?",
               "duration": "18 min"
-            }
-          },
-          {
-            "id": "b1790864350575w4ayz3",
-            "type": "stats",
-            "data": {
-              "items": [
-                {
-                  "num": "100%",
-                  "label": "Satisfied customer",
-                  "change": "Customer satisfaction",
-                  "color": "green"
-                },
-                {
-                  "num": "4.5k",
-                  "label": "Or more",
-                  "change": "Customer satisfaction",
-                  "color": "blue"
-                },
-                {
-                  "num": "24",
-                  "label": "Hours or more",
-                  "change": "Refund policy",
-                  "color": "muted"
-                },
-                {
-                  "num": "7",
-                  "label": "years ",
-                  "change": "Running service",
-                  "color": "red"
-                }
-              ]
-            }
-          },
-          {
-            "id": "b1790864350575khbx49",
-            "type": "accordion",
-            "data": {
-              "items": [
-                {
-                  "question": "Why should you Buy From Here?",
-                  "answer": "Trusted seller with seven years In the network."
-                },
-                {
-                  "question": "How safe is this?",
-                  "answer": "It is very safe. Your data privacy is our main priority."
-                },
-                {
-                  "question": "How good is the refund policy?",
-                  "answer": "Reliable, fast, simple refund policy. So that you can trust us."
-                }
-              ]
             }
           },
           {
@@ -257,6 +196,58 @@
             }
           },
           {
+            "id": "b1790864350575w4ayz3",
+            "type": "stats",
+            "data": {
+              "items": [
+                {
+                  "num": "100%",
+                  "label": "Satisfied customer",
+                  "change": "Customer satisfaction",
+                  "color": "green"
+                },
+                {
+                  "num": "4.5k",
+                  "label": "Or more",
+                  "change": "Customer satisfaction",
+                  "color": "blue"
+                },
+                {
+                  "num": "24",
+                  "label": "Hours or more",
+                  "change": "Refund policy",
+                  "color": "muted"
+                },
+                {
+                  "num": "7",
+                  "label": "years ",
+                  "change": "Running service",
+                  "color": "red"
+                }
+              ]
+            }
+          },
+          {
+            "id": "b1790864350575khbx49",
+            "type": "accordion",
+            "data": {
+              "items": [
+                {
+                  "question": "Why should you Buy From Here?",
+                  "answer": "Trusted seller with seven years In the network."
+                },
+                {
+                  "question": "How safe is this?",
+                  "answer": "It is very safe. Your data privacy is our main priority."
+                },
+                {
+                  "question": "How good is the refund policy?",
+                  "answer": "Reliable, fast, simple refund policy. So that you can trust us."
+                }
+              ]
+            }
+          },
+          {
             "id": "b1790864350575xe3wfq",
             "type": "footer",
             "data": {
@@ -351,73 +342,12 @@
       }
     },
     {
-      "id": "b1790864350575ujaxbe",
-      "type": "pullquote",
-      "data": {
-        "quote": "This is a trusted service. We offer best price.",
-        "citation": " Rejaul Korim",
-        "quoteStyle": "big"
-      }
-    },
-    {
       "id": "b1790864350575j7b2eb",
       "type": "youtube",
       "data": {
         "videoId": "dQw4w9WgXcQ",
         "title": "How to buy from us?",
         "duration": "18 min"
-      }
-    },
-    {
-      "id": "b1790864350575w4ayz3",
-      "type": "stats",
-      "data": {
-        "items": [
-          {
-            "num": "100%",
-            "label": "Satisfied customer",
-            "change": "Customer satisfaction",
-            "color": "green"
-          },
-          {
-            "num": "4.5k",
-            "label": "Or more",
-            "change": "Customer satisfaction",
-            "color": "blue"
-          },
-          {
-            "num": "24",
-            "label": "Hours or more",
-            "change": "Refund policy",
-            "color": "muted"
-          },
-          {
-            "num": "7",
-            "label": "years ",
-            "change": "Running service",
-            "color": "red"
-          }
-        ]
-      }
-    },
-    {
-      "id": "b1790864350575khbx49",
-      "type": "accordion",
-      "data": {
-        "items": [
-          {
-            "question": "Why should you Buy From Here?",
-            "answer": "Trusted seller with seven years In the network."
-          },
-          {
-            "question": "How safe is this?",
-            "answer": "It is very safe. Your data privacy is our main priority."
-          },
-          {
-            "question": "How good is the refund policy?",
-            "answer": "Reliable, fast, simple refund policy. So that you can trust us."
-          }
-        ]
       }
     },
     {
@@ -549,6 +479,58 @@
           "privacyLinkText": "Privacy policy",
           "privacyLinkUrl": ""
         }
+      }
+    },
+    {
+      "id": "b1790864350575w4ayz3",
+      "type": "stats",
+      "data": {
+        "items": [
+          {
+            "num": "100%",
+            "label": "Satisfied customer",
+            "change": "Customer satisfaction",
+            "color": "green"
+          },
+          {
+            "num": "4.5k",
+            "label": "Or more",
+            "change": "Customer satisfaction",
+            "color": "blue"
+          },
+          {
+            "num": "24",
+            "label": "Hours or more",
+            "change": "Refund policy",
+            "color": "muted"
+          },
+          {
+            "num": "7",
+            "label": "years ",
+            "change": "Running service",
+            "color": "red"
+          }
+        ]
+      }
+    },
+    {
+      "id": "b1790864350575khbx49",
+      "type": "accordion",
+      "data": {
+        "items": [
+          {
+            "question": "Why should you Buy From Here?",
+            "answer": "Trusted seller with seven years In the network."
+          },
+          {
+            "question": "How safe is this?",
+            "answer": "It is very safe. Your data privacy is our main priority."
+          },
+          {
+            "question": "How good is the refund policy?",
+            "answer": "Reliable, fast, simple refund policy. So that you can trust us."
+          }
+        ]
       }
     },
     {
