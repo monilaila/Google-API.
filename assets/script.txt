@@ -1291,7 +1291,7 @@ function shMineHTML(S, T, e){
 function shRender(S){
   var C = S.cfg, h = '', e = rvEsc, T = function(k){ return e(shTx(S,k)); };
   if(!S.live) h += '<div class="sh-note">' + T('preview') + '</div>';
-  if(C.title || C.dash) h += '<div class="sh-tb"><div class="sh-title">' + e(C.title) + '</div>' + (C.dash ? '<a class="sh-dash" title="Seller" aria-label="Seller"' + (S.live ? ' href="dashboard/"' : '') + '><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></a>' : '') + '</div>';
+  if(C.title || C.dash) h += '<style>.sh-tb{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:10px;margin-bottom:1rem}.sh-tb .sh-title{margin:0!important;flex:1}.sh-dash{margin-left:auto;color:var(--txt2);opacity:.3;display:flex;padding:6px;border-radius:8px;cursor:pointer}.sh-dash:hover{opacity:.85}</style><div class="sh-tb"><div class="sh-title">' + e(C.title) + '</div>' + (C.dash ? '<a class="sh-dash" title="Seller" aria-label="Seller"' + (S.live ? ' href="dashboard/"' : '') + '><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 3v6c0 4.5-3.2 8-8 9-4.8-1-8-4.5-8-9V6z"/></svg></a>' : '') + '</div>';
   if(S.view === 'gallery'){
     h += shMineHTML(S, T, e);
     h += '<div class="sh-grid">' + C.products.map(function(p){
