@@ -435,7 +435,7 @@
               "showRecent": true,
               "clientId": "583545653555-qc48sfb9402lbn94sd686mrdipddb2kk.apps.googleusercontent.com",
               "scriptUrl": "",
-              "tabPrefix": "Shop",
+              "tabPrefix": "",
               "shopId": "s_0zeh13",
               "timezone": "Asia/Dhaka",
               "retentionDays": 7,
@@ -561,39 +561,8 @@
                 "pay": true,
                 "test": false
               },
-              "scriptSeen": "-81808347"
-            }
-          },
-          {
-            "id": "b1790864350575w4ayz3",
-            "type": "stats",
-            "data": {
-              "items": [
-                {
-                  "num": "100%",
-                  "label": "Satisfied customer",
-                  "change": "Customer satisfaction",
-                  "color": "green"
-                },
-                {
-                  "num": "4.5k",
-                  "label": "Or more",
-                  "change": "Customer satisfaction",
-                  "color": "blue"
-                },
-                {
-                  "num": "24",
-                  "label": "Hours or more",
-                  "change": "Refund policy",
-                  "color": "muted"
-                },
-                {
-                  "num": "7",
-                  "label": "years ",
-                  "change": "Running service",
-                  "color": "red"
-                }
-              ]
+              "scriptSeen": "-81808347",
+              "dashUrl": "https://monilaila.github.io/Google-API./projects/dashboard/dashboard.html"
             }
           },
           {
@@ -650,6 +619,38 @@
             }
           },
           {
+            "id": "b1790864350575w4ayz3",
+            "type": "stats",
+            "data": {
+              "items": [
+                {
+                  "num": "100%",
+                  "label": "Satisfied customer",
+                  "change": "Customer satisfaction",
+                  "color": "green"
+                },
+                {
+                  "num": "4.5k",
+                  "label": "Or more",
+                  "change": "Customer satisfaction",
+                  "color": "blue"
+                },
+                {
+                  "num": "24",
+                  "label": "Hours or more",
+                  "change": "Refund policy",
+                  "color": "muted"
+                },
+                {
+                  "num": "7",
+                  "label": "years ",
+                  "change": "Running service",
+                  "color": "red"
+                }
+              ]
+            }
+          },
+          {
             "id": "b1790864350575khbx49",
             "type": "accordion",
             "data": {
@@ -665,28 +666,6 @@
                 {
                   "question": "How good is the refund policy?",
                   "answer": "Reliable, fast, simple refund policy. So that you can trust us."
-                }
-              ]
-            }
-          },
-          {
-            "id": "bmur1ta7p95c",
-            "type": "masonry",
-            "data": {
-              "title": "",
-              "description": "",
-              "descPosition": "below",
-              "clickMode": "detail",
-              "items": [
-                {
-                  "src": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=80",
-                  "title": "Card Title",
-                  "description": "A short description of this project or item.",
-                  "aspectRatio": "original",
-                  "linkUrl": "projects/dashboard/dashboard.html",
-                  "tag": "Featured",
-                  "tagColor": "#d4a853",
-                  "openInNewTab": true
                 }
               ]
             }
@@ -1185,7 +1164,7 @@
         "showRecent": true,
         "clientId": "583545653555-qc48sfb9402lbn94sd686mrdipddb2kk.apps.googleusercontent.com",
         "scriptUrl": "",
-        "tabPrefix": "Shop",
+        "tabPrefix": "",
         "shopId": "s_0zeh13",
         "timezone": "Asia/Dhaka",
         "retentionDays": 7,
@@ -1311,39 +1290,8 @@
           "pay": true,
           "test": false
         },
-        "scriptSeen": "-81808347"
-      }
-    },
-    {
-      "id": "b1790864350575w4ayz3",
-      "type": "stats",
-      "data": {
-        "items": [
-          {
-            "num": "100%",
-            "label": "Satisfied customer",
-            "change": "Customer satisfaction",
-            "color": "green"
-          },
-          {
-            "num": "4.5k",
-            "label": "Or more",
-            "change": "Customer satisfaction",
-            "color": "blue"
-          },
-          {
-            "num": "24",
-            "label": "Hours or more",
-            "change": "Refund policy",
-            "color": "muted"
-          },
-          {
-            "num": "7",
-            "label": "years ",
-            "change": "Running service",
-            "color": "red"
-          }
-        ]
+        "scriptSeen": "-81808347",
+        "dashUrl": "https://monilaila.github.io/Google-API./projects/dashboard/dashboard.html"
       }
     },
     {
@@ -1400,6 +1348,38 @@
       }
     },
     {
+      "id": "b1790864350575w4ayz3",
+      "type": "stats",
+      "data": {
+        "items": [
+          {
+            "num": "100%",
+            "label": "Satisfied customer",
+            "change": "Customer satisfaction",
+            "color": "green"
+          },
+          {
+            "num": "4.5k",
+            "label": "Or more",
+            "change": "Customer satisfaction",
+            "color": "blue"
+          },
+          {
+            "num": "24",
+            "label": "Hours or more",
+            "change": "Refund policy",
+            "color": "muted"
+          },
+          {
+            "num": "7",
+            "label": "years ",
+            "change": "Running service",
+            "color": "red"
+          }
+        ]
+      }
+    },
+    {
       "id": "b1790864350575khbx49",
       "type": "accordion",
       "data": {
@@ -1415,28 +1395,6 @@
           {
             "question": "How good is the refund policy?",
             "answer": "Reliable, fast, simple refund policy. So that you can trust us."
-          }
-        ]
-      }
-    },
-    {
-      "id": "bmur1ta7p95c",
-      "type": "masonry",
-      "data": {
-        "title": "",
-        "description": "",
-        "descPosition": "below",
-        "clickMode": "detail",
-        "items": [
-          {
-            "src": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=80",
-            "title": "Card Title",
-            "description": "A short description of this project or item.",
-            "aspectRatio": "original",
-            "linkUrl": "projects/dashboard/dashboard.html",
-            "tag": "Featured",
-            "tagColor": "#d4a853",
-            "openInNewTab": true
           }
         ]
       }
