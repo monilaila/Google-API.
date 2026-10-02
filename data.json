@@ -424,13 +424,6 @@
             }
           },
           {
-            "id": "bmurbe0wv0fm",
-            "type": "divider",
-            "data": {
-              "symbol": "✦"
-            }
-          },
-          {
             "id": "bmuqjiv5wlxj",
             "type": "shopblock",
             "data": {
@@ -570,6 +563,13 @@
               },
               "scriptSeen": "-81808347",
               "dashUrl": "https://monilaila.github.io/Google-API./projects/dashboard/dashboard.html"
+            }
+          },
+          {
+            "id": "bmurbe0wv0fm",
+            "type": "divider",
+            "data": {
+              "symbol": "✦"
             }
           },
           {
@@ -1160,13 +1160,6 @@
       }
     },
     {
-      "id": "bmurbe0wv0fm",
-      "type": "divider",
-      "data": {
-        "symbol": "✦"
-      }
-    },
-    {
       "id": "bmuqjiv5wlxj",
       "type": "shopblock",
       "data": {
@@ -1306,6 +1299,13 @@
         },
         "scriptSeen": "-81808347",
         "dashUrl": "https://monilaila.github.io/Google-API./projects/dashboard/dashboard.html"
+      }
+    },
+    {
+      "id": "bmurbe0wv0fm",
+      "type": "divider",
+      "data": {
+        "symbol": "✦"
       }
     },
     {
