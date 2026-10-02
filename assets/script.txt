@@ -1299,7 +1299,7 @@ function shRender(S){
       return '<button class="sh-card' + (inc ? ' on' : '') + '" data-a="open" data-p="' + e(p.id) + '"' + (p.available === false ? ' disabled' : '') + '><div class="sh-im">' + (p.image ? '<img src="' + e(p.image) + '" alt="">' : '<div class="sh-ph"></div>') + (lb ? '<i class="sh-lab' + (p.available === false ? ' out' : '') + '">' + lb + '</i>' : '') + (off ? '<i class="sh-disc">-' + off + '%</i>' : '') + '</div><b>' + e(p.title) + '</b>' + (p.badge ? '<small>' + e(p.badge) + '</small>' : '') + (p.desc ? '<small class="sh-cd">' + e(p.desc) + '</small>' : '') + (inc ? '<span class="sh-inc">&#10003; ' + T('incart') + '</span>' : shPr(S, mn.p, mn.o)) + '</button>';
     }).join('') + '</div>';
     if(C.multi) h += '<button class="sh-cartbtn" data-a="cart" aria-label="Cart">&#128722;<i>' + S.lines.length + '</i></button>';
-    h += '<div class="sh-box"><div class="sh-h">' + T('check') + '</div><div class="sh-row"><input class="sh-in" data-f="sid" placeholder="' + T('oid') + '"><input class="sh-in" data-f="scode" placeholder="' + T('code') + '"><button class="sh-btn" data-a="check">' + T('go') + '</button></div><div class="sh-st" data-st>' + e(S.status) + '</div></div>';
+    h += '<details class="sh-box sh-more"' + ((S.mine.length || S.fin.length) ? '' : ' open') + '><summary>' + T('check') + '</summary><div class="sh-row"><input class="sh-in" data-f="sid" placeholder="' + T('oid') + '"><input class="sh-in" data-f="scode" placeholder="' + T('code') + '"><button class="sh-btn" data-a="check">' + T('go') + '</button></div><div class="sh-st" data-st>' + e(S.status) + '</div></details>';
   } else if(S.view === 'order'){
     h += '<button class="sh-link" data-a="back">&larr; ' + T('back') + '</button>';
     if(!S.lines.length) h += '<div class="sh-note">' + T('empty') + '</div>';
@@ -1345,10 +1345,11 @@ function shRender(S){
   }
   if(C.feed && S.feed && S.view !== 'order'){
     h += '<div class="sh-box"><div class="sh-h">' + T('recent') + ' <small class="sh-live">&#9679; ' + T('live') + '</small></div>' + (S.feed.items||[]).map(function(i){
-      return '<div class="sh-fd"><span class="sh-av">' + e(String(i.n||'?').charAt(0)) + '</span><div><b>' + e(i.n) + '</b><small>' + e(i.t) + ' - ' + shMoney(S, i.p) + '</small></div><em class="sh-s ' + e(String(i.s).toLowerCase()) + '">' + e(i.s) + '</em></div>';
+      return '<div class="sh-fd">' + (i.a ? '<img class="sh-av" referrerpolicy="no-referrer" alt="' + e(String(i.n||'?').charAt(0)) + '" src="' + e(i.a) + '">' : '<span class="sh-av">' + e(String(i.n||'?').charAt(0)) + '</span>') + '<div><b>' + e(i.n) + '</b><small>' + e(i.t) + ' - ' + shMoney(S, i.p) + '</small></div><em class="sh-s ' + e(String(i.s).toLowerCase()) + '">' + e(i.s) + '</em></div>';
     }).join('') + '</div>';
   }
   var body = S.sec.querySelector('.sh-body'); body.innerHTML = h;
+  body.querySelectorAll('img.sh-av').forEach(function(im){ im.onerror = function(){ var sp = document.createElement('span'); sp.className = 'sh-av'; sp.textContent = im.alt; im.replaceWith(sp); }; });
   var g = body.querySelector('[data-g]'); if(g && S.live){ g.appendChild(S.host); if(S.g && S.g.expired && !S.msg) S.msg = ''; }
 }
 (function(){
