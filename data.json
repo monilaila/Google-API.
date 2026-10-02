@@ -678,6 +678,13 @@
             }
           },
           {
+            "id": "bmurdh0dn31v",
+            "type": "divider",
+            "data": {
+              "symbol": "✦"
+            }
+          },
+          {
             "id": "b1790864350575xe3wfq",
             "type": "footer",
             "data": {
@@ -1411,6 +1418,13 @@
             "answer": "Reliable, fast, simple refund policy. So that you can trust us."
           }
         ]
+      }
+    },
+    {
+      "id": "bmurdh0dn31v",
+      "type": "divider",
+      "data": {
+        "symbol": "✦"
       }
     },
     {
