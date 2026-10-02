@@ -533,3 +533,4 @@ footer{background:var(--bg2);border-top:1px solid var(--bdr);padding:2.5rem 0;ma
 .h-soc-btn:hover { transform: translateY(-2px); }
 
 '+cp.files[key].content+'
+.sh-tb{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:10px;margin-bottom:1rem}.sh-tb .sh-title{margin:0!important;flex:1}.sh-dash{margin-left:auto;color:var(--txt2);opacity:.3;display:flex;padding:6px;border-radius:8px;cursor:pointer}.sh-dash:hover{opacity:.85}
