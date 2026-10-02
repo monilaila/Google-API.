@@ -424,6 +424,13 @@
             }
           },
           {
+            "id": "bmurbe0wv0fm",
+            "type": "divider",
+            "data": {
+              "symbol": "✦"
+            }
+          },
+          {
             "id": "bmuqjiv5wlxj",
             "type": "shopblock",
             "data": {
@@ -1150,6 +1157,13 @@
           "ICON_4": "Auto",
           "PNG_4": ""
         }
+      }
+    },
+    {
+      "id": "bmurbe0wv0fm",
+      "type": "divider",
+      "data": {
+        "symbol": "✦"
       }
     },
     {
