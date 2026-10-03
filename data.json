@@ -214,6 +214,13 @@
             }
           },
           {
+            "id": "bmurbe0wv0fm",
+            "type": "divider",
+            "data": {
+              "symbol": "✦"
+            }
+          },
+          {
             "id": "bmuqo5yp2vx0",
             "type": "customblock",
             "data": {
@@ -674,7 +681,7 @@
                 "done": "Order placed!",
                 "check": "Check order status"
               },
-              "shopRev": 1790983793371,
+              "shopRev": 1790985792932,
               "checks": {
                 "seller": true,
                 "script": true,
@@ -686,13 +693,6 @@
               },
               "scriptSeen": "730805760",
               "dashUrl": "https://monilaila.github.io/Google-API./projects/dashboard/dashboard.html"
-            }
-          },
-          {
-            "id": "bmurbe0wv0fm",
-            "type": "divider",
-            "data": {
-              "symbol": "✦"
             }
           },
           {
@@ -1116,6 +1116,13 @@
           "CUSTOM_BAR": "#2a2926",
           "CUSTOM_TEXT": "#f0ede6"
         }
+      }
+    },
+    {
+      "id": "bmurbe0wv0fm",
+      "type": "divider",
+      "data": {
+        "symbol": "✦"
       }
     },
     {
@@ -1579,7 +1586,7 @@
           "done": "Order placed!",
           "check": "Check order status"
         },
-        "shopRev": 1790983793371,
+        "shopRev": 1790985792932,
         "checks": {
           "seller": true,
           "script": true,
@@ -1591,13 +1598,6 @@
         },
         "scriptSeen": "730805760",
         "dashUrl": "https://monilaila.github.io/Google-API./projects/dashboard/dashboard.html"
-      }
-    },
-    {
-      "id": "bmurbe0wv0fm",
-      "type": "divider",
-      "data": {
-        "symbol": "✦"
       }
     },
     {
