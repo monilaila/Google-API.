@@ -749,6 +749,13 @@
             }
           },
           {
+            "id": "bmuslnpdhx40",
+            "type": "divider",
+            "data": {
+              "symbol": "✦"
+            }
+          },
+          {
             "id": "b1790864350575w4ayz3",
             "type": "stats",
             "data": {
@@ -798,13 +805,6 @@
                   "answer": "Reliable, fast, simple refund policy. So that you can trust us."
                 }
               ]
-            }
-          },
-          {
-            "id": "bmuslnpdhx40",
-            "type": "divider",
-            "data": {
-              "symbol": "✦"
             }
           },
           {
@@ -1661,6 +1661,13 @@
       }
     },
     {
+      "id": "bmuslnpdhx40",
+      "type": "divider",
+      "data": {
+        "symbol": "✦"
+      }
+    },
+    {
       "id": "b1790864350575w4ayz3",
       "type": "stats",
       "data": {
@@ -1710,13 +1717,6 @@
             "answer": "Reliable, fast, simple refund policy. So that you can trust us."
           }
         ]
-      }
-    },
-    {
-      "id": "bmuslnpdhx40",
-      "type": "divider",
-      "data": {
-        "symbol": "✦"
       }
     },
     {
