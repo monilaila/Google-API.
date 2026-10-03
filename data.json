@@ -801,6 +801,13 @@
             }
           },
           {
+            "id": "bmuslnpdhx40",
+            "type": "divider",
+            "data": {
+              "symbol": "✦"
+            }
+          },
+          {
             "id": "bmurfktwaoo3",
             "type": "cta",
             "data": {
@@ -1703,6 +1710,13 @@
             "answer": "Reliable, fast, simple refund policy. So that you can trust us."
           }
         ]
+      }
+    },
+    {
+      "id": "bmuslnpdhx40",
+      "type": "divider",
+      "data": {
+        "symbol": "✦"
       }
     },
     {
