@@ -1040,14 +1040,11 @@ function rvValidate(S){
   return '';
 }
 function rvConfirm(S){
-  var cfg = S.cfg, d = S.draft, edit = S.mode === 'edit', secs = Math.max(0, cfg.fill != null ? cfg.fill : 5);
+  var cfg = S.cfg, d = S.draft, edit = S.mode === 'edit', secs = 0;
   var ov = document.createElement('div'); ov.className = 'rv-ov';
-  var warn = rvTx(S,'confirmWarning','Once you send this, it cannot be changed or taken back by you. Please check it carefully.');
-  if(edit) warn = 'This replaces your earlier review. ' + warn;
   ov.innerHTML = '<div class="rv-modal" role="dialog" aria-modal="true" aria-label="Confirm review">'
     + '<div class="rv-mt">' + rvEsc(rvTx(S,'confirmTitle','Send this review?')) + '</div>'
     + '<div class="rv-prev"><div class="rv-prev-n">' + rvEsc(d.name.trim()) + '</div>' + (cfg.rating && d.rating ? '<div>' + rvStars(d.rating, cfg.max||5) + '</div>' : '') + '<div class="rv-prev-m">' + rvEsc(d.msg.trim()) + '</div></div>'
-    + '<div class="rv-warn">' + rvEsc(warn) + '</div>'
     + '<div class="rv-err" data-rv-merr></div>'
     + '<div class="rv-actions"><button type="button" class="fb-btn fb-btn-primary" data-m="send" disabled>' + rvEsc(rvTx(S,'confirmSend','Send review')) + '</button><button type="button" class="fb-btn fb-btn-secondary" data-m="cancel">' + rvEsc(rvTx(S,'cancel','Cancel')) + '</button></div></div>';
   document.body.appendChild(ov);
@@ -1376,7 +1373,7 @@ function shRender(S){
     }
   } else if(S.view === 'done' && S.order){
     var o = S.order;
-    h += '<div class="sh-box"><div class="sh-h">&#10003; ' + T('done') + '</div><div class="sh-big">' + e(o.orderId) + '</div><div class="sh-sum"><span>' + T('code') + '</span><b class="sh-big">' + e(o.code) + '</b></div><div class="sh-note">' + T('save') + '</div>';
+    h += '<div class="sh-box sh-okbox"><div class="sh-okic">&#10003;</div><div class="sh-h">' + T('done') + '</div><div class="sh-note">Your order was received. It is saved below.</div><div class="sh-big">' + e(o.orderId) + '</div><div class="sh-sum"><span>' + T('code') + '</span><b class="sh-big">' + e(o.code) + '</b></div><div class="sh-note">' + T('save') + '</div>';
     o.items.forEach(function(i){ h += '<div class="sh-sum"><span>' + e(i.title) + (i.label ? ' - ' + e(i.label) : '') + (i.qty > 1 ? ' x' + i.qty : '') + '</span><b>' + shMoney(S, i.price * i.qty) + '</b></div>'; });
     h += '<div class="sh-sum tot"><span>' + T('total') + '</span><b>' + shMoney(S, o.total) + '</b></div>';
     if(C.pay) h += '<div class="sh-h2">' + T('pay') + '</div><div class="sh-pay">' + e(C.pay.split('{id}').join(o.orderId)) + '</div>';
@@ -1387,6 +1384,7 @@ function shRender(S){
   if(C.feed && S.feed && S.view !== 'order'){
     h += '<div class="sh-box"><div class="sh-h">' + T('recent') + ' <small class="sh-live">&#9679; ' + T('live') + '</small>' + (S.live ? shRfHTML(S) : '') + '</div><div data-fl>' + shFeedItems(S) + '</div></div>';
   }
+  if(S.busy && S.view !== 'gallery') h += '<div class="sh-ovl" role="status" aria-live="polite"><div class="sh-ovc"><span class="sh-spin big"></span><b>Placing your order...</b><small>Please wait, do not close this page.</small></div></div>';
   var body = S.sec.querySelector('.sh-body'); body.innerHTML = h;
   body.querySelectorAll('img.sh-av').forEach(function(im){ im.onerror = function(){ var sp = document.createElement('span'); sp.className = 'sh-av'; sp.textContent = im.alt; im.replaceWith(sp); }; });
   var g = body.querySelector('[data-g]'); if(g && S.live){ g.appendChild(S.host); if(S.g && S.g.expired && !S.msg) S.msg = ''; }
