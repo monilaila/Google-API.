@@ -1273,7 +1273,7 @@ function shRfSync(S){ var b = S.sec.querySelector('.sh-rf'); if(!b) return; b.di
 function shAvFix(root){ root.querySelectorAll('img.sh-av').forEach(function(im){ im.onerror = function(){ var sp = document.createElement('span'); sp.className = 'sh-av'; sp.textContent = im.alt; im.replaceWith(sp); }; }); }
 function shFeedItems(S){
   return (S.feed.items||[]).map(function(i){
-      return '<div class="sh-fd">' + (i.a ? '<img class="sh-av" referrerpolicy="no-referrer" alt="' + e(String(i.n||'?').charAt(0)) + '" src="' + e(i.a) + '">' : '<span class="sh-av">' + e(String(i.n||'?').charAt(0)) + '</span>') + '<div><b>' + e(i.n) + '</b><small>' + e(i.t) + ' - ' + shMoney(S, i.p) + '</small></div><em class="sh-s ' + e(String(i.s).toLowerCase()) + '">' + e(i.s) + '</em></div>';
+      return '<div class="sh-fd">' + (i.a ? '<img class="sh-av" referrerpolicy="no-referrer" alt="' + rvEsc(String(i.n||'?').charAt(0)) + '" src="' + rvEsc(i.a) + '">' : '<span class="sh-av">' + rvEsc(String(i.n||'?').charAt(0)) + '</span>') + '<div><b>' + rvEsc(i.n) + '</b><small>' + rvEsc(i.t) + ' - ' + shMoney(S, i.p) + '</small></div><em class="sh-s ' + rvEsc(String(i.s).toLowerCase()) + '">' + rvEsc(i.s) + '</em></div>';
     }).join('');
 }
 async function shFeedRefresh(S){
@@ -1346,7 +1346,7 @@ var SHX_ST = { Pending:['Order received','We have your order and will start on i
 var SHX_PAY = { paid:['Payment received','ok'], unpaid:['Payment not received yet','bad'], pending:['Payment is being checked','wait'] };
 function shStatusHTML(r){
   var s = SHX_ST[r.status] || [String(r.status || 'Unknown'), '', 'wait'], p = SHX_PAY[r.payStatus];
-  return '<div class="sh-sc"><div class="sh-sh"><span class="sh-dot ' + s[2] + '"></span><b>' + e(s[0]) + '</b></div>' + (s[1] ? '<p>' + e(s[1]) + '</p>' : '') + (p ? '<span class="sh-pc ' + p[1] + '">' + e(p[0]) + '</span>' : '') + '</div>';
+  return '<div class="sh-sc"><div class="sh-sh"><span class="sh-dot ' + s[2] + '"></span><b>' + rvEsc(s[0]) + '</b></div>' + (s[1] ? '<p>' + rvEsc(s[1]) + '</p>' : '') + (p ? '<span class="sh-pc ' + p[1] + '">' + rvEsc(p[0]) + '</span>' : '') + '</div>';
 }
 async function shCheck(S){
   if(S.chk) return;
@@ -1358,7 +1358,7 @@ async function shCheck(S){
   try { r = await shPost(S, { type:'shopstatus', orderId:S.sid||'', code:S.scode||'' }); } catch(e2){ r = null; }
   S.chk = false;
   if(r && r.ok){ S.statusHtml = shStatusHTML(r); S.status = String(r.status || ''); }
-  else { S.statusHtml = '<div class="sh-sc bad"><b>' + e((r && r.error) || shTx(S,'nonet')) + '</b></div>'; S.status = (r && r.error) || shTx(S,'nonet'); }
+  else { S.statusHtml = '<div class="sh-sc bad"><b>' + rvEsc((r && r.error) || shTx(S,'nonet')) + '</b></div>'; S.status = (r && r.error) || shTx(S,'nonet'); }
   box = S.sec.querySelector('[data-st]'); btn = S.sec.querySelector('[data-a="check"]');
   if(box) box.innerHTML = S.statusHtml;
   if(btn){ btn.disabled = false; btn.classList.remove('sh-busy'); }
